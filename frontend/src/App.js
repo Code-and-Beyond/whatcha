@@ -1,9 +1,11 @@
+import Home from './screens/Home'
+
 import './main.scss'
 
-function App() {
+const App = () => {
 	return (
-		<div className="h h--1">
-			Whatcha
+		<div>
+			<Home />
 		</div>
 	)
 }

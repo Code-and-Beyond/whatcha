@@ -8,7 +8,7 @@
 	font-weight: 200;
 	font-size: 2em;
 	line-height: 1.4;
-	color: $color-black;
+	color: $color-white;
 	box-sizing: border-box;
 
 	&--white-light{color: $color-white-light !important;}
@@ -27,7 +27,7 @@
 	font-weight: 200;
 	font-size: 1.8em;
 	line-height: 1;
-	color: $color-black;
+	color: $color-white;
 	box-sizing: border-box;
 	font-style: italic;
 
@@ -39,7 +39,7 @@
 }
 
 .h{
-	color: $color-black;
+	color: $color-white;
 	font-family: 'Poppins', sans-serif;
 	cursor: default;
 	transition: all 0.2s ease-in-out;
@@ -50,9 +50,9 @@
 
 	&--shead {font-size: 3.5rem; font-weight: 400;}
 
-	&--1{ font-size: 3rem; font-weight: 500; text-decoration: underline 0.24rem $color-primary; text-underline-offset: 0.6rem; }
+	&--1{ font-size: 3rem; font-weight: 500;  }
 
-	&--2{ font-size: 2.4rem; font-weight: 400; }
+	&--2{ font-size: 2.4rem; font-weight: 500; }
 
 	&--3{ font-size: 2.2rem; font-weight: 300; }
 
@@ -61,13 +61,13 @@
 	&--5{ font-size: 1.6rem; font-weight: 400; }
 
 	&--disabled {
-		opacity: 50%;
+		opacity: 60%;
 		text-decoration: none !important;
 	}
 }
 
 .d{
-	color: $color-black;
+	color: $color-white;
 	font-family: 'Poppins', sans-serif;
 	cursor: default;
 
@@ -76,7 +76,7 @@
 }
 
 .a{
-	color: $color-black;
+	color: $color-white;
 	font-family: 'Poppins', sans-serif;
 	font-weight: 300;
 

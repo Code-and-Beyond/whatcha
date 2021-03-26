@@ -1,0 +1,30 @@
+.profile {
+	height: 100vh;
+	flex: 0.25;
+	display: flex;
+	justify-content: center;
+	padding: 8rem 0;
+	background-color: $color-black-light;
+
+	&__tray {
+		background-color: $color-black-tray;
+		padding: 6rem 4rem;
+		border-radius: 1rem;
+		max-width: 35rem;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&--avatar {
+		align-self: center;
+		height: 20rem;
+		width: 20rem;
+		border-radius: 20rem;
+		box-shadow: 0 .4rem 0.9rem rgba($color-black, .25);
+		border: .2rem solid $color-grey;
+	}
+
+	&__details {
+		padding: 3rem 0;
+	}
+}
