@@ -2,10 +2,10 @@
 	height: 100vh; // to be centralized later
 	background-color: $color-black-canvas;
 	flex: 0.4;
-
+	
 	&__header {
 		padding: 2rem;
-		background-color: $color-black-head;
+		background-color: $color-white-head;
 		box-shadow: 0 .4rem 0.9rem rgba($color-black, .25);
 		display: flex;
 		flex-direction: column;
@@ -18,9 +18,71 @@
 			margin-bottom: 2rem;
 		}
 	}
+
+	&__container {
+		max-height: 84.5vh;
+		scroll-behavior: smooth;
+		overflow-y: scroll;
+
+		&::-webkit-scrollbar {
+			width: .3rem;  /* Remove scrollbar space */
+			background: transparent;  /* Optional: just make scrollbar invisible */
+		}
+		/* Optional: show position indicator in red */
+		&::-webkit-scrollbar-thumb {
+			background: $color-white-head;
+		}
+	}
+
 }
 
 .post {
 	width: 100%;
-	height: 40rem;
+	padding: 2rem;
+	background-color: $color-white-post;
+	margin: 2rem 0;
+	border-radius: .5rem;
+	box-shadow: 0 .4rem 0.8rem rgba($color-black, .25);
+	
+	&__head {
+		display: flex;
+
+		&--data > *{ 
+			margin-left: 2rem;
+			color: $color-black !important; 
+		}
+
+
+		&--dotsContainer {
+			border-radius: 40rem;
+			margin-left: auto;
+			padding: 1.1rem 1.3rem;
+			transition: all 0.2s ease-in-out;	
+			height: min-content;
+			&:hover {
+				background-color: $color-gray;
+			}
+		}
+		
+		&--dots {
+			transform: translate(90deg);
+			height: 2rem;
+		}
+	}
+
+	&__image {
+		padding: 2rem 0;
+		max-height: 40rem;
+		width: 100%;
+	}
+
+	&__input {
+		width: 100%;
+		color: $color-black !important;
+		&:focus { 
+			box-shadow: none !important;
+			border-color: $color-blue-dark !important;
+		}
+	}
+	
 }

@@ -3,6 +3,8 @@
 
 .no-wrap{white-space: nowrap;}
 
+
+
 .b{
 	font-family: 'Poppins', sans-serif;
 	font-weight: 200;
@@ -80,6 +82,8 @@
 	font-family: 'Poppins', sans-serif;
 	font-weight: 300;
 
+	&--name {font-weight: 500;}
+
 	&--1{ font-size: 1.8rem; }
 
 	&--2{ font-size: 1.6rem; }
@@ -96,4 +100,5 @@
 .text{
 	&--error{color: $color-red !important}
 	&--white{color: $color-white !important}
+	&--black{color: $color-black !important}
 }
