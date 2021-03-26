@@ -1,9 +1,9 @@
-import React from 'react'
+import PostHeader from '../components/Header/PostNav'
 
 const PostsScreen = () => {
 	return (
 		<div className='posts'>
-			Hi i'm posts
+			<PostHeader />
 		</div>
 	)
 }

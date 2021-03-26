@@ -1,6 +1,6 @@
 import logo from '../../assets/Logos/company_logo.png'
 
-const Header = () => {
+const LeftNavHeader = () => {
 	return (
 		<div className='header'>
 			<img src={ logo } className="header__logo u-c-pointer" alt='company logo' />
@@ -10,4 +10,4 @@ const Header = () => {
 	)
 }
 
-export default Header
+export default LeftNavHeader
