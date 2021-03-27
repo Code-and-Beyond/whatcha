@@ -36,6 +36,9 @@
 
 }
 
+
+
+
 .post {
 	width: 100%;
 	padding: 2rem;
@@ -43,7 +46,8 @@
 	margin: 2rem 0;
 	border-radius: .5rem;
 	box-shadow: 0 .4rem 0.8rem rgba($color-black, .25);
-	
+	transition: all .4s ease-in-out;
+
 	&__head {
 		display: flex;
 
@@ -70,18 +74,84 @@
 		}
 	}
 
+
+
+
 	&__image {
-		padding: 2rem 0;
+		padding: 2.5rem 0;
 		max-height: 40rem;
 		width: 100%;
 	}
 
+
+
 	&__input {
 		width: 100%;
+		margin-top: 1.5rem;
 		color: $color-black !important;
 		&:focus { 
 			box-shadow: none !important;
 			border-color: $color-blue-dark !important;
+		}
+	}
+
+
+	&__icons {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		&--basic {
+			display: flex;
+		
+			& > span {
+				opacity: 0.8;
+				display: flex;
+				align-items: center;
+				padding: .5rem;
+				cursor: pointer;
+				margin-right: 1.5rem;
+				transition: all 0.3s ease-in-out;
+
+				&:hover {
+					background-color: $color-gray;
+					border-radius: 5rem;
+				}
+				&:active {
+					opacity: 1;
+				}
+			}
+			
+		}
+
+
+		&--upvote {
+			height: 2rem;
+			width: 2rem;
+			margin-right: 0.5rem;
+			border-radius: 10rem;
+			transition: all 0.7s ease-in-out;
+			box-shadow: 0 .2rem 0.4rem rgba($color-black, .25);
+
+			&:active {
+				opacity: 1;
+				transform: scale(1.1);
+				box-shadow: 0 .3rem 0.8rem rgba($color-black, 1);
+			}
+			
+		}
+
+		&--share {
+			height: 2rem;
+			width: 2rem;
+			margin: 0 0.5rem;
+			box-shadow: none;
+		}
+
+		&--upvotesDone {
+			height: 1.2rem;
+			width: 1.2rem;
+			margin-right: 0.8rem;
 		}
 	}
 	
