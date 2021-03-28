@@ -1,5 +1,7 @@
 .icon{
 	object-fit: contain;
+	opacity: 0.7;
+	transition: all 0.2s ease-in-out;
 
 	&--l{ max-width: 24rem; max-height: 24rem; }
 
@@ -16,6 +18,11 @@
 		align-items: center;
 
 		&:not(:last-child){margin-bottom: 2rem;}
+	}
+
+	&:hover {
+		opacity: 0.9;
+		transform: scale(1.05);
 	}
 
 }

@@ -5,10 +5,10 @@
 	padding: 0.8rem 1.5rem;
 	background-color: $color-white-post;
 	transition: all 0.2s ease-in-out;
-	color: $color-white;
+	color: $color-black;
 
 	&:focus { 
-		border-color: $color-white; 
+		border-color: $color-blue-dark; 
 		box-shadow: 0 .3rem 0.4rem rgba($color-black, .25);
 		outline: none;
 	}
