@@ -36,18 +36,24 @@
 
 
 
+	&__imgContainer {
+		background-color: $color-gray;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
-	&__image {
-		padding-bottom: 2.5rem;
-		max-height: 40rem;
-		width: 100%;
+		&--image {
+			max-height: 40rem;
+			max-width: 100%;
+		}
 	}
+
+	
 
 
 
 	&__input {
 		width: 100%;
-		margin-top: 1.5rem;
 		color: $color-black !important;
 		&:focus { 
 			box-shadow: none !important;
@@ -60,7 +66,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-
+		padding-top: 2.5rem;
+		
 		&--basic {
 			display: flex;
 		
