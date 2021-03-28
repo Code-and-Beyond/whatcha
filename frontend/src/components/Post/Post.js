@@ -11,7 +11,10 @@ import dots from '../../assets/icons/dots.svg'
 import share from '../../assets/icons/share.svg'
 import comment from '../../assets/icons/comment.svg'
 
-const Post = () => {
+const Post = (props) => {
+
+	const { content, attachment } = props
+
 	const [addComment, setAddComment] = useState('')
 	const [upvote, setUpvote] = useState(false)
 	const [openComments, setOpenComments] = useState(false)
@@ -37,8 +40,8 @@ const Post = () => {
 	const getContent = () => {
 		return (
 			<React.Fragment>
-				<p className='a a--2 text--black u-p-t-m'>
-					Ready for your next big step? For a limited time my course “Essential Coding Interview Course - Python Edition” is on SALE!
+				<p className='a a--2 text--black u-p-v-m'>
+					{/* Ready for your next big step? For a limited time my course “Essential Coding Interview Course - Python Edition” is on SALE!
 
 					It’s a tough time for all of us right now, and with the uncertainty with the job market it’s best to be prepared.
 
@@ -54,11 +57,15 @@ const Post = () => {
 
 					#softwareengineers #softwareengineering
 
-					Follow Nathan Clarke, AMBCS RITTech
-			</p>
-				<div>
-					<img src={ post1 } className='post__image' alt='post content' />
-				</div>
+					Follow Nathan Clarke, AMBCS RITTech */}
+					{ content }
+				</p>
+				{attachment ?
+					<div>
+						<img src={ attachment } className='post__image' alt='post attachment' />
+					</div>
+					: null
+				}
 			</React.Fragment>
 		)
 	}

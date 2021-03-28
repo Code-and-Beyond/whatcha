@@ -12,6 +12,10 @@ import imageIcon from '../assets/icons/ico-image.svg'
 import trashIcon from '../assets/icons/ico-trash.svg'
 
 const PostsScreen = () => {
+
+	//temporary posts array
+	const [posts, setPosts] = useState([])
+
 	const initialAttachment = {
 		raw: "",
 		preview: ""
@@ -30,7 +34,12 @@ const PostsScreen = () => {
 	}
 
 	const handlePostUpload = () => {
-
+		setShowPostModal(false)
+		const totalPostData = {
+			postContent,
+			attachment
+		}
+		setPosts([...posts, totalPostData])
 	}
 
 	const getModal = () => (
@@ -67,8 +76,7 @@ const PostsScreen = () => {
 			<PostHeader setShowPostModal={ () => setShowPostModal(true) } />
 			{ getModal() }
 			<div className='posts__container u-p-h-m'>
-				<Post />
-				<Post />
+				{ posts.map((post) => <Post content={ post.postContent } attachment={ post.attachment.preview } />) }
 			</div>
 		</div>
 	)
