@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "nodemon" :"npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "z3t4z00k",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "base64url": "^3.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "forever": "^3.0.4",
+    "google-auth-library": "^7.0.2",
+    "https": "^1.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.7"
+  }
+}
