@@ -1,4 +1,4 @@
-import Avatar from '../Icons/Avatar'
+import Avatar from '../Avatar/Avatar'
 import logo from '../../assets/Logos/company_logo.png'
 
 const LeftNavHeader = () => {

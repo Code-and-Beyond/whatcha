@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import Avatar from "../Icons/Avatar"
+import Avatar from "../Avatar/Avatar"
 import Input from '../Input/Input'
 
 import upVote from '../../assets/icons/upvote.svg'
@@ -15,7 +15,7 @@ const Post = () => {
 	const [addComment, setAddComment] = useState('')
 	const [upvote, setUpvote] = useState(false)
 	const [openComments, setOpenComments] = useState(false)
-	const [SharePopup, setSharePopup] = useState(false)
+	const [, setSharePopup] = useState(false)
 
 
 	const getHeader = () => {

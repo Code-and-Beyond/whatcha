@@ -14,7 +14,7 @@ const Profile = () => {
 					<h2 className='a a--1 u-p-t-s'>React Developer | UI designer | Graphic Designer | DSA Enthusiast | React | Redux | SaSS | Material-UI</h2>
 					<FillButton text='Edit Profile' extraStyle='u-m-v-m' />
 					<div className='d--f ai--c'>
-						<img src={ location } className='icon' alt='location' />
+						<img src={ location } className='u--icon' alt='location' />
 						<p className='b b--3 u-m-l-xs'>Noida, India</p>
 					</div>
 				</div>
