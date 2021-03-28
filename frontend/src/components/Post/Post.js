@@ -6,10 +6,12 @@ import upVote from '../../assets/icons/upvote.svg'
 import upVoteActive from '../../assets/icons/upvote-active.svg'
 import upVotesDone from '../../assets/icons/upvotes-done.svg'
 import ps from '../../assets/profile/prerna.jpg'
+import me from '../../assets/profile/me.jpeg'
 import post1 from '../../assets/posts/post1.jpeg'
 import dots from '../../assets/icons/dots.svg'
 import share from '../../assets/icons/share.svg'
 import comment from '../../assets/icons/comment.svg'
+import Row from "../Row/Row"
 
 const Post = (props) => {
 
@@ -61,8 +63,8 @@ const Post = (props) => {
 					{ content }
 				</p>
 				{attachment ?
-					<div>
-						<img src={ attachment } className='post__image' alt='post attachment' />
+					<div className='post__imgContainer'>
+						<img src={ attachment } className='post__imgContainer--image' alt='post attachment' />
 					</div>
 					: null
 				}
@@ -106,12 +108,15 @@ const Post = (props) => {
 				{ getIcons() }
 			</div>
 			{openComments ?
-				<Input
-					value={ addComment }
-					handleInput={ (val) => setAddComment(val) }
-					placeholder='Add a comment'
-					extraStyle='post__input'
-				/>
+				<Row ai='c' extraStyle='u-m-t-s'>
+					<Avatar src={ me } alt='avatar' size='4.5rem' />
+					<Input
+						value={ addComment }
+						handleInput={ (val) => setAddComment(val) }
+						placeholder='Add a comment'
+						extraStyle='post__input u-m-l-xs'
+					/>
+				</Row>
 				: null
 			}
 		</div>

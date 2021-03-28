@@ -39,6 +39,8 @@ const PostsScreen = () => {
 			postContent,
 			attachment
 		}
+		setPostContent('')
+		setAttachment(initialAttachment)
 		setPosts([...posts, totalPostData])
 	}
 
