@@ -1,29 +1,41 @@
-.icon{
-	object-fit: contain;
-	opacity: 0.7;
-	transition: all 0.2s ease-in-out;
+.icon {
+    object-fit: contain;
+    opacity: 0.7;
+    transition: all 0.2s ease-in-out;
 
-	&--l{ max-width: 24rem; max-height: 24rem; }
+    &--l {
+        max-width: 24rem;
+        max-height: 24rem;
+    }
 
-	&--b{ width: 6rem; height: 6rem; }
+    &--b {
+        width: 6rem;
+        height: 6rem;
+    }
 
-	&--m {width: 4.5rem; height: 4.5rem;}
+    &--m {
+        width: 4.5rem;
+        height: 4.5rem;
+    }
 
-	&--s{ width: 3.2rem; height: 3.2rem; }
+    &--s {
+        width: 3.2rem;
+        height: 3.2rem;
+    }
 
-	&--container{
-		border-radius: 1rem;
-		padding: .3rem;
-		display: flex;
-		align-items: center;
+    &--container {
+        border-radius: 1rem;
+        padding: 0.3rem;
+        display: flex;
+        align-items: center;
 
-		&:not(:last-child){margin-bottom: 2rem;}
-	}
+        &:not(:last-child) {
+            margin-bottom: 2rem;
+        }
+    }
 
-	&:hover {
-		opacity: 0.9;
-		transform: scale(1.05);
-	}
-
+    &:hover {
+        opacity: 0.9;
+        transform: scale(1.05);
+    }
 }
-

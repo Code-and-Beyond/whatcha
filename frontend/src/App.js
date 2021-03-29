@@ -1,13 +1,13 @@
-import Home from './screens/Home'
+import Home from "./screens/Home";
 
-import './main.scss'
+import "./main.scss";
 
 const App = () => {
-	return (
-		<div>
-			<Home />
-		</div>
-	)
-}
+    return (
+        <div>
+            <Home />
+        </div>
+    );
+};
 
-export default App
+export default App;

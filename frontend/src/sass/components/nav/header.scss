@@ -1,19 +1,19 @@
-.header{
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: center;
-	// width: 8rem;
-	height: 100vh;
-	background-color: $color-black;
-	box-shadow: 0 .3rem 0.9rem rgba($color-black, .15);
-	padding: 2rem 1rem;
-	z-index: 100;
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    // width: 8rem;
+    height: 100vh;
+    background-color: $color-black;
+    box-shadow: 0 0.3rem 0.9rem rgba($color-black, 0.15);
+    padding: 2rem 1rem;
+    z-index: 100;
 
-	&__logo {
-     	box-shadow: 0 .3rem 0.9rem rgba($color-black, 0.16);		
-		height: 5rem;
-		width: 5rem;
-		border-radius: 10rem;
-	}
+    &__logo {
+        box-shadow: 0 0.3rem 0.9rem rgba($color-black, 0.16);
+        height: 5rem;
+        width: 5rem;
+        border-radius: 10rem;
+    }
 }

@@ -1,13 +1,13 @@
-.card{
-	background-color: $color-white;
-	border-radius: 0.8rem;
-	box-shadow: 0 0.3rem 0.9rem rgba($color-black, 0.16);
-	padding: 1rem;
-	position: relative;
+.card {
+    background-color: $color-white;
+    border-radius: 0.8rem;
+    box-shadow: 0 0.3rem 0.9rem rgba($color-black, 0.16);
+    padding: 1rem;
+    position: relative;
 
-	&--editor{
-		width: 40rem;
-		display: flex;
-		flex-direction: column;
-	}
+    &--editor {
+        width: 40rem;
+        display: flex;
+        flex-direction: column;
+    }
 }

@@ -1,19 +1,25 @@
-.input{
-	border: 0.2rem $color-grey solid;
-	font-family: 'Poppins';
-	border-radius: 4rem;
-	padding: 0.8rem 1.5rem;
-	background-color: $color-white-post;
-	transition: all 0.2s ease-in-out;
-	color: $color-black;
+.input {
+    border: 0.2rem $color-grey solid;
+    font-family: "Poppins";
+    border-radius: 4rem;
+    padding: 0.8rem 1.5rem;
+    background-color: $color-white-post;
+    transition: all 0.2s ease-in-out;
+    color: $color-black;
 
-	&:focus { 
-		border-color: $color-blue-dark; 
-		box-shadow: 0 .3rem 0.9rem rgba($color-black, .25);
-		outline: none;
-	}
+    &:focus {
+        border-color: $color-blue-dark;
+        box-shadow: 0 0.3rem 0.9rem rgba($color-black, 0.25);
+        outline: none;
+    }
 
-	&--error{border-color: $color-red;}
-	&--warning{border-color: $color-yellow;}
-	&--success{border-color: $color-green;}
+    &--error {
+        border-color: $color-red;
+    }
+    &--warning {
+        border-color: $color-yellow;
+    }
+    &--success {
+        border-color: $color-green;
+    }
 }
