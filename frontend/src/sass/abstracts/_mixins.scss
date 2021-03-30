@@ -1,9 +1,9 @@
 @mixin clearfix {
-	&::after{
-		content: "";
-		display: table;
-		clear: both;
-	}
+    &::after {
+        content: '';
+        display: table;
+        clear: both;
+    }
 }
 
 // MEDIA QUERY MANAGER
@@ -15,20 +15,30 @@
 	1800 <	:		Big Desktop
 */
 
-@mixin respond($bp){
-	@if $bp == phone{
-		@media (max-width: 37.5em){@content};
-	}
-	@if $bp == tabPort{
-		@media (max-width: 56.25em){@content};
-	}
-	@if $bp == tabLand{
-		@media (max-width: 75em){@content};
-	}
-	@if $bp == desk{
-		@media (max-width: 112.5em){@content};
-	}
-	@if $bp == desBig{
-		@media (min-width: 112.5em){@content}
-	}
+@mixin respond($bp) {
+    @if $bp == phone {
+        @media (max-width: 37.5em) {
+            @content;
+        }
+    }
+    @if $bp == tabPort {
+        @media (max-width: 56.25em) {
+            @content;
+        }
+    }
+    @if $bp == tabLand {
+        @media (max-width: 75em) {
+            @content;
+        }
+    }
+    @if $bp == desk {
+        @media (max-width: 112.5em) {
+            @content;
+        }
+    }
+    @if $bp == desBig {
+        @media (min-width: 112.5em) {
+            @content;
+        }
+    }
 }

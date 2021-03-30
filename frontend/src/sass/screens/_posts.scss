@@ -1,49 +1,48 @@
 .posts {
-	height: 100vh; // to be centralized later
-	background-color: $color-black-canvas;
-	flex: 0.4;
-	
-	&__header {
-		padding: 2rem;
-		background-color: $color-white-head;
-		box-shadow: 0 .4rem 0.9rem rgba($color-black, .25);
-		display: flex;
-		flex-direction: column;
-		align-items: space-between;
-		justify-content: center;
+    height: 100vh; // to be centralized later
+    background-color: $color-black-canvas;
+    flex: 0.4;
 
-		&--top {
-			display: flex;
-			align-items: center;
-			margin-bottom: 2rem;
-		}
+    &__header {
+        padding: 2rem;
+        background-color: $color-white-head;
+        box-shadow: 0 0.4rem 0.9rem rgba($color-black, 0.25);
+        display: flex;
+        flex-direction: column;
+        align-items: space-between;
+        justify-content: center;
 
-		&--start {
-			background-color: $color-white;
-			box-shadow: 0 0.3rem 0.5rem rgba($color-black, .25);
-			border-radius: 10rem;
+        &--top {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
 
-			& > h1 {
-				color: $color-black;
-				opacity: 60%;
-				padding: 0.8rem 1.5rem;
-			}
-		}
-	}
+        &--start {
+            background-color: $color-white;
+            box-shadow: 0 0.3rem 0.5rem rgba($color-black, 0.25);
+            border-radius: 10rem;
 
-	&__container {
-		max-height: 84.5vh;
-		scroll-behavior: smooth;
-		overflow-y: scroll;
+            & > h1 {
+                color: $color-black;
+                opacity: 60%;
+                padding: 0.8rem 1.5rem;
+            }
+        }
+    }
 
-		&::-webkit-scrollbar {
-			width: .3rem;  /* Remove scrollbar space */
-			background: transparent;  /* Optional: just make scrollbar invisible */
-		}
-		/* Optional: show position indicator in red */
-		&::-webkit-scrollbar-thumb {
-			background: $color-white-head;
-		}
-	}
+    &__container {
+        max-height: 84.5vh;
+        scroll-behavior: smooth;
+        overflow-y: scroll;
 
+        &::-webkit-scrollbar {
+            width: 0.3rem; /* Remove scrollbar space */
+            background: transparent; /* Optional: just make scrollbar invisible */
+        }
+        /* Optional: show position indicator in red */
+        &::-webkit-scrollbar-thumb {
+            background: $color-white-head;
+        }
+    }
 }
