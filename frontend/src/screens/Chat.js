@@ -1,7 +1,10 @@
-import React from 'react';
+import React from 'react'
+import CreateBlogs from '../components/Blogs/CreateBlogs'
 
 const ChatScreen = () => {
-    return <div className="chat">Hi i'm chat</div>;
-};
+	return (<div className="chat">
+		<CreateBlogs />
+	</div>)
+}
 
-export default ChatScreen;
+export default ChatScreen

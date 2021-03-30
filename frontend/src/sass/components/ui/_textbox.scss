@@ -6,4 +6,15 @@
     border-radius: 0.5rem;
     padding: 1rem;
     margin: 1rem 0;
+	scroll-behavior: smooth;
+	overflow-y: scroll;
+
+	&::-webkit-scrollbar {
+		width: 0.3rem; /* Remove scrollbar space */
+		background: transparent; /* Optional: just make scrollbar invisible */
+	}
+	/* Optional: show position indicator in red */
+	&::-webkit-scrollbar-thumb {
+		background: $color-white-head;
+	}
 }
