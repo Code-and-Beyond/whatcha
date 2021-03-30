@@ -11,7 +11,7 @@ html {
     background-color: $color-white;
     scroll-behavior: smooth;
     color: $color-black;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
 
     @include respond(desBig) {
         font-size: 62.5%;

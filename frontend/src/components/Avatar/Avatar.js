@@ -1,11 +1,11 @@
 const Avatar = (props) => {
     const { src, extraStyle, size, alt } = props;
     const getClasses = (props) => {
-        let classes = ["avatar"];
+        let classes = ['avatar'];
 
         if (extraStyle) classes.push(extraStyle);
 
-        return classes.join(" ", ", ");
+        return classes.join(' ', ', ');
     };
 
     return (

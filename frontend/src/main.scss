@@ -1,32 +1,32 @@
-@import "sass/abstracts/funcs";
-@import "sass/abstracts/mixins";
-@import "sass/abstracts/vars";
+@import 'sass/abstracts/funcs';
+@import 'sass/abstracts/mixins';
+@import 'sass/abstracts/vars';
 
-@import "sass/base/anims";
-@import "sass/base/base";
-@import "sass/base/typo";
-@import "sass/base/utils";
+@import 'sass/base/anims';
+@import 'sass/base/base';
+@import 'sass/base/typo';
+@import 'sass/base/utils';
 
-@import "sass/components/nav/side-drawer.scss";
-@import "sass/components/nav/header.scss";
-@import "sass/components/nav/profile.scss";
+@import 'sass/components/nav/side-drawer.scss';
+@import 'sass/components/nav/header.scss';
+@import 'sass/components/nav/profile.scss';
 
-@import "sass/components/content/post.scss";
+@import 'sass/components/content/post.scss';
 
-@import "sass/components/ui/backdrop";
-@import "sass/components/ui/button";
-@import "sass/components/ui/card";
-@import "sass/components/ui/icon";
-@import "sass/components/ui/input";
-@import "sass/components/ui/pills";
-@import "sass/components/ui/snackbar";
-@import "sass/components/ui/avatar";
-@import "sass/components/ui/modal";
-@import "sass/components/ui/textbox";
+@import 'sass/components/ui/backdrop';
+@import 'sass/components/ui/button';
+@import 'sass/components/ui/card';
+@import 'sass/components/ui/icon';
+@import 'sass/components/ui/input';
+@import 'sass/components/ui/pills';
+@import 'sass/components/ui/snackbar';
+@import 'sass/components/ui/avatar';
+@import 'sass/components/ui/modal';
+@import 'sass/components/ui/textbox';
 
-@import "sass/layouts/display";
-@import "sass/layouts/grid";
+@import 'sass/layouts/display';
+@import 'sass/layouts/grid';
 
-@import "sass/screens/home";
-@import "sass/screens/posts";
-@import "sass/screens/chat";
+@import 'sass/screens/home';
+@import 'sass/screens/posts';
+@import 'sass/screens/chat';

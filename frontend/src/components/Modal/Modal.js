@@ -1,8 +1,8 @@
-import React from "react";
-import Icon from "../Icon/Icon";
-import Row from "../Row/Row";
+import React from 'react';
+import Icon from '../Icon/Icon';
+import Row from '../Row/Row';
 
-import closeIcon from "../../assets/icons/ico-close.svg";
+import closeIcon from '../../assets/icons/ico-close.svg';
 
 const Modal = (props) => {
     const { open, title, height, width } = props;

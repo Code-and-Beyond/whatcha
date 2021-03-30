@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 // we will be importing our own fonts
 
 .no-wrap {
@@ -6,7 +6,7 @@
 }
 
 .b {
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 200;
     font-size: 2em;
     line-height: 1.4;
@@ -35,7 +35,7 @@
 }
 
 .c {
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 200;
     font-size: 1.8em;
     line-height: 1;
@@ -58,7 +58,7 @@
 
 .h {
     color: $color-white;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
     cursor: default;
     transition: all 0.2s ease-in-out;
 
@@ -109,7 +109,7 @@
 
 .d {
     color: $color-white;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
     cursor: default;
 
     &--1 {
@@ -125,7 +125,7 @@
 
 .a {
     color: $color-white;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 300;
 
     &--name {

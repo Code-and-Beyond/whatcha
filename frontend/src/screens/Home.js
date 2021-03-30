@@ -1,8 +1,8 @@
-import React from "react";
-import Header from "../components/Header/LeftNav";
-import Features from "../components/Features/Profile";
-import Posts from "./Posts";
-import Chat from "./Chat";
+import React from 'react';
+import Header from '../components/Header/LeftNav';
+import Features from '../components/Features/Profile';
+import Posts from './Posts';
+import Chat from './Chat';
 
 const HomeScreen = () => {
     return (

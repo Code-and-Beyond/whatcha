@@ -1,8 +1,8 @@
-require("dotenv").config();
+require('dotenv').config();
 
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
-var acsTkn = "";
+var acsTkn = '';
 var refreshTokens = [];
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
     refreshTokens,
     authenticateToken: function (req, res, next) {
         try {
-            var token = req.headers.authorization.split(" ")[1];
+            var token = req.headers.authorization.split(' ')[1];
             if (token == null) return res.sendStatus(401);
             jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
                 if (err) {
@@ -26,14 +26,14 @@ module.exports = {
 
     generateAccessToken: function (user) {
         const accesToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-            expiresIn: "3600s",
+            expiresIn: '3600s',
         });
         return accesToken;
     },
 
     generateRefreshToken: function (user) {
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
-            expiresIn: "14d",
+            expiresIn: '14d',
         });
         this.refreshTokens.push(refreshToken);
         return refreshToken;
@@ -44,7 +44,7 @@ module.exports = {
             refreshToken,
             process.env.REFRESH_TOKEN_SECRET,
             (err, user) => {
-                if (err) return "no";
+                if (err) return 'no';
                 const accessToken = this.generateAccessToken({
                     name: user.name,
                 });

@@ -1,6 +1,6 @@
-import TextButton from "../../components/Button/Text";
-import Avatar from "../Avatar/Avatar";
-import avatar from "../../assets/profile/me.jpeg";
+import TextButton from '../../components/Button/Text';
+import Avatar from '../Avatar/Avatar';
+import avatar from '../../assets/profile/me.jpeg';
 
 const PostNavHeader = (props) => {
     return (

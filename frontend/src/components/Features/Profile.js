@@ -1,7 +1,7 @@
-import FillButton from "../Button/Fill";
+import FillButton from '../Button/Fill';
 
-import me from "../../assets/profile/me.jpeg";
-import location from "../../assets/icons/location.svg";
+import me from '../../assets/profile/me.jpeg';
+import location from '../../assets/icons/location.svg';
 
 const Profile = () => {
     return (

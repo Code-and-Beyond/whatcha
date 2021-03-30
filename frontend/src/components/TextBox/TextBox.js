@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const TextBox = (props) => {
     const {
@@ -14,11 +14,11 @@ const TextBox = (props) => {
     } = props;
 
     const getClasses = () => {
-        let classes = ["textbox h h--5"];
+        let classes = ['textbox h h--5'];
 
         if (props.extraStyle) classes.push(props.extraStyle);
 
-        return classes.join(" ", ", ");
+        return classes.join(' ', ', ');
     };
 
     return (

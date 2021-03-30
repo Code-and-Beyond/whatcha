@@ -1,26 +1,26 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import PostHeader from "../components/Header/PostNav";
-import Post from "../components/Post/Post";
-import Modal from "../components/Modal/Modal";
-import TextBox from "../components/TextBox/TextBox";
-import FillButton from "../components/Button/Fill";
-import Row from "../components/Row/Row";
-import Icon from "../components/Icon/Icon";
+import PostHeader from '../components/Header/PostNav';
+import Post from '../components/Post/Post';
+import Modal from '../components/Modal/Modal';
+import TextBox from '../components/TextBox/TextBox';
+import FillButton from '../components/Button/Fill';
+import Row from '../components/Row/Row';
+import Icon from '../components/Icon/Icon';
 
-import imageIcon from "../assets/icons/ico-image.svg";
-import trashIcon from "../assets/icons/ico-trash.svg";
+import imageIcon from '../assets/icons/ico-image.svg';
+import trashIcon from '../assets/icons/ico-trash.svg';
 
 const PostsScreen = () => {
     //temporary posts array
     const [posts, setPosts] = useState([]);
 
     const initialAttachment = {
-        raw: "",
-        preview: "",
+        raw: '',
+        preview: '',
     };
     const [showPostModal, setShowPostModal] = useState(false);
-    const [postContent, setPostContent] = useState("");
+    const [postContent, setPostContent] = useState('');
     const [attachment, setAttachment] = useState(initialAttachment);
 
     const handleAttachmentChange = (e) => {
@@ -38,7 +38,7 @@ const PostsScreen = () => {
             postContent,
             attachment,
         };
-        setPostContent("");
+        setPostContent('');
         setAttachment(initialAttachment);
         setPosts([...posts, totalPostData]);
     };
@@ -88,7 +88,7 @@ const PostsScreen = () => {
                     <input
                         type="file"
                         id="upload-button"
-                        style={{ display: "none" }}
+                        style={{ display: 'none' }}
                         onChange={handleAttachmentChange}
                     />
                     <br />
@@ -96,7 +96,7 @@ const PostsScreen = () => {
                 <FillButton
                     extraStyle="modal__btn"
                     text="Post"
-                    disabled={postContent === ""}
+                    disabled={postContent === ''}
                     type={1}
                     onClickHandler={handlePostUpload}
                 />

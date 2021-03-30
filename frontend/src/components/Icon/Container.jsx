@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import Icon from "./Icon";
+import Icon from './Icon';
 
 const IconContainer = (props) => {
     const { text, color, src, alt } = props;

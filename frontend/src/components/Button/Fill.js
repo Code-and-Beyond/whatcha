@@ -1,29 +1,29 @@
-import React from "react";
+import React from 'react';
 
 const FillButton = (props) => {
     const getClasses = () => {
-        let classes = ["button button--fill a a--1 u-c-pointer"];
+        let classes = ['button button--fill a a--1 u-c-pointer'];
 
         if (props.extraStyle) classes.push(props.extraStyle);
 
         switch (props.type) {
             case 2:
-                classes.push("button--fill--error");
+                classes.push('button--fill--error');
                 break;
             case 3:
-                classes.push("button--fill--warning");
+                classes.push('button--fill--warning');
                 break;
             case 4:
-                classes.push("button--fill--info");
+                classes.push('button--fill--info');
                 break;
             case 5:
-                classes.push("button--fill--success");
+                classes.push('button--fill--success');
                 break;
             default:
-                classes.push("button--fill--primary");
+                classes.push('button--fill--primary');
         }
 
-        return classes.join(" ", ", ");
+        return classes.join(' ', ', ');
     };
 
     return (

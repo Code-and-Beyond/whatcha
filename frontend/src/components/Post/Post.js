@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import Avatar from "../Avatar/Avatar";
-import Input from "../Input/Input";
+import React, { useState } from 'react';
+import Avatar from '../Avatar/Avatar';
+import Input from '../Input/Input';
 
-import upVote from "../../assets/icons/upvote.svg";
-import upVoteActive from "../../assets/icons/upvote-active.svg";
-import upVotesDone from "../../assets/icons/upvotes-done.svg";
-import ps from "../../assets/profile/prerna.jpg";
-import me from "../../assets/profile/me.jpeg";
-import post1 from "../../assets/posts/post1.jpeg";
-import dots from "../../assets/icons/dots.svg";
-import share from "../../assets/icons/share.svg";
-import comment from "../../assets/icons/comment.svg";
-import Row from "../Row/Row";
+import upVote from '../../assets/icons/upvote.svg';
+import upVoteActive from '../../assets/icons/upvote-active.svg';
+import upVotesDone from '../../assets/icons/upvotes-done.svg';
+import ps from '../../assets/profile/prerna.jpg';
+import me from '../../assets/profile/me.jpeg';
+import post1 from '../../assets/posts/post1.jpeg';
+import dots from '../../assets/icons/dots.svg';
+import share from '../../assets/icons/share.svg';
+import comment from '../../assets/icons/comment.svg';
+import Row from '../Row/Row';
 
 const Post = (props) => {
     const { content, attachment } = props;
 
-    const [addComment, setAddComment] = useState("");
+    const [addComment, setAddComment] = useState('');
     const [upvote, setUpvote] = useState(false);
     const [openComments, setOpenComments] = useState(false);
     const [, setSharePopup] = useState(false);
@@ -119,7 +119,7 @@ const Post = (props) => {
                         src={upVotesDone}
                         className="post__icons--upvotesDone"
                         alt="upvote"
-                    />{" "}
+                    />{' '}
                     2 upvotes - 2 comments
                 </div>
             </React.Fragment>

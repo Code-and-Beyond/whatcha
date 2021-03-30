@@ -1,5 +1,5 @@
-import Avatar from "../Avatar/Avatar";
-import logo from "../../assets/Logos/company_logo.png";
+import Avatar from '../Avatar/Avatar';
+import logo from '../../assets/Logos/company_logo.png';
 
 const LeftNavHeader = () => {
     return (

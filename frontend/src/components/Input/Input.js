@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 
 const Input = (props) => {
     const { value, placeholder } = props;
     const getClasses = () => {
-        let classes = ["input"];
+        let classes = ['input'];
 
         if (props.extraStyle) classes.push(props.extraStyle);
 
-        return classes.join(" ", ", ");
+        return classes.join(' ', ', ');
     };
 
     return (
