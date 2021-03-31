@@ -1,35 +1,32 @@
-require('dotenv').config();
+require('dotenv').config()
 
-const express = require('express');
-const cors = require('cors');
-const https = require('https');
-const jwt = require('jsonwebtoken');
-const bodyparser = require('body-parser');
-const axios = require('axios');
-const connection = require('./connections/user');
-const auth = require('./helpers/auth');
+const express = require('express')
+const cors = require('cors')
+const https = require('https')
+const jwt = require('jsonwebtoken')
+const bodyparser = require('body-parser')
+const axios = require('axios')
+const connection = require('./connections/user')
+const auth = require('./helpers/auth')
 
-const http = require('http');
-const app = express();
-const server = http.createServer(app);
+const app = express()
 
-server.listen(5000, () => console.log('server is running on port 5000'));
 
 var checkUserFilter = function (req, res, nex) {
-    const regex = '/api/pvt/';
-    if (req._parsedUrl.pathname.match(regex)) {
-        auth.authenticateToken(req, res, nex);
-    } else {
-        nex();
-    }
-};
+	const regex = '/api/pvt/'
+	if (req._parsedUrl.pathname.match(regex)) {
+		auth.authenticateToken(req, res, nex)
+	} else {
+		nex()
+	}
+}
 
-app.use(cors());
-app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({ extended: true }));
-app.use(checkUserFilter);
+app.use(cors())
+app.use(bodyparser.json())
+app.use(bodyparser.urlencoded({ extended: true }))
+app.use(checkUserFilter)
 
-require('./routes/auth/google')(app, connection, axios);
+require('./routes/auth/google')(app, connection, axios)
 
 /*  PRODUCTION  */
 // var key = fs.readFileSync(__dirname + '/ssl/server.key');
@@ -46,5 +43,5 @@ require('./routes/auth/google')(app, connection, axios);
 // });
 
 /*  DEVELOPMENT */
-// app.set('port', process.env.PORT || 8080);
-// app.listen(8080);
+app.set('port', process.env.PORT || 8080)
+app.listen(8080, () => console.log('server is running on port 8080'))

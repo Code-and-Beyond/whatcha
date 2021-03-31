@@ -48,8 +48,9 @@
 	&__preview {
 		margin: 1.5rem 0;
 		padding: 2rem 4rem;
-		width: 100%;
 		max-width: 100%;
+		word-break: break-all;
+
 		min-height: 35vh;
 		background-color: $color-white;
 		color: $color-black !important;
