@@ -26,7 +26,15 @@ app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({ extended: true }))
 app.use(checkUserFilter)
 
+app.use((req, res, next) => {
+	res.append('Access-Control-Allow-Origin', ['*'])
+	res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+	res.append('Access-Control-Allow-Headers', 'Content-Type')
+	next()
+})
+
 require('./routes/auth/google')(app, connection, axios)
+require('./routes/public/posts/posts')(app, connection)
 
 /*  PRODUCTION  */
 // var key = fs.readFileSync(__dirname + '/ssl/server.key');

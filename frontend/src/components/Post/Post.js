@@ -14,7 +14,7 @@ import comment from '../../assets/icons/comment.svg'
 import Row from '../Row/Row'
 
 const Post = (props) => {
-	const { content, attachment } = props
+	const { content, attachment, upvotes } = props
 
 	const [addComment, setAddComment] = useState('')
 	const [upvote, setUpvote] = useState(false)
@@ -120,7 +120,7 @@ const Post = (props) => {
 						className="post__icons--upvotesDone"
 						alt="upvote"
 					/>{ ' ' }
-                    2 upvotes - 2 comments
+					{ upvotes } upvotes - 2 comments
                 </div>
 			</React.Fragment>
 		)
