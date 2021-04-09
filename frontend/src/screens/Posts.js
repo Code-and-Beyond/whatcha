@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 import PostHeader from '../components/Header/PostNav'
 import Post from '../components/Post/Post'
@@ -22,6 +23,20 @@ const PostsScreen = () => {
 	const [showPostModal, setShowPostModal] = useState(false)
 	const [postContent, setPostContent] = useState('')
 	const [attachment, setAttachment] = useState(initialAttachment)
+
+	useEffect(() => {
+		axios.get('http://localhost:8080/api/pub/posts')
+			.then((res) => {
+				const data = res.data.data
+				setPosts(data)
+			}
+			)
+			.catch((err) => console.log(err))
+	}, [])
+
+	useEffect(() => {
+		console.log(posts)
+	}, [posts])
 
 	const handleAttachmentChange = (e) => {
 		if (e.target.files.length) {
@@ -109,11 +124,12 @@ const PostsScreen = () => {
 			<PostHeader setShowPostModal={ () => setShowPostModal(true) } />
 			{getModal() }
 			<div className="posts__container u-p-h-m">
-				{ posts.map((post, index) => (
+				{ posts.length && posts.map((post, index) => (
 					<Post
 						key={ index }
-						content={ post.postContent }
-						attachment={ post.attachment.preview }
+						content={ post.content }
+						upvotes={ post.upvotes }
+						attachment={ post.imgUrl }
 					/>
 				)) }
 			</div>

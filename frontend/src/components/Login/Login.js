@@ -1,9 +1,7 @@
-import React from 'react'
 import axios from 'axios'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-// import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import GoogleLogin from 'react-google-login'
 
 import { toggleLoginModal } from '../../store/actions/loginModal'
@@ -14,7 +12,6 @@ import { setAccessToken, setRefreshToken, setUser } from '../../helpers/session'
 
 import IconContainer from '../Icon/Container'
 
-// import facebook from '../../assets/icons/logo-facebook.svg';
 import google from '../../assets/icons/logo-google.svg'
 
 import closeIcon from '../../assets/icons/ico-close.svg'
@@ -28,10 +25,11 @@ const Login = (props) => {
 	const modalState = useSelector(state => state.loginModalState)
 
 	const onSuccessHandler = response => {
+		console.log(response)
 		dispatch(toggleLoginModal(false))
 		dispatch(toggleLoading(true, "default", "Loggin In..."))
 		axios({
-			url: 'https://34.123.64.49:443/auth/google',
+			url: 'http://localhost:8080/auth/google',
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
@@ -65,31 +63,6 @@ const Login = (props) => {
 	}
 	const onFailureHandler = res => { console.log({ failure: res }) /*dispatch(setAlert(-1, "Something went wrong", true))*/ }
 
-	// const responseFacebook = (response) => {
-	// 	console.log({response})
-	// 	axios({
-	// 		url: 'https://34.123.64.49:443/auth/facebook',
-	// 		method: 'post',
-	// 		headers: {
-	// 			'Content-Type': 'application/json',
-	// 			'Access-Control-Allow-Origin': '*'
-	// 		},
-	// 		data: {
-	// 			'token': response.accessToken,
-	// 			'user': {
-	// 				'email': response.email,
-	// 				'id': response.id,
-	// 				'name': response.name,
-	// 				'image': response.picture.data.url,
-	// 				'fname': response.name.split(' ')[0],
-	// 				'lname': response.name.split(' ')[response.name.split(' ').length - 1]
-	// 			}
-	// 		}
-	// 	})
-	// 		.then(res => { console.log({ res }); })
-	// 		.catch(err => console.log({ err }));
-	// };
-
 	return (
 		modalState.visible ?
 			<div className="backdrop">
@@ -100,17 +73,15 @@ const Login = (props) => {
 					</div>
 					<div className='h h--3'>Join now to unlock your complete potential and ace all the exams.</div>
 					<div className='join__container--social'>
-						<GoogleLogin clientId="794549463220-752dfsj8mhgpgpjl4f44u2amuhipqtpc.apps.googleusercontent.com"
+						<GoogleLogin
+							clientId={ process.env.REACT_APP_GOOGLE_CLIENT_ID }
+							cookiePolicy={ 'single_host_origin' }
 							render={ renderprops =>
 								<IconContainer src={ google } color='#16C9FF' text='Google' alt='google logo' onClickHandler={ renderprops.onClick } />
 							}
-							onSuccess={ onSuccessHandler } onFailure={ onFailureHandler } />
-						{/* <FacebookLogin appId="237479144687081"
-							render={renderprops =>
-								<IconContainer src={facebook} color='#1878F3' text='Facebook' alt='facebook logo' onClickHandler={renderprops.onClick()} />
-							}
-							callback={responseFacebook}
-						/> */}
+							onSuccess={ onSuccessHandler }
+							onFailure={ onFailureHandler }
+						/>
 					</div>
 				</div>
 			</div>
