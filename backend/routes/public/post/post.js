@@ -1,10 +1,15 @@
 module.exports = function (app, connection) {
 
+
     //to insert a post by a user
-    app.route("/api/pub/post")
+    app.route('/api/pub/post')
         .post(function (req, res, nex) {
-            const name = req.body.name;
-            connection.query("INSERT INTO whatcha.`posts-list` (`name`) values(?)", [name],
+            const id = req.body.uid;
+            const content = req.body.content;
+            const upvotes = req.body.upvotes;
+            const comment = req.body.comments;
+            const imgurl = req.body.imgUrl;
+            connection.query("INSERT INTO whatcha.`posts-list` (`uid`,`content`,`upvotes`,`comments`,`imgUrl`) values(?,?,?,?,?)", [id, content, upvotes, comment, imgurl],
                 function (error, result, fields) {
                     if (error) res.json(error);
                     else {
@@ -16,10 +21,11 @@ module.exports = function (app, connection) {
         });
 
 
-        //to get all the posts by a user
-    app.route('/api/pub/post/:name')
+    //to get all the posts by a user(done)
+    app.route('/api/pub/post/:query')
         .get(function (req, res, next) {
-            connection.query("SELECT * FROM whatcha.`posts-list` WHERE `name` LIKE ? ",["%" + query + "%"],
+            const query = req.params.query;
+            connection.query("SELECT * FROM whatcha.`posts-list` WHERE `uid` LIKE ? ", ["%" + query + "%"],
                 function (error, result, fields) {
                     if (error) { res.sendStatus(500) }
                     else {
@@ -35,5 +41,5 @@ module.exports = function (app, connection) {
         });
 
 
-    
-    }
+
+}
