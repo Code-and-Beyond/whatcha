@@ -4,8 +4,5 @@
     },
     "devDependencies": {
         "prettier": "^2.2.1"
-    },
-    "dependencies": {
-        "spinners-react": "^1.0.4"
     }
 }
