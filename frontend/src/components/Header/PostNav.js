@@ -2,8 +2,8 @@ import { useDispatch } from 'react-redux';
 
 import TextButton from '../../components/Button/Text';
 import Avatar from '../Avatar/Avatar';
-import avatar from '../../assets/profile/me.jpeg';
-import { setLogout } from '../../helpers/session';
+import user from '../../assets/profile/user.svg';
+import { setLogout, getUser } from '../../helpers/session';
 import { toggleLoggedIn } from '../../store/actions/user';
 
 const PostNavHeader = (props) => {
@@ -13,7 +13,7 @@ const PostNavHeader = (props) => {
 		<div className="posts__header">
 			<div className="posts__header--top">
 				<Avatar
-					src={ avatar }
+					src={ getUser() ? getUser().image : user }
 					extraStyle="u-c-pointer"
 					alt="user avatar"
 				/>
