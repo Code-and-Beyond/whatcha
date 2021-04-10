@@ -14,8 +14,6 @@ import IconContainer from '../Icon/Container';
 
 import google from '../../assets/icons/logo-google.svg';
 
-import closeIcon from '../../assets/icons/ico-close.svg';
-import Icon from '../Icon/Icon';
 // import { setAlert } from '../../store/actions/snackbar'
 
 const Login = (props) => {
@@ -65,11 +63,10 @@ const Login = (props) => {
 
 	return (
 		modalState.visible ?
-			<div className="backdrop">
+			<div className="backdrop" style={ { background: 'grey' } }>
 				<div className='join__container card'>
 					<div className="join__container__row">
 						<h1 className="join__head h h--head text--black">Whatcha</h1>
-						<Icon src={ closeIcon } onClickHandler={ () => { dispatch(toggleLoginModal(false)); } } extraStyle="icon--s" />
 					</div>
 					<div className='h h--4 text--black'>Welcome to whatcha! Please login to continue.</div>
 					<div className='join__container--social'>
