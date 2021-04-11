@@ -1,28 +1,64 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
-import Input from '../Input/Input'
-import TextBox from '../TextBox/TextBox'
-import FillButton from '../Button/Fill'
-import Row from '../Row/Row'
+import Input from '../Input/Input';
+import TextBox from '../TextBox/TextBox';
+import FillButton from '../Button/Fill';
+import Row from '../Row/Row';
+import axios from 'axios';
+import { getUser } from '../../helpers/session';
 
-let marked = require("marked")
+let marked = require("marked");
 
 
 const CreateBlogs = () => {
 
-	const [title, setTitle] = useState('')
-	const [blogContent, setBlogContent] = useState('')
+	const [title, setTitle] = useState('');
+	const [blogContent, setBlogContent] = useState('');
+	const [uploading, setUploading] = useState(false);
+
+	const handleBlogUpload = () => {
+		setUploading(true);
+		axios({
+			url: "http://localhost:8080/api/pub/blogs",
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Origin': '*',
+				// 'Authorization': 'Bearer ' + getAccessToken()
+			},
+			data: {
+				uid: getUser().id,
+				title,
+				content: blogContent,
+			},
+
+		}).then((res) => {
+			if (res.status === 200 && !res.data.error) {
+				// setAccessToken(res.data.tokens.access);
+				// setRefreshToken(res.data.tokens.refresh);
+				setUploading(false);
+				setTitle('');
+				setBlogContent('');
+				console.log(res.data);
+			}
+		}).catch((err) => console.log(err));
+	};
 
 	return (
 		<div>
 			<Row ai='c' jc='sb' extraStyle='u-m-b-s'>
-				<h1 className='h h--2'>Write a Blog</h1>
+				{ uploading ?
+					<h1 className='h h--2'>Uploading...</h1>
+					:
+					<h1 className='h h--2'>Write a Blog</h1>
+				}
+
 				<FillButton
 					extraStyle='text--black'
 					text="Go ahead! Post it"
 					disabled={ (blogContent && title) === '' }
 					type={ 3 }
-				// onClickHandler={ handlePostUpload }
+					onClickHandler={ handleBlogUpload }
 				/>
 			</Row>
 			<div className='blogs'>
@@ -47,10 +83,9 @@ const CreateBlogs = () => {
 						__html: marked(blogContent),
 					} }
 				/>
-
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default CreateBlogs
+export default CreateBlogs;

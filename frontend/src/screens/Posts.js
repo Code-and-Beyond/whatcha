@@ -13,6 +13,8 @@ import imageIcon from '../assets/icons/ico-image.svg';
 import trashIcon from '../assets/icons/ico-trash.svg';
 import { getUser, getAccessToken, setAccessToken, setRefreshToken } from '../helpers/session';
 import Blog from '../components/Blog/Blog';
+import Spinner from '../components/Spinner/Spinner';
+import React from 'react';
 
 const PostsScreen = () => {
 	const [posts, setPosts] = useState([]);
@@ -22,14 +24,17 @@ const PostsScreen = () => {
 		preview: '',
 	};
 
-	const [editPost, setEditPost] = useState({ show: false, id: null });
-	const [showBlogs, setShowBlogs] = useState(false);
-	const [uploadPost, setUploadPost] = useState(false);
-	const [showPostModal, setShowPostModal] = useState(false);
+	// POSTS 
 	const [postContent, setPostContent] = useState('');
 	const [attachment, setAttachment] = useState(initialAttachment);
 	const [upvotedPosts, setUpvotedPosts] = useState([]);
+	const [showPostModal, setShowPostModal] = useState(false);
+	const [editPost, setEditPost] = useState({ show: false, id: null });
+	const [uploadPost, setUploadPost] = useState(false);
 
+	//BLOGS
+	const [showBlogs, setShowBlogs] = useState(false);
+	const [blogs, setBlogs] = useState([]);
 
 	const fetchAllPosts = () => (
 		axios.get('http://localhost:8080/api/pub/posts')
@@ -53,6 +58,18 @@ const PostsScreen = () => {
 			})
 			.catch((err) => console.log(err))
 	);
+
+	useEffect(() => {
+		axios.get('http://localhost:8080/api/pub/blogs')
+			.then((res) => {
+				if (res.status === 200 && !res.data.error) {
+					const data = res.data.data;
+					setBlogs(data);
+					console.log(data);
+				}
+			})
+			.catch((err) => console.log(err));
+	}, [showBlogs]);
 
 	useEffect(() => {
 		console.log('im running');
@@ -261,9 +278,14 @@ const PostsScreen = () => {
 		))
 	);
 
-	const getAllBlogs = () => {
-		return <Blog />;
-	};
+	const getAllBlogs = () => (
+		(blogs.length > 0 && showBlogs) ?
+			blogs.map((blog) => <Blog title={ blog.title } content={ blog.content } author={ blog.fullname } uploadedOn={ blog.createdAt.split('T')[0] } />) :
+			<div className='d--f jc--c u-p-v-b'>
+				<Spinner loading={ blogs.length === 0 } />
+			</div>
+	);
+
 
 	return (
 		<div className="posts">
@@ -282,4 +304,4 @@ const PostsScreen = () => {
 	);
 };
 
-export default PostsScreen;
+export default React.memo(PostsScreen);

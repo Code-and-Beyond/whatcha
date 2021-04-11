@@ -73,6 +73,7 @@
 }
 
 .blog {
+	max-width: max-content;
 	&__head {
 		display: flex;
 		justify-content: center;
@@ -82,19 +83,24 @@
 		margin: 2rem 0;
 		display: flex;
 		justify-content: space-between;	
+		align-items: center;
 
 		& > * h4 {
 			font-weight: 400;
 		}
 
-		& > h5 {
-			font-weight: 300;
+		& > * h5 {
+			text-align: center;
+			font-weight: 400;
 		}
 	}
 
 	&__content {
 		margin-top: 4rem;
 		margin-bottom:2rem ;
+		> * {
+			padding: 0 3rem;
+		}
 	}
 
 	&--pre {

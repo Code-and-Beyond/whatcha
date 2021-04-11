@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+let marked = require('marked');
+
+
 const LongText = (props) => {
 	const [showAll, setShowAll] = useState(false);
 
@@ -15,13 +18,19 @@ const LongText = (props) => {
 
 	if (content.length <= limit) {
 		// there is nothing more to show
-		return <div className={ getClasses() }>{ content }</div>;
+		return <div className={ getClasses() } dangerouslySetInnerHTML={ {
+			__html: marked(content),
+		} } />;
 	}
 	if (showAll) {
 		// We show the extended text and a link to reduce it
 		return (
 			<div>
-				<pre className={ getClasses() }>{ content }</pre>
+				<pre className={ getClasses() }
+					dangerouslySetInnerHTML={ {
+						__html: marked(content),
+					} }
+				/>
 				<h2
 					style={ {
 						fontWeight: 600,
@@ -39,9 +48,11 @@ const LongText = (props) => {
 	const toShow = content.substring(0, limit) + '...';
 	return (
 		<React.Fragment>
-			<h1 className={ getClasses() }>
-				{ toShow }
-			</h1>
+			<h1 className={ getClasses() }
+				dangerouslySetInnerHTML={ {
+					__html: marked(toShow),
+				} }
+			/>
 			<h2
 				style={ { fontWeight: 600, cursor: 'pointer', color: 'blue' } }
 				onClick={ () => setShowAll(true) }
