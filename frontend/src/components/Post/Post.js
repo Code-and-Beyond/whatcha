@@ -1,25 +1,27 @@
-import React, { useState } from 'react'
-import Avatar from '../Avatar/Avatar'
-import Input from '../Input/Input'
+import React, { useState } from 'react';
 
-import upVote from '../../assets/icons/upvote.svg'
-import upVoteActive from '../../assets/icons/upvote-active.svg'
-import upVotesDone from '../../assets/icons/upvotes-done.svg'
-import ps from '../../assets/profile/prerna.jpg'
-import me from '../../assets/profile/me.jpeg'
-// import post1 from '../../assets/posts/post1.jpeg';
-import dots from '../../assets/icons/dots.svg'
-import share from '../../assets/icons/share.svg'
-import comment from '../../assets/icons/comment.svg'
-import Row from '../Row/Row'
+import { getUser } from '../../helpers/session';
+
+import Avatar from '../Avatar/Avatar';
+import Input from '../Input/Input';
+import Row from '../Row/Row';
+
+import upVote from '../../assets/icons/upvote.svg';
+import upVoteActive from '../../assets/icons/upvote-active.svg';
+import upVotesDone from '../../assets/icons/upvotes-done.svg';
+import ps from '../../assets/profile/prerna.jpg';
+import user from '../../assets/profile/user.svg';
+import dots from '../../assets/icons/dots.svg';
+import share from '../../assets/icons/share.svg';
+import comment from '../../assets/icons/comment.svg';
 
 const Post = (props) => {
-	const { content, attachment, upvotes } = props
+	const { content, attachment, upvotes } = props;
 
-	const [addComment, setAddComment] = useState('')
-	const [upvote, setUpvote] = useState(false)
-	const [openComments, setOpenComments] = useState(false)
-	const [, setSharePopup] = useState(false)
+	const [addComment, setAddComment] = useState('');
+	const [upvote, setUpvote] = useState(false);
+	const [openComments, setOpenComments] = useState(false);
+	const [, setSharePopup] = useState(false);
 
 	const getHeader = () => {
 		return (
@@ -38,8 +40,8 @@ const Post = (props) => {
 					/>
 				</div>
 			</React.Fragment>
-		)
-	}
+		);
+	};
 
 	const getContent = () => {
 		return (
@@ -74,8 +76,8 @@ const Post = (props) => {
 					</div>
 				) : null }
 			</React.Fragment>
-		)
-	}
+		);
+	};
 
 	const getIcons = () => {
 		return (
@@ -123,8 +125,8 @@ const Post = (props) => {
 					{ upvotes } upvotes - 2 comments
                 </div>
 			</React.Fragment>
-		)
-	}
+		);
+	};
 
 	return (
 		<div className="post">
@@ -133,7 +135,7 @@ const Post = (props) => {
 			<div className="post__icons">{ getIcons() }</div>
 			{openComments ? (
 				<Row ai="c" extraStyle="u-m-t-s">
-					<Avatar src={ me } alt="avatar" size="4.5rem" />
+					<Avatar src={ getUser() ? getUser().image : user } alt="avatar" size="4.5rem" />
 					<Input
 						value={ addComment }
 						handleInput={ (val) => setAddComment(val) }
@@ -143,7 +145,7 @@ const Post = (props) => {
 				</Row>
 			) : null }
 		</div>
-	)
-}
+	);
+};
 
-export default Post
+export default Post;

@@ -1,0 +1,30 @@
+.join {
+	&__container {
+		background-color: $color-white-light;
+		padding: 2rem;
+		width: 60rem;
+		height: max-content;
+		max-width: 90%;
+
+		&__row{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			margin-bottom: 2rem;
+		}
+
+		&--social {
+			padding-top: 3rem;
+			min-height: 50%;
+			display: flex;
+			flex-direction: column;
+		}
+	}
+
+	&__head {
+		display: flex;
+		justify-content: center;
+	}
+}

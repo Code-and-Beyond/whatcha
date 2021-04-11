@@ -1,9 +1,9 @@
-import { TOGGLE_LOGIN_MODAL } from "../actions/loginModal"
+import { TOGGLE_LOGIN_MODAL } from "../actions/loginModal";
 
 const initalState = {
-	visible: true,
+	visible: false,
 	redirect: null
-}
+};
 
 const handleToggle = (state = initalState, action) => {
 	switch (action.type) {
@@ -13,17 +13,17 @@ const handleToggle = (state = initalState, action) => {
 					...state,
 					visible: action.visible,
 					redirect: action.redirect
-				}
+				};
 			else {
 				return {
 					...state,
 					visible: action.visible,
-				}
+				};
 			}
 		default:
-			break
+			break;
 	}
-	return state
-}
+	return state;
+};
 
-export default handleToggle
+export default handleToggle;

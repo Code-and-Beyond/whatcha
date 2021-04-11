@@ -1,33 +1,31 @@
-import axios from 'axios'
+import axios from 'axios';
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
 
-import GoogleLogin from 'react-google-login'
+import GoogleLogin from 'react-google-login';
 
-import { toggleLoginModal } from '../../store/actions/loginModal'
-import { toggleLoading } from '../../store/actions/loading'
-import { toggleLoggedIn } from '../../store/actions/user'
+import { toggleLoginModal } from '../../store/actions/loginModal';
+import { toggleLoading } from '../../store/actions/loading';
+import { toggleLoggedIn } from '../../store/actions/user';
 
-import { setAccessToken, setRefreshToken, setUser } from '../../helpers/session'
+import { setAccessToken, setRefreshToken, setUser } from '../../helpers/session';
 
-import IconContainer from '../Icon/Container'
+import IconContainer from '../Icon/Container';
 
-import google from '../../assets/icons/logo-google.svg'
+import google from '../../assets/icons/logo-google.svg';
 
-import closeIcon from '../../assets/icons/ico-close.svg'
-import Icon from '../Icon/Icon'
 // import { setAlert } from '../../store/actions/snackbar'
 
 const Login = (props) => {
 
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 
-	const modalState = useSelector(state => state.loginModalState)
+	const modalState = useSelector(state => state.loginModalState);
 
 	const onSuccessHandler = response => {
-		console.log(response)
-		dispatch(toggleLoginModal(false))
-		dispatch(toggleLoading(true, "default", "Loggin In..."))
+		console.log(response);
+		dispatch(toggleLoginModal(false));
+		dispatch(toggleLoading(true, "default", "Loggin In..."));
 		axios({
 			url: 'http://localhost:8080/auth/google',
 			method: 'post',
@@ -42,42 +40,41 @@ const Login = (props) => {
 		})
 			.then(res => {
 				if (res.status === 200 && !res.data.error) {
-					const data = res.data.data
-					const acsTkn = res.data.tokens.accessToken
-					const rfsTkn = res.data.tokens.refreshToken
-					setUser(data)
-					setAccessToken(acsTkn)
-					setRefreshToken(rfsTkn)
-					dispatch(toggleLoading(false))
-					dispatch(toggleLoggedIn(true))
+					const data = res.data.data;
+					const acsTkn = res.data.tokens.accessToken;
+					const rfsTkn = res.data.tokens.refreshToken;
+					setUser(data);
+					setAccessToken(acsTkn);
+					setRefreshToken(rfsTkn);
+					dispatch(toggleLoading(false));
+					dispatch(toggleLoggedIn(true));
 				}
 				else {
-					dispatch(toggleLoading(false))
+					dispatch(toggleLoading(false));
 					// dispatch(setAlert(-1, "Something went wrong", true))
 				}
 			})
 			.catch(err => {
-				dispatch(toggleLoading(false))
+				dispatch(toggleLoading(false));
 				// dispatch(setAlert(-1, "Something went wrong", true))
-			})
-	}
-	const onFailureHandler = res => { console.log({ failure: res }) /*dispatch(setAlert(-1, "Something went wrong", true))*/ }
+			});
+	};
+	const onFailureHandler = res => { console.log({ failure: res }); /*dispatch(setAlert(-1, "Something went wrong", true))*/ };
 
 	return (
 		modalState.visible ?
-			<div className="backdrop">
+			<div className="backdrop" style={ { background: 'grey' } }>
 				<div className='join__container card'>
 					<div className="join__container__row">
-						<h1 className="join__head h h--head">WePrep</h1>
-						<Icon src={ closeIcon } onClickHandler={ () => { dispatch(toggleLoginModal(false)) } } extraStyle="icon--s" />
+						<h1 className="join__head h h--head text--black">Whatcha</h1>
 					</div>
-					<div className='h h--3'>Join now to unlock your complete potential and ace all the exams.</div>
+					<div className='h h--4 text--black'>Welcome to whatcha! Please login to continue.</div>
 					<div className='join__container--social'>
 						<GoogleLogin
 							clientId={ process.env.REACT_APP_GOOGLE_CLIENT_ID }
 							cookiePolicy={ 'single_host_origin' }
 							render={ renderprops =>
-								<IconContainer src={ google } color='#16C9FF' text='Google' alt='google logo' onClickHandler={ renderprops.onClick } />
+								<IconContainer src={ google } color='#4285F4' text='Google' alt='google logo' onClickHandler={ renderprops.onClick } />
 							}
 							onSuccess={ onSuccessHandler }
 							onFailure={ onFailureHandler }
@@ -87,7 +84,7 @@ const Login = (props) => {
 			</div>
 			:
 			<div />
-	)
-}
+	);
+};
 
-export default Login
+export default Login;
