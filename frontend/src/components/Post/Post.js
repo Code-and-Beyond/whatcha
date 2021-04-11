@@ -1,36 +1,41 @@
 import React, { useState } from 'react';
-
+import moment from 'moment';
 import { getUser } from '../../helpers/session';
 
 import Avatar from '../Avatar/Avatar';
 import Input from '../Input/Input';
 import Row from '../Row/Row';
+import Comment from '../Comment/Comment';
 
 import upVote from '../../assets/icons/upvote.svg';
 import upVoteActive from '../../assets/icons/upvote-active.svg';
 import upVotesDone from '../../assets/icons/upvotes-done.svg';
-import ps from '../../assets/profile/prerna.jpg';
 import user from '../../assets/profile/user.svg';
 import dots from '../../assets/icons/dots.svg';
 import share from '../../assets/icons/share.svg';
 import comment from '../../assets/icons/comment.svg';
+import axios from 'axios';
 
 const Post = (props) => {
-	const { content, attachment, upvotes } = props;
+	const { postId, content, attachment, upvotes, createdAt, name, email, displayPicture } = props;
 
 	const [addComment, setAddComment] = useState('');
+	const [upvoteCount, setUpvoteCount] = useState(upvotes);
 	const [upvote, setUpvote] = useState(false);
 	const [openComments, setOpenComments] = useState(false);
 	const [, setSharePopup] = useState(false);
 
+
+	const daysCount = moment(new Date(createdAt)).fromNow();
+
 	const getHeader = () => {
 		return (
 			<React.Fragment>
-				<Avatar src={ ps } alt="avatar" size="7rem" />
+				<Avatar src={ displayPicture } alt="avatar" size="7rem" />
 				<div className="post__head--data">
-					<h3 className="a a--1 a--name">Prerna Singh</h3>
-					<h4 className="b b--3 h--disabled">prernasingh1401</h4>
-					<h4 className="b c--3 h--disabled">4d</h4>
+					<h3 className="a a--1 a--name">{ name }</h3>
+					<h4 className="b b--3 h--disabled">{ email }</h4>
+					<h4 className="b c--3 h--disabled">{ daysCount }</h4>
 				</div>
 				<div className="post__head--dotsContainer u-c-pointer">
 					<img
@@ -47,23 +52,6 @@ const Post = (props) => {
 		return (
 			<React.Fragment>
 				<p className="a a--2 text--black u-p-v-m">
-					{/* Ready for your next big step? For a limited time my course “Essential Coding Interview Course - Python Edition” is on SALE!
-
-					It’s a tough time for all of us right now, and with the uncertainty with the job market it’s best to be prepared.
-
-					This course is design your help you to be prepare with your next job interview, with specially chosen practical coding exercises.
-
-					My goal is to help you to be prepared for your next coding interview and get you the best possible job offer you deserve!
-
-					So why not join today and get ready for your next adventure!
-
-					https://lnkd.in/eV2Ckji
-
-					SHARE and TAG so that others can also learn.
-
-					#softwareengineers #softwareengineering
-
-					Follow Nathan Clarke, AMBCS RITTech */}
 					{ content }
 				</p>
 				{attachment ? (
@@ -83,8 +71,8 @@ const Post = (props) => {
 		return (
 			<React.Fragment>
 				<div className="post__icons--basic">
-					<span onClick={ () => setUpvote(!upvote) }>
-						{ upvote ? (
+					<span onClick={ handleToggleUpvote }>
+						{ !upvote ? (
 							<img
 								src={ upVote }
 								className="post__icons--upvote"
@@ -122,10 +110,51 @@ const Post = (props) => {
 						className="post__icons--upvotesDone"
 						alt="upvote"
 					/>{ ' ' }
-					{ upvotes } upvotes - 2 comments
+					{ upvoteCount } upvotes - 2 comments
                 </div>
 			</React.Fragment>
 		);
+	};
+
+	const handleToggleUpvote = () => {
+		setUpvote(!upvote);
+		if (!upvote) {
+			setUpvoteCount(upvoteCount + 1);
+			axios({
+				url: 'http://localhost:8080/api/pub/post/' + postId,
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+					// 'Authorization': 'Bearer ' + getAccessToken()
+				},
+				data: {
+					upvotes: upvoteCount + 1
+				}
+			}).then((res) => {
+				if (res.status === 200 && !res.data.error) {
+					console.log(res.data.data);
+				}
+			}).catch((err) => console.log(err));
+		} else {
+			setUpvoteCount(upvoteCount - 1);
+			axios({
+				url: 'http://localhost:8080/api/pub/post/' + postId,
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+					// 'Authorization': 'Bearer ' + getAccessToken()
+				},
+				data: {
+					upvotes: upvoteCount - 1
+				}
+			}).then((res) => {
+				if (res.status === 200 && !res.data.error) {
+					console.log(res.data.data);
+				}
+			}).catch((err) => console.log(err));
+		}
 	};
 
 	return (
@@ -134,15 +163,18 @@ const Post = (props) => {
 			{getContent() }
 			<div className="post__icons">{ getIcons() }</div>
 			{openComments ? (
-				<Row ai="c" extraStyle="u-m-t-s">
-					<Avatar src={ getUser() ? getUser().image : user } alt="avatar" size="4.5rem" />
-					<Input
-						value={ addComment }
-						handleInput={ (val) => setAddComment(val) }
-						placeholder="Add a comment"
-						extraStyle="post__input u-m-l-xs"
-					/>
-				</Row>
+				<div>
+					<Row ai="c" extraStyle="u-m-t-s">
+						<Avatar src={ getUser() ? getUser().image : user } alt="avatar" size="4.5rem" />
+						<Input
+							value={ addComment }
+							handleInput={ (val) => setAddComment(val) }
+							placeholder="Add a comment"
+							extraStyle="post__input u-m-l-xs"
+						/>
+					</Row>
+					<Comment />
+				</div>
 			) : null }
 		</div>
 	);
