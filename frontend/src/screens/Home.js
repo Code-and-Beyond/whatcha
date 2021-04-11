@@ -12,8 +12,6 @@ import Posts from './Posts';
 import Chat from './Chat';
 
 
-
-
 const HomeScreen = () => {
 	const dispatch = useDispatch();
 	const userState = useSelector(state => state.loggedInState);
@@ -24,6 +22,7 @@ const HomeScreen = () => {
 			dispatch(toggleLoggedIn(false));
 			dispatch(toggleLoginModal(true));
 		}
+		console.log('mai chala');
 	}, [dispatch, userLogin]);
 
 	return (

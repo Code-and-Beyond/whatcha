@@ -45,4 +45,12 @@
             background: $color-white-head;
         }
     }
+
+	&__loadingCard {
+		background-color: $color-white;
+		height: 8rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 }

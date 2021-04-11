@@ -4,5 +4,8 @@
     },
     "devDependencies": {
         "prettier": "^2.2.1"
+    },
+    "dependencies": {
+        "moment": "^2.29.1"
     }
 }

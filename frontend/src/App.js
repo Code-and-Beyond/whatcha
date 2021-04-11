@@ -2,8 +2,8 @@ import Home from './screens/Home';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 
-import { getUser, isLoggedIn, setLogout } from './helpers/session';
-import checkAccess from './helpers/token';
+// import { getUser, isLoggedIn, setLogout } from './helpers/session';
+// import checkAccess from './helpers/token';
 
 
 import Login from './components/Login/Login';
@@ -25,12 +25,12 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer);
 
-const checkTokens = () => { if (!isLoggedIn() || checkAccess().isExp || checkAccess().tknData.name !== getUser().username) setLogout(); };
+// const checkTokens = () => { if (!isLoggedIn() || checkAccess().isExp || checkAccess().tknData.name !== getUser().username) setLogout(); };
 
 const App = () => {
 	return (
 		<Provider store={ store }>
-			{checkTokens() }
+			{/* {checkTokens() } */ }
 			<Home />
 			<Login />
 		</Provider>
