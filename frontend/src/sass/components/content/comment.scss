@@ -1,20 +1,37 @@
 .comment {
-	display: flex;
-	flex-direction: column;
-	padding: 1rem;
-	background-color: $color-white-light;
-	border-radius: 0.3rem;
 
-	& > h2 {
+	margin-left: 1rem;
+	width: 100%;
+
+	&__container {
+		display: flex;
+		flex-direction: column;
+		padding: 1rem;
+		background-color: $color-white-light;
+		border-radius: 0.5rem;
+	}
+
+	& h2 {
 		font-weight: 500;
+	}
+
+	&__body {
+		padding-top: 1rem;
+		color: $color-black;
+		font-weight: 300;
 	}
 	
 	&__button {
+		margin-top: 0.5rem;
+		padding: 0 1rem;
 		max-width: 5rem;
 		color: $color-black;
+		font-weight: 500;
+		opacity: 0.8;
+		transition: all 0.3s ease-in-out;
 
 		&:hover {
-			font-weight: 400;
+			opacity: 1;
 		}
 	}
 }
