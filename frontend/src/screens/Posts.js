@@ -14,7 +14,6 @@ import trashIcon from '../assets/icons/ico-trash.svg';
 import { getUser, getAccessToken, setAccessToken, setRefreshToken } from '../helpers/session';
 
 const PostsScreen = () => {
-	//temporary posts array
 	const [posts, setPosts] = useState([]);
 
 	const initialAttachment = {
@@ -26,25 +25,27 @@ const PostsScreen = () => {
 	const [showPostModal, setShowPostModal] = useState(false);
 	const [postContent, setPostContent] = useState('');
 	const [attachment, setAttachment] = useState(initialAttachment);
+	const [upvotedPosts, setUpvotedPosts] = useState([]);
 
 	useEffect(() => {
+
 		axios.get('http://localhost:8080/api/pub/posts')
 			.then((res) => {
-				const data = res.data.data;
-				setPosts(data);
-				console.log(data);
+				if (res.status === 200 && !res.data.error) {
+					const data = res.data.data;
+					setPosts(data);
+				}
 			})
 			.catch((err) => console.log(err));
-	}, []);
 
-	const handleAttachmentChange = (e) => {
-		if (e.target.files.length) {
-			setAttachment({
-				preview: URL.createObjectURL(e.target.files[0]),
-				raw: e.target.files[0],
-			});
-		}
-	};
+		axios.get('http://localhost:8080/api/pub/users/upvote/' + getUser().id)
+			.then((res) => {
+				if (res.status === 200 && !res.data.error) {
+					setUpvotedPosts(res.data.data);
+				}
+			}).catch((err) => console.log(err));
+
+	}, []);
 
 	const handlePostUpload = () => {
 		setShowPostModal(false);
@@ -78,6 +79,16 @@ const PostsScreen = () => {
 				// console.log(res.data.data);
 			}
 		}).catch((err) => console.log(err));
+	};
+
+
+	const handleAttachmentChange = (e) => {
+		if (e.target.files.length) {
+			setAttachment({
+				preview: URL.createObjectURL(e.target.files[0]),
+				raw: e.target.files[0],
+			});
+		}
 	};
 
 	const getModal = () => (
@@ -149,25 +160,39 @@ const PostsScreen = () => {
 			: null
 	);
 
+	const checkForUpvote = (pid) => {
+		for (const [, val] of upvotedPosts.entries()) {
+			if (val.pid === pid) {
+				return true;
+			}
+		}
+		return false;
+	};
+
+	const getAllPosts = () => (
+		posts.length && upvotedPosts.length && posts.map((post, index) => (
+			< Post
+				upvoteState={ checkForUpvote(post.pid) }
+				key={ index }
+				postId={ post.pid }
+				content={ post.content }
+				upvotesCount={ post.upvotes }
+				attachment={ post.imgUrl }
+				createdAt={ post.createdAt }
+				name={ post.fullname }
+				email={ post.username }
+				displayPicture={ post.image }
+			/>
+		))
+	);
+
 	return (
 		<div className="posts">
 			<PostHeader setShowPostModal={ () => setShowPostModal(true) } />
 			{getModal() }
 			<div className="posts__container u-p-h-m">
 				{ getPostLoadingCard() }
-				{ posts.length && posts.map((post, index) => (
-					<Post
-						key={ index }
-						postId={ post.pid }
-						content={ post.content }
-						upvotes={ post.upvotes }
-						attachment={ post.imgUrl }
-						createdAt={ post.createdAt }
-						name={ post.fullname }
-						email={ post.username }
-						displayPicture={ post.image }
-					/>
-				)) }
+				{ getAllPosts() }
 			</div>
 		</div>
 	);

@@ -17,16 +17,87 @@ import comment from '../../assets/icons/comment.svg';
 import axios from 'axios';
 
 const Post = (props) => {
-	const { postId, content, attachment, upvotes, createdAt, name, email, displayPicture } = props;
+	const { postId, content, attachment, upvotesCount, createdAt, name, email, displayPicture, upvoteState } = props;
 
 	const [addComment, setAddComment] = useState('');
-	const [upvoteCount, setUpvoteCount] = useState(upvotes);
-	const [upvote, setUpvote] = useState(false);
+	const [upvoteCount, setUpvoteCount] = useState(upvotesCount);
+	const [upvote, setUpvote] = useState(upvoteState);
 	const [openComments, setOpenComments] = useState(false);
 	const [, setSharePopup] = useState(false);
 
 
 	const daysCount = moment(new Date(createdAt)).fromNow();
+
+	const handleToggleUpvote = () => {
+		setUpvote(!upvote);
+		if (!upvote) {
+
+			setUpvoteCount(upvoteCount + 1);
+			axios({
+				url: 'http://localhost:8080/api/pub/post/' + postId,
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+					// 'Authorization': 'Bearer ' + getAccessToken()
+				},
+				data: {
+					upvotes: upvoteCount + 1
+				}
+			}).then((res) => {
+				if (res.status === 200 && !res.data.error) {
+					console.log(res.data.message);
+				}
+			}).catch((err) => console.log(err));
+
+			axios({
+				url: 'http://localhost:8080/api/pub/users/upvote/' + getUser().id + '/' + postId,
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+				},
+			}).then((res) => {
+				if (res.status === 200 && !res.data.error) {
+					console.log(res.data.message);
+				}
+			}).catch((err) => console.log(err));
+
+		} else {
+
+			setUpvoteCount(upvoteCount - 1);
+			axios({
+				url: 'http://localhost:8080/api/pub/post/' + postId,
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+					// 'Authorization': 'Bearer ' + getAccessToken()
+				},
+				data: {
+					upvotes: upvoteCount - 1
+				}
+			}).then((res) => {
+				if (res.status === 200 && !res.data.error) {
+					console.log(res.data.message);
+				}
+			}).catch((err) => console.log(err));
+
+			axios({
+				url: 'http://localhost:8080/api/pub/users/upvote/' + getUser().id + '/' + postId,
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+				},
+			}).then((res) => {
+				if (res.status === 200 && !res.data.error) {
+					console.log(res.data.message);
+				}
+			}).catch((err) => console.log(err));
+		}
+	};
+
 
 	const getHeader = () => {
 		return (
@@ -85,7 +156,7 @@ const Post = (props) => {
 								alt="upvote"
 							/>
 						) }
-						<h3 className="a a--2 a--name text--black">Upvote</h3>
+						<h3 className="a a--2 a--name text--black">Upvote{ !upvote ? '' : 'd' }</h3>
 					</span>
 					<span onClick={ () => setOpenComments(!openComments) }>
 						<img
@@ -116,66 +187,29 @@ const Post = (props) => {
 		);
 	};
 
-	const handleToggleUpvote = () => {
-		setUpvote(!upvote);
-		if (!upvote) {
-			setUpvoteCount(upvoteCount + 1);
-			axios({
-				url: 'http://localhost:8080/api/pub/post/' + postId,
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*',
-					// 'Authorization': 'Bearer ' + getAccessToken()
-				},
-				data: {
-					upvotes: upvoteCount + 1
-				}
-			}).then((res) => {
-				if (res.status === 200 && !res.data.error) {
-					console.log(res.data.data);
-				}
-			}).catch((err) => console.log(err));
-		} else {
-			setUpvoteCount(upvoteCount - 1);
-			axios({
-				url: 'http://localhost:8080/api/pub/post/' + postId,
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*',
-					// 'Authorization': 'Bearer ' + getAccessToken()
-				},
-				data: {
-					upvotes: upvoteCount - 1
-				}
-			}).then((res) => {
-				if (res.status === 200 && !res.data.error) {
-					console.log(res.data.data);
-				}
-			}).catch((err) => console.log(err));
-		}
-	};
+	const getComments = () => (
+		openComments ? (
+			<div>
+				<Row ai="c" extraStyle="u-m-t-s">
+					<Avatar src={ getUser() ? getUser().image : user } alt="avatar" size="4.5rem" />
+					<Input
+						value={ addComment }
+						handleInput={ (val) => setAddComment(val) }
+						placeholder="Add a comment"
+						extraStyle="post__input u-m-l-xs"
+					/>
+				</Row>
+				<Comment />
+			</div>
+		) : null
+	);
 
 	return (
 		<div className="post">
 			<div className="post__head">{ getHeader() }</div>
 			{getContent() }
 			<div className="post__icons">{ getIcons() }</div>
-			{openComments ? (
-				<div>
-					<Row ai="c" extraStyle="u-m-t-s">
-						<Avatar src={ getUser() ? getUser().image : user } alt="avatar" size="4.5rem" />
-						<Input
-							value={ addComment }
-							handleInput={ (val) => setAddComment(val) }
-							placeholder="Add a comment"
-							extraStyle="post__input u-m-l-xs"
-						/>
-					</Row>
-					<Comment />
-				</div>
-			) : null }
+			{ getComments() }
 		</div>
 	);
 };

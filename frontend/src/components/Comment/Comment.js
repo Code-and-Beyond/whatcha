@@ -1,12 +1,11 @@
 import React from 'react';
 import Avatar from '../Avatar/Avatar';
+import Row from '../Row/Row';
 
 import user from '../../assets/profile/user.svg';
 
-import NoFillButton from '../Button/NoFIll';
-import Row from '../Row/Row';
-
-const Comment = () => {
+const Comment = (props) => {
+	// const { name, bio, time, body } = props;
 	return (
 		<Row extraStyle='u-m-v-s'>
 			<Avatar src={ user } alt='user avatar' size='4.5rem' />
@@ -19,7 +18,7 @@ const Comment = () => {
 					<p className='b b--4 text--black'>Competitive Coder, DSA, React</p>
 					<p className='comment__body b b--3'>Working on Whatcha!</p>
 				</div>
-				<p className='comment__button u-c-pointer b b--4'>Reply</p>
+				<p className='comment__button u-c-pointer b b--4' onClick={ props.onClickHandler }>Reply</p>
 			</div>
 		</Row>
 	);

@@ -97,7 +97,7 @@ module.exports = function (app, connection) {
 		});
 
 	//to delete the post by a user
-	app.route('/api/pvt/post/:ppstId')
+	app.route('/api/pvt/post/:postId')
 		.delete(function (req, res, next) {
 			const postId = req.params.postId;
 			connection.query("DELETE FROM whatcha.`posts-list` WHERE `pid`= ? ", [postId],
