@@ -12,6 +12,7 @@ import Icon from '../components/Icon/Icon';
 import imageIcon from '../assets/icons/ico-image.svg';
 import trashIcon from '../assets/icons/ico-trash.svg';
 import { getUser, getAccessToken, setAccessToken, setRefreshToken } from '../helpers/session';
+import Blog from '../components/Blog/Blog';
 
 const PostsScreen = () => {
 	const [posts, setPosts] = useState([]);
@@ -22,6 +23,7 @@ const PostsScreen = () => {
 	};
 
 	const [editPost, setEditPost] = useState({ show: false, id: null });
+	const [showBlogs, setShowBlogs] = useState(false);
 	const [uploadPost, setUploadPost] = useState(false);
 	const [showPostModal, setShowPostModal] = useState(false);
 	const [postContent, setPostContent] = useState('');
@@ -241,7 +243,7 @@ const PostsScreen = () => {
 	};
 
 	const getAllPosts = () => (
-		(posts.length) && posts.map((post, index) => (
+		(posts.length && !showBlogs) && posts.map((post, index) => (
 			< Post
 				key={ index }
 				postId={ post.pid }
@@ -258,17 +260,23 @@ const PostsScreen = () => {
 			/>
 		))
 	);
+
+	const getAllBlogs = () => {
+		return <Blog />;
+	};
+
 	return (
 		<div className="posts">
 			<PostHeader
 				setShowPostModal={ () => setShowPostModal(true) }
 				handleTrending={ fetchTrendingPosts }
 				handleFeed={ fetchAllPosts }
+				handleBlogs={ (val) => setShowBlogs(val) }
 			/>
 			{getModal() }
 			<div className="posts__container u-p-h-m">
 				{ getPostLoadingCard() }
-				{ getAllPosts() }
+				{ showBlogs ? getAllBlogs() : getAllPosts() }
 			</div>
 		</div>
 	);

@@ -71,3 +71,39 @@
 		}
 	}
 }
+
+.blog {
+	&__head {
+		display: flex;
+		justify-content: center;
+	}
+
+	&__details {
+		margin: 2rem 0;
+		display: flex;
+		justify-content: space-between;	
+
+		& > * h4 {
+			font-weight: 400;
+		}
+
+		& > h5 {
+			font-weight: 300;
+		}
+	}
+
+	&__content {
+		margin-top: 4rem;
+		margin-bottom:2rem ;
+	}
+
+	&--pre {
+		white-space: pre-wrap; /* css-3 */
+		white-space: -moz-pre-wrap; /* Mozilla */
+		white-space: -pre-wrap; /* Opera 4-6 */
+		white-space: -o-pre-wrap; /* Opera 7 */
+		word-wrap: break-word; /* Internet Explorer 5.5+ */
+		font-weight: 300;
+		font-family: Arial, Helvetica, sans-serif;
+	}
+}

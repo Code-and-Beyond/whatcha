@@ -12,6 +12,23 @@ const PostNavHeader = (props) => {
 
 	let classes = "h h--3 u-m-l-m";
 
+	const handleShowFeed = () => {
+		setActive('feed');
+		props.handleFeed();
+		props.handleBlogs(false);
+	};
+
+	const handleShowTrending = () => {
+		setActive('trending');
+		props.handleTrending();
+		props.handleBlogs(false);
+	};
+
+	const handleShowBlogs = () => {
+		setActive('blogs');
+		props.handleBlogs(true);
+	};
+
 	return (
 		<div className="posts__header">
 			<div className="posts__header--top">
@@ -20,9 +37,9 @@ const PostNavHeader = (props) => {
 					extraStyle="u-c-pointer"
 					alt="user avatar"
 				/>
-				<h3 className={ classes } onClick={ () => { setActive('feed'); props.handleFeed(); } } style={ { color: active === 'feed' ? '#56fe99' : 'white' } }>Feed</h3>
-				<h3 className={ classes } onClick={ () => { setActive('trending'); props.handleTrending(); } } style={ { color: active === 'trending' ? '#56fe99' : 'white' } }>Trending</h3>
-				<h3 className={ classes } style={ { color: active === 'blogs' ? '#56fe99' : 'white' } }>Blogs</h3>
+				<h3 className={ classes } onClick={ handleShowFeed } style={ { color: active === 'feed' ? '#56fe99' : 'white' } }>Feed</h3>
+				<h3 className={ classes } onClick={ handleShowTrending } style={ { color: active === 'trending' ? '#56fe99' : 'white' } }>Trending</h3>
+				<h3 className={ classes } onClick={ handleShowBlogs } style={ { color: active === 'blogs' ? '#56fe99' : 'white' } }>Blogs</h3>
 				<TextButton extraStyle="u-m-l-auto" text="Logout" type={ 1 } onClickHandler={ () => { dispatch(toggleLoggedIn(false)); setLogout(); } } />
 			</div>
 			<div
