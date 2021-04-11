@@ -5,6 +5,7 @@ import { getUser } from '../../helpers/session';
 import Avatar from '../Avatar/Avatar';
 import Input from '../Input/Input';
 import Row from '../Row/Row';
+import Comment from '../Comment/Comment';
 
 import upVote from '../../assets/icons/upvote.svg';
 import upVoteActive from '../../assets/icons/upvote-active.svg';
@@ -162,15 +163,18 @@ const Post = (props) => {
 			{getContent() }
 			<div className="post__icons">{ getIcons() }</div>
 			{openComments ? (
-				<Row ai="c" extraStyle="u-m-t-s">
-					<Avatar src={ getUser() ? getUser().image : user } alt="avatar" size="4.5rem" />
-					<Input
-						value={ addComment }
-						handleInput={ (val) => setAddComment(val) }
-						placeholder="Add a comment"
-						extraStyle="post__input u-m-l-xs"
-					/>
-				</Row>
+				<div>
+					<Row ai="c" extraStyle="u-m-t-s">
+						<Avatar src={ getUser() ? getUser().image : user } alt="avatar" size="4.5rem" />
+						<Input
+							value={ addComment }
+							handleInput={ (val) => setAddComment(val) }
+							placeholder="Add a comment"
+							extraStyle="post__input u-m-l-xs"
+						/>
+					</Row>
+					<Comment />
+				</div>
 			) : null }
 		</div>
 	);

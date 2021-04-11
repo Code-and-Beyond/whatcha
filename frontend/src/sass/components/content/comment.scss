@@ -1,0 +1,20 @@
+.comment {
+	display: flex;
+	flex-direction: column;
+	padding: 1rem;
+	background-color: $color-white-light;
+	border-radius: 0.3rem;
+
+	& > h2 {
+		font-weight: 500;
+	}
+	
+	&__button {
+		max-width: 5rem;
+		color: $color-black;
+
+		&:hover {
+			font-weight: 400;
+		}
+	}
+}
