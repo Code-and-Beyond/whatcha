@@ -37,6 +37,7 @@ require('./routes/auth/google')(app, connection, axios)
 require('./routes/public/posts/posts')(app, connection)
 require('./routes/public/post/post')(app, connection)
 require('./routes/public/blogs/blogs')(app, connection)
+require('./routes/public/users/users')(app, connection)
 
 /*  PRODUCTION  */
 // var key = fs.readFileSync(__dirname + '/ssl/server.key');
