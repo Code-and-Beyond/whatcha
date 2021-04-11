@@ -23,7 +23,6 @@ const Login = (props) => {
 	const modalState = useSelector(state => state.loginModalState);
 
 	const onSuccessHandler = response => {
-		console.log(response);
 		dispatch(toggleLoginModal(false));
 		dispatch(toggleLoading(true, "default", "Loggin In..."));
 		axios({

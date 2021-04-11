@@ -16,7 +16,14 @@
             display: flex;
             align-items: center;
             margin-bottom: 2rem;
+
+			& > h3 {
+				cursor: pointer;
+				font-weight: 400;
+				transition: all 0.3s ease-in-out;
+			}			
         }
+
 
         &--start {
             background-color: $color-white;

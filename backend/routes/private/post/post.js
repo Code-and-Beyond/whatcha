@@ -37,7 +37,6 @@ module.exports = function (app, connection) {
 			connection.query("INSERT INTO whatcha.`posts-list` (`uid`,`content`,`imgUrl`) values(?,?,?)", [id, content, imgUrl],
 				function (error, result, fields) {
 					if (error) {
-						console.log('itsme');
 						res.json(error);
 					}
 					else {
@@ -104,12 +103,11 @@ module.exports = function (app, connection) {
 				function (error, result, fields) {
 					if (error) { res.sendStatus(500); }
 					else {
+						const access = auth.generateAccessToken({ name: req.params.username });
+						const refresh = auth.generateRefreshToken({ name: req.params.username });
 						res.header('Access-Control-Allow-Origin', '*');
 						res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-						res.json({
-							error: false,
-							data: result
-						});
+						res.json({ error: false, message: "Post Successfully Deleted!", tokens: { access, refresh } });
 					}
 				}
 			);

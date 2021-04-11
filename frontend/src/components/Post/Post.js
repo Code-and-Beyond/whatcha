@@ -19,11 +19,12 @@ import axios from 'axios';
 const Post = (props) => {
 	const { postId, content, attachment, upvotesCount, createdAt, name, email, displayPicture, upvoteState } = props;
 
-	const [addComment, setAddComment] = useState('');
-	const [upvoteCount, setUpvoteCount] = useState(upvotesCount);
 	const [upvote, setUpvote] = useState(upvoteState);
+	const [upvoteCount, setUpvoteCount] = useState(upvotesCount);
 	const [openComments, setOpenComments] = useState(false);
+	const [addComment, setAddComment] = useState('');
 	const [, setSharePopup] = useState(false);
+	const [showPopover, setShowPopover] = useState(false);
 
 
 	const daysCount = moment(new Date(createdAt)).fromNow();
@@ -108,13 +109,20 @@ const Post = (props) => {
 					<h4 className="b b--3 h--disabled">{ email }</h4>
 					<h4 className="b c--3 h--disabled">{ daysCount }</h4>
 				</div>
-				<div className="post__head--dotsContainer u-c-pointer">
+				<div className="post__head--dotsContainer u-c-pointer" onClick={ () => setShowPopover(!showPopover) }>
 					<img
 						src={ dots }
 						alt="three dots"
 						className="post__head--dots u-c-pointer"
 					/>
 				</div>
+				{ showPopover && getUser().username === email ?
+					<div className='menu'>
+						<p className='b b--3' onClick={ () => { props.handleEditPost(postId, content); setShowPopover(false); } }>Edit</p>
+						<p className='b b--3' onClick={ () => { props.handleDeletePost(postId); setShowPopover(false); } }>Delete</p>
+					</div>
+					: null
+				}
 			</React.Fragment>
 		);
 	};

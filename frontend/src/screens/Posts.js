@@ -21,14 +21,15 @@ const PostsScreen = () => {
 		preview: '',
 	};
 
+	const [editPost, setEditPost] = useState({ show: false, id: null });
 	const [uploadPost, setUploadPost] = useState(false);
 	const [showPostModal, setShowPostModal] = useState(false);
 	const [postContent, setPostContent] = useState('');
 	const [attachment, setAttachment] = useState(initialAttachment);
 	const [upvotedPosts, setUpvotedPosts] = useState([]);
 
-	useEffect(() => {
 
+	const fetchAllPosts = () => (
 		axios.get('http://localhost:8080/api/pub/posts')
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
@@ -36,25 +37,42 @@ const PostsScreen = () => {
 					setPosts(data);
 				}
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => console.log(err))
+	);
 
-		axios.get('http://localhost:8080/api/pub/users/upvote/' + getUser().id)
+	const fetchTrendingPosts = () => (
+		axios.get('http://localhost:8080/api/pub/posts/trending')
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
-					setUpvotedPosts(res.data.data);
+					const data = res.data.data;
+					setPosts(data);
+					console.log(data);
 				}
-			}).catch((err) => console.log(err));
+			})
+			.catch((err) => console.log(err))
+	);
+
+	useEffect(() => {
+		console.log('im running');
+		if (getUser()) {
+			axios.get('http://localhost:8080/api/pub/users/upvote/' + getUser().id)
+				.then((res) => {
+					if (res.status === 200 && !res.data.error) {
+						fetchAllPosts();
+						setUpvotedPosts(res.data.data);
+					}
+				}).catch((err) => console.log(err));
+		}
 
 	}, []);
 
 	const handlePostUpload = () => {
 		setShowPostModal(false);
-		const totalPostData = {
-			postContent,
-			attachment,
-		};
-		console.log(totalPostData);
-		setPosts([...posts, totalPostData]);
+		// const totalPostData = {
+		// 	postContent,
+		// 	attachment,
+		// };
+		// setPosts([...posts, totalPostData]);
 		setUploadPost(true);
 		axios({
 			url: "http://localhost:8080/api/pvt/post",
@@ -77,10 +95,36 @@ const PostsScreen = () => {
 				setAccessToken(res.data.tokens.access);
 				setRefreshToken(res.data.tokens.refresh);
 				// console.log(res.data.data);
+				fetchAllPosts();
 			}
 		}).catch((err) => console.log(err));
 	};
 
+	const handleEditPostUpload = () => {
+		setEditPost({ ...editPost, show: false });
+		setShowPostModal(false);
+		axios({
+			url: "http://localhost:8080/api/pub/post/" + editPost.id,
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Origin': '*',
+			},
+			data: {
+				uid: getUser().id,
+				content: postContent,
+			},
+
+		}).then((res) => {
+			if (res.status === 200 && !res.data.error) {
+				setPostContent('');
+				setAttachment(initialAttachment);
+				setEditPost({ show: false, id: null });
+				// console.log(res.data.data);
+				fetchAllPosts();
+			}
+		}).catch((err) => console.log(err));
+	};
 
 	const handleAttachmentChange = (e) => {
 		if (e.target.files.length) {
@@ -91,10 +135,36 @@ const PostsScreen = () => {
 		}
 	};
 
+	const handleEditPost = (postId, content) => {
+		setEditPost({ show: true, id: postId });
+		setPostContent(content);
+		setShowPostModal(true);
+	};
+
+	const handleDeletePost = (postId) => {
+		const tempPosts = posts.filter((post) => post.pid !== postId);
+		setPosts(tempPosts);
+		axios({
+			url: 'http://localhost:8080/api/pvt/post/' + postId,
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Origin': '*',
+				'Authorization': 'Bearer ' + getAccessToken()
+			},
+		}).then((res) => {
+			if (res.status === 200 && !res.data.error) {
+				console.log(res.data.message);
+				setAccessToken(res.data.tokens.access);
+				setRefreshToken(res.data.tokens.refresh);
+			}
+		}).catch((err) => console.log(err));
+	};
+
 	const getModal = () => (
 		<Modal
 			open={ showPostModal }
-			title="Create a Post"
+			title={ editPost.show ? "Edit Post" : "Create a Post" }
 			handleClose={ () => setShowPostModal(false) }
 			width="40vw"
 			btnText="Post"
@@ -143,14 +213,15 @@ const PostsScreen = () => {
 				</div>
 				<FillButton
 					extraStyle="modal__btn"
-					text="Post"
+					text={ editPost.show ? "Update" : "Post" }
 					disabled={ postContent === '' }
 					type={ 1 }
-					onClickHandler={ handlePostUpload }
+					onClickHandler={ editPost.show ? handleEditPostUpload : handlePostUpload }
 				/>
 			</Row>
 		</Modal>
 	);
+
 
 	const getPostLoadingCard = () => (
 		uploadPost ?
@@ -170,9 +241,8 @@ const PostsScreen = () => {
 	};
 
 	const getAllPosts = () => (
-		posts.length && upvotedPosts.length && posts.map((post, index) => (
+		(posts.length) && posts.map((post, index) => (
 			< Post
-				upvoteState={ checkForUpvote(post.pid) }
 				key={ index }
 				postId={ post.pid }
 				content={ post.content }
@@ -182,13 +252,19 @@ const PostsScreen = () => {
 				name={ post.fullname }
 				email={ post.username }
 				displayPicture={ post.image }
+				upvoteState={ checkForUpvote(post.pid) }
+				handleDeletePost={ handleDeletePost }
+				handleEditPost={ handleEditPost }
 			/>
 		))
 	);
-
 	return (
 		<div className="posts">
-			<PostHeader setShowPostModal={ () => setShowPostModal(true) } />
+			<PostHeader
+				setShowPostModal={ () => setShowPostModal(true) }
+				handleTrending={ fetchTrendingPosts }
+				handleFeed={ fetchAllPosts }
+			/>
 			{getModal() }
 			<div className="posts__container u-p-h-m">
 				{ getPostLoadingCard() }
