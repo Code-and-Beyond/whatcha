@@ -10,7 +10,7 @@ import { getUser } from '../../helpers/session';
 
 const EditProfile = (props) => {
 
-	const { website, bio, uid, location, organization } = props;
+	const { website, bio, location, organization } = props;
 
 	const [bioData, setBioData] = useState(bio);
 	const [link, setLink] = useState(website);
@@ -18,7 +18,8 @@ const EditProfile = (props) => {
 	const [org, setOrg] = useState(organization);
 	const [update, setUpdate] = useState(false);
 
-	const handleBlogUpload = () => {
+	const handleProfileUpdate = () => {
+		props.closeEdit(false);
 		setUpdate(true);
 		axios({
 			url: "http://localhost:8080/api/pub/users/profile/" + getUser().id,
@@ -38,6 +39,7 @@ const EditProfile = (props) => {
 		}).then((res) => {
 			if (res.status === 200 && !res.data.error) {
 				setUpdate(false);
+				props.fetchProfile();
 				console.log(res.data);
 			}
 		}).catch((err) => console.log(err));
@@ -65,7 +67,7 @@ const EditProfile = (props) => {
 						extraStyle='text--black'
 						text="Update"
 						type={ 2 }
-						onClickHandler={ handleBlogUpload }
+						onClickHandler={ handleProfileUpdate }
 					/>
 				</Row>
 				<div className='blogs u-m-t-m'>

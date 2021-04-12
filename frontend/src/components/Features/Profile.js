@@ -13,25 +13,30 @@ import axios from 'axios';
 const Profile = () => {
 	const loading = getUser() ? false : true;
 	const [editProfile, setEditProfile] = useState(false);
-	const [profileInfo, setProfileInfo] = useState({ loading: false });
+	const [profileLoading, setProfileLoading] = useState(false);
+	const [profileInfo, setProfileInfo] = useState([]);
+
+	const fetchProfile = () => {
+		setProfileLoading(true);
+		axios({
+			url: 'http://localhost:8080/api/pub/users/profile/' + getUser().id,
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Origin': '*',
+				// 'Authorization': 'Bearer ' + getAccessToken()
+			}
+		}).then((res) => {
+			if (res.status === 200 && !res.data.error) {
+				setProfileInfo(res.data.data[0]);
+				setProfileLoading(false);
+			}
+		}).catch((err) => console.log(err));
+	};
 
 	useEffect(() => {
 		if (!loading) {
-			setEditProfile({ loading: true });
-			axios({
-				url: 'http://localhost:8080/api/pub/users/profile/' + getUser().id,
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*',
-					// 'Authorization': 'Bearer ' + getAccessToken()
-				}
-			}).then((res) => {
-				if (res.status === 200 && !res.data.error) {
-					setEditProfile({ loading: false, ...res.data.data[0] });
-					console.log(editProfile);
-				}
-			}).catch((err) => console.log(err));
+			fetchProfile();
 		}
 	}, [loading]);
 
@@ -46,13 +51,14 @@ const Profile = () => {
 							className="profile--avatar"
 							alt="profile avatar"
 						/>
-
 						<div className="profile__details">
+
+							<h1 className="h h--2">{ getUser().fullname } </h1>
+							<h2 className="a a--1 h--disabled">{ getUser().username }</h2>
+
 							{
-								!profileInfo.loading ?
+								!profileLoading ?
 									<>
-										<h1 className="h h--2">{ getUser().fullname } </h1>
-										<h2 className="a a--1 h--disabled">{ getUser().username }</h2>
 										<h2 className="a a--1 u-p-t-s">
 											{ profileInfo.bio }
 
@@ -87,7 +93,7 @@ const Profile = () => {
 						</div>
 					</div> }
 			</div>)
-			: (<EditProfile closeEdit={ () => setEditProfile(false) } />)
+			: (<EditProfile closeEdit={ () => setEditProfile(false) } fetchProfile={ fetchProfile } { ...profileInfo } />)
 	);
 };
 
