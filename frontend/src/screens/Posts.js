@@ -93,30 +93,43 @@ const PostsScreen = () => {
 		// };
 		// setPosts([...posts, totalPostData]);
 		setUploadPost(true);
-		axios({
-			url: "http://localhost:8080/api/pvt/post",
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Access-Control-Allow-Origin': '*',
-				'Authorization': 'Bearer ' + getAccessToken()
-			},
-			data: {
-				uid: getUser().id,
-				content: postContent,
-			},
 
-		}).then((res) => {
-			if (res.status === 200 && !res.data.error) {
-				setPostContent('');
-				setAttachment(initialAttachment);
-				setUploadPost(false);
-				setAccessToken(res.data.tokens.access);
-				setRefreshToken(res.data.tokens.refresh);
-				// console.log(res.data.data);
-				fetchAllPosts();
-			}
-		}).catch((err) => console.log(err));
+		const reader = new FileReader();
+		reader.readAsDataURL(attachment.raw);
+		reader.onloadend = () => {
+			console.log(reader.result);
+			axios({
+				url: 'http://localhost:8080/api/pub/post',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+					Authorization: 'Bearer ' + getAccessToken(),
+				},
+				data: {
+					uid: getUser().id,
+					content: postContent,
+					encodedImg: reader.result,
+				},
+				maxContentLength: 10000000000,
+				maxBodyLength: 100000000000,
+			})
+				.then((res) => {
+					if (res.status === 200 && !res.data.error) {
+						setPostContent('');
+						setAttachment(initialAttachment);
+						setUploadPost(false);
+						setAccessToken(res.data.tokens.access);
+						setRefreshToken(res.data.tokens.refresh);
+						fetchAllPosts();
+						// console.log(res.data.data);
+					}
+				})
+				.catch((err) => console.log(err));
+		};
+		reader.onerror = () => {
+			console.log('Somehting went wrong!');
+		};
 	};
 
 	const handleEditPostUpload = () => {

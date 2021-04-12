@@ -56,8 +56,7 @@ module.exports = function (app, connection) {
 
 				const updateColumns = (colArray) => {
 					for (let colName of colArray) {
-						if (req.body[colName] === undefined)
-							return;
+						if (req.body[colName] === undefined) continue;
 
 						queryString += `\`${colName}\` = ?, `;
 						queryArray.push(req.body[colName]);
@@ -101,4 +100,4 @@ module.exports = function (app, connection) {
 				}
 			);
 		});
-}
+};
