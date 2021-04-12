@@ -75,24 +75,21 @@ module.exports = function (app, connection) {
     });
 
     //to update the post by a user (given postId)
-    //1.edit the content
-    //2.edit the image
     app.route('/api/pub/post/:postId').put(function (req, res, next) {
         const computeUpdateQuery = () => {
             let queryString = 'UPDATE whatcha.`posts-list` SET ';
             let queryArray = [];
 
-            const updateColumn = (colName) => {
-                if (req.body[colName] === undefined) return;
+            const updateColumns = (colArray) => {
+                for (let colName of colArray) {
+                    if (req.body[colName] === undefined) continue;
 
-                queryString += `\`${colName}\` = ?, `;
-                queryArray.push(req.body[colName]);
+                    queryString += `\`${colName}\` = ?, `;
+                    queryArray.push(req.body[colName]);
+                }
             };
 
-            updateColumn('content');
-            updateColumn('imgUrl');
-            updateColumn('upvotes');
-            updateColumn('comments');
+            updateColumns(['content', 'imgUrl', 'upvotes', 'comments']);
 
             queryString = queryString.substring(0, queryString.length - 2);
             queryString += ` WHERE \`pid\` = ${req.params.postId}`;
