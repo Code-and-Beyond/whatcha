@@ -1,7 +1,6 @@
 .header {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
     // width: 8rem;
     height: 100vh;
@@ -16,4 +15,8 @@
         width: 5rem;
         border-radius: 10rem;
     }
+
+	& > img {
+		margin-bottom: 2rem;
+	}
 }

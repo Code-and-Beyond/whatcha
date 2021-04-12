@@ -189,7 +189,7 @@ const Post = (props) => {
 						className="post__icons--upvotesDone"
 						alt="upvote"
 					/>{ ' ' }
-					{ upvoteCount } upvotes - 2 comments
+					{ upvoteCount } upvotes - 0 comments
                 </div>
 			</React.Fragment>
 		);

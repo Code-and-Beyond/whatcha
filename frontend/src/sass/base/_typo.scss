@@ -167,4 +167,7 @@
     &--black {
         color: $color-black !important;
     }
+	&--link {
+		text-decoration: none !important;
+	}
 }

@@ -29,3 +29,20 @@
         padding: 3rem 0;
     }
 }
+
+.editProfile {
+    flex: 0.25;
+	height: 100vh;
+    background-color: $color-black-light;
+
+	&--icon {
+		height: 3rem;
+		width: 3rem;
+		margin-right: 1rem;
+		cursor: pointer;
+
+		&:hover {
+			box-shadow: 0 0.4rem 0.9rem rgba($color-black, 0.25);
+		}
+	}
+}
