@@ -1,4 +1,4 @@
-import { TOGGLE_LOGIN_MODAL } from "../actions/loginModal";
+import { TOGGLE_LOGIN_MODAL } from "../actions/actionTypes";
 
 const initalState = {
 	visible: false,

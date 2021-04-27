@@ -1,9 +1,9 @@
-export const TOGGLE_LOGIN_MODAL = "TOGGLE_LOGIN_MODAL"
+import * as actionTypes from './actionTypes';
 
-export const toggleLoginModal = (visible, redirect=null) => {
+export const toggleLoginModal = (visible, redirect = null) => {
 	return {
-		type: TOGGLE_LOGIN_MODAL,
+		type: actionTypes.TOGGLE_LOGIN_MODAL,
 		visible: visible,
 		redirect: redirect
-	}
-}
+	};
+};

@@ -1,8 +1,8 @@
-export const TOGGLE_LOGGED_IN = "TOGGLE_LOGGED_IN"
+import * as actionTypes from './actionTypes';
 
 export const toggleLoggedIn = (loggedin) => {
 	return {
-		type: TOGGLE_LOGGED_IN,
+		type: actionTypes.TOGGLE_LOGGED_IN,
 		loggedIn: loggedin
-	}
-}
+	};
+};

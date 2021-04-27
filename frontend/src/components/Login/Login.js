@@ -1,12 +1,9 @@
 import axios from 'axios';
+import GoogleLogin from 'react-google-login';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import GoogleLogin from 'react-google-login';
-
-import { toggleLoginModal } from '../../store/actions/loginModal';
-import { toggleLoading } from '../../store/actions/loading';
-import { toggleLoggedIn } from '../../store/actions/user';
+import { toggleLoading, toggleLoggedIn, toggleLoginModal } from '../../store/actions/index';
 
 import { setAccessToken, setRefreshToken, setUser } from '../../helpers/session';
 
@@ -49,12 +46,14 @@ const Login = (props) => {
 					dispatch(toggleLoggedIn(true));
 				}
 				else {
-					dispatch(toggleLoading(false));
+					// dispatch(toggleLoading(false));
+					console.log("Couldn't login");
 					// dispatch(setAlert(-1, "Something went wrong", true))
 				}
 			})
 			.catch(err => {
-				dispatch(toggleLoading(false));
+				// dispatch(toggleLoading(false));
+				console.log(err);
 				// dispatch(setAlert(-1, "Something went wrong", true))
 			});
 	};

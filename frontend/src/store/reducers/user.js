@@ -1,4 +1,4 @@
-import { TOGGLE_LOGGED_IN } from "../actions/user";
+import { TOGGLE_LOGGED_IN } from "../actions/actionTypes";
 
 const initalState = {
 	loggedIn: false,

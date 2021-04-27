@@ -1,18 +1,17 @@
-export const TOGGLE_LOADING = "TOGGLE_LOADING"
-export const UPDATE_LOADING_TEXT = "UPDATE_LOADING_TEXT"
+import * as actionTypes from './actionTypes';
 
 export const toggleLoading = (loading, loader = 'default', text = "Loading...") => {
 	return {
-		type: TOGGLE_LOADING,
+		type: actionTypes.TOGGLE_LOADING,
 		visible: loading,
 		loader: loader,
 		text: text
-	}
-}
+	};
+};
 
 export const updateLoadingText = (text) => {
 	return {
-		type: UPDATE_LOADING_TEXT,
+		type: actionTypes.UPDATE_LOADING_TEXT,
 		text: text
-	}
-}
+	};
+};
