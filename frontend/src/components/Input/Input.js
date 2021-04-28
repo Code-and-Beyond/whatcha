@@ -1,24 +1,24 @@
 import React from 'react';
 
 const Input = (props) => {
-    const { value, placeholder } = props;
-    const getClasses = () => {
-        let classes = ['input'];
+	const { value, placeholder, type, required } = props;
+	const getClasses = () => {
+		let classes = ['input'];
 
-        if (props.extraStyle) classes.push(props.extraStyle);
+		if (props.extraStyle) classes.push(props.extraStyle);
 
-        return classes.join(' ', ', ');
-    };
+		return classes.join(' ', ', ');
+	};
 
-    return (
-        <input
-            type="text"
-            placeholder={placeholder}
-            className={getClasses()}
-            value={value}
-            onChange={(e) => props.handleInput(e.target.value)}
-        />
-    );
+	return (
+		<input
+			type={ type ? type : "text" }
+			placeholder={ placeholder }
+			className={ getClasses() }
+			value={ value }
+			onChange={ (e) => props.handleInput(e.target.value) }
+		/>
+	);
 };
 
 export default Input;
