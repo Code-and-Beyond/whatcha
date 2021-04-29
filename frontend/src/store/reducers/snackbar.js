@@ -1,25 +1,25 @@
 import { SET_ALERT } from "../actions/snackbar";
 
-const initalState = {
-    type: 0,
-    show: false,
-    text: ''
-}
+const initialState = {
+	type: 0,
+	show: false,
+	text: ''
+};
 
-const handleSnackbar = (state = initalState, action) => {
-    switch (action.type) {
-        case SET_ALERT:
-            return {
-                ...state,
-                type: action.alertType,
-                show: action.show,
-                text: action.text
-            }
+const handleSnackbar = (state = initialState, action) => {
+	switch (action.type) {
+		case SET_ALERT:
+			return {
+				...state,
+				type: action.alertType,
+				show: action.show,
+				text: action.text
+			};
 
-        default:
-            return state;
-    }
+		default:
+			return state;
+	}
 
-}
+};
 
 export default handleSnackbar;

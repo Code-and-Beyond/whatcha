@@ -1,12 +1,12 @@
 import { TOGGLE_LOADING, UPDATE_LOADING_TEXT } from '../actions/actionTypes';
 
-const initalState = {
+const initialState = {
 	visible: false,
 	loader: 'default',
 	text: 'Loading...'
 };
 
-const handleLoading = (state = initalState, action) => {
+const handleLoading = (state = initialState, action) => {
 	switch (action.type) {
 		case TOGGLE_LOADING:
 			return {
@@ -21,9 +21,8 @@ const handleLoading = (state = initalState, action) => {
 				text: action.text
 			};
 		default:
-			break;
+			return state;
 	}
-	return state;
 };
 
 export default handleLoading;

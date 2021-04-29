@@ -1,10 +1,10 @@
 import { TOGGLE_NAV_DRAWER } from "../actions/navDrawer";
 
-const initalState = {
+const initialState = {
 	visible: false,
 };
 
-const handleToggle = (state = initalState, action) => {
+const handleToggle = (state = initialState, action) => {
 	switch (action.type) {
 		case TOGGLE_NAV_DRAWER:
 			const prevState = state;
@@ -13,9 +13,8 @@ const handleToggle = (state = initalState, action) => {
 				visible: !prevState.visible,
 			};
 		default:
-			break;
+			return state;
 	}
-	return state;
 };
 
 export default handleToggle;

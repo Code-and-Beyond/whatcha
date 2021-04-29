@@ -4,7 +4,7 @@ import TextButton from '../../components/Button/Text';
 import Avatar from '../Avatar/Avatar';
 import user from '../../assets/profile/user.svg';
 import { setLogout, getUser } from '../../helpers/session';
-import { toggleLoggedIn } from '../../store/actions/user';
+import { toggleLoggedIn } from '../../store/actions/index';
 
 const PostNavHeader = (props) => {
 	const dispatch = useDispatch();

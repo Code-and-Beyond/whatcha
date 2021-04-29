@@ -4,10 +4,10 @@ import { isLoggedIn } from '../helpers/session';
 import { toggleLoggedIn } from '../store/actions/user';
 import { toggleLoginModal } from '../store/actions/loginModal';
 
-import Header from '../components/Header/LeftNav';
-import Features from '../components/Features/Profile';
+import FeaturesHeader from '../components/Header/Features';
+import Profile from '../components/Features/Profile';
 import Posts from './Posts';
-import Chat from './Chat';
+import Connect from './Connect';
 
 
 const HomeScreen = () => {
@@ -16,7 +16,6 @@ const HomeScreen = () => {
 	const userLogin = userState.loggedIn;
 
 	useEffect(() => {
-		console.log(userLogin);
 		if (!isLoggedIn()) {
 			dispatch(toggleLoggedIn(false));
 			dispatch(toggleLoginModal(true));
@@ -25,10 +24,10 @@ const HomeScreen = () => {
 
 	return (
 		<div className="home">
-			<Header />
-			<Features />
+			<FeaturesHeader />
+			<Profile />
 			<Posts />
-			<Chat />
+			<Connect />
 		</div>
 	);
 };

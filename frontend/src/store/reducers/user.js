@@ -1,10 +1,10 @@
 import { TOGGLE_LOGGED_IN } from "../actions/actionTypes";
 
-const initalState = {
+const initialState = {
 	loggedIn: false,
 };
 
-const handleToggle = (state = initalState, action) => {
+const handleToggle = (state = initialState, action) => {
 	switch (action.type) {
 		case TOGGLE_LOGGED_IN:
 			return {

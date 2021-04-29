@@ -3,4 +3,17 @@
     height: 5rem;
     width: 5rem;
     border-radius: 10rem;
+
+	&__noRad {
+		border-radius: 0;
+		box-shadow: none;
+		
+	}
+
+	&__back {
+		background-color: $color-white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 }

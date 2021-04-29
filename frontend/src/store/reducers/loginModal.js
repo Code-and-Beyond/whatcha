@@ -1,11 +1,11 @@
 import { TOGGLE_LOGIN_MODAL } from "../actions/actionTypes";
 
-const initalState = {
+const initialState = {
 	visible: false,
 	redirect: null
 };
 
-const handleToggle = (state = initalState, action) => {
+const handleToggle = (state = initialState, action) => {
 	switch (action.type) {
 		case TOGGLE_LOGIN_MODAL:
 			if (action.redirect !== null)
@@ -21,9 +21,8 @@ const handleToggle = (state = initalState, action) => {
 				};
 			}
 		default:
-			break;
+			return state;
 	}
-	return state;
 };
 
 export default handleToggle;

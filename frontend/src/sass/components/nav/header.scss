@@ -16,7 +16,13 @@
         border-radius: 10rem;
     }
 
-	& > img {
-		margin-bottom: 2rem;
+	& > div {
+		margin-bottom: 1rem;
+	}
+}
+
+.features {
+	&__chat {
+		background: $color-white;
 	}
 }
