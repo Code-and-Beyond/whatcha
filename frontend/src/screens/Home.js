@@ -16,6 +16,7 @@ const HomeScreen = () => {
 	const userLogin = userState.loggedIn;
 
 	useEffect(() => {
+		console.log(userLogin);
 		if (!isLoggedIn()) {
 			dispatch(toggleLoggedIn(false));
 			dispatch(toggleLoginModal(true));

@@ -92,7 +92,7 @@ const Login = (props) => {
 						<Input placeholder='Email Id' type='email' handleInput={ (val) => handleUserData('email', val) } />
 						<Input placeholder='Password' type='password' handleInput={ (val) => handleUserData('password', val) } />
 						<Input placeholder='Biography (optional)' type='password' handleInput={ (val) => handleUserData('bio', val) } />
-						<p className='b b--2 text--black'>Already have an account? <a>SignIn</a></p>
+						<p className='b b--2 text--black'>Already have an account? <span>SignIn</span></p>
 					</div>
 
 					{/* sign in with third party */ }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Input = (props) => {
-	const { value, placeholder, type, required } = props;
+	const { value, placeholder, type } = props;
 	const getClasses = () => {
 		let classes = ['input'];
 
