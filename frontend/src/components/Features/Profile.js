@@ -59,37 +59,51 @@ const Profile = () => {
 							{
 								!profileLoading ?
 									<>
-										<h2 className="a a--1 u-p-t-s">
-											{ profileInfo.bio }
+										{ profileInfo.bio ?
+											<h2 className="a a--1 u-m-v-s">
+												{ profileInfo.bio }
+											</h2>
+											: null
+										}
 
-										</h2>
-										<FillButton text="Edit Profile" extraStyle="u-m-v-m" onClickHandler={ () => setEditProfile(true) } />
-										<div className="d--f ai--c u-m-b-s">
-											<img
-												src={ location }
-												className="u--icon"
-												alt="location"
-											/>
-											<p className="b b--3 u-m-l-xs">{ profileInfo.location }</p>
-										</div>
-										<div className="d--f ai--c u-m-b-s">
-											<img
-												src={ organization }
-												className="u--icon"
-												alt="location"
-											/>
-											<p className="b b--3 u-m-l-xs">{ profileInfo.organization }</p>
-										</div>
-										<div className="d--f ai--c">
-											<img
-												src={ link }
-												className="u--icon"
-												alt="location"
-											/>
-											<a href={ profileInfo.website } className="text--link b b--3 u-m-l-xs">{ profileInfo.website }</a>
-										</div>
+										{ profileInfo.location
+											?
+											<div className="d--f ai--c u-m-b-s">
+												<img
+													src={ location }
+													className="u--icon"
+													alt="location"
+												/>
+												<p className="b b--3 u-m-l-xs">{ profileInfo.location }</p>
+											</div>
+											: null
+										}
+										{ profileInfo.organization ?
+											<div className="d--f ai--c u-m-b-s">
+												<img
+													src={ organization }
+													className="u--icon"
+													alt="location"
+												/>
+												<p className="b b--3 u-m-l-xs">{ profileInfo.organization }</p>
+											</div>
+											: null
+										}
+										{ profileInfo.website ?
+											<div className="d--f ai--c">
+												<img
+													src={ link }
+													className="u--icon"
+													alt="location"
+												/>
+												<a href={ profileInfo.website } className="text--link b b--3 u-m-l-xs">{ profileInfo.website }</a>
+											</div>
+											: null
+										}
 									</>
 									: null }
+							<FillButton text="Edit Profile" extraStyle='u-m-t-m' onClickHandler={ () => setEditProfile(true) } />
+
 						</div>
 					</div> }
 			</div>)

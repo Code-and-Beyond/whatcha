@@ -97,7 +97,6 @@ const PostsScreen = () => {
 		const reader = new FileReader();
 		reader.readAsDataURL(attachment.raw);
 		reader.onloadend = () => {
-			console.log(reader.result);
 			axios({
 				url: 'http://localhost:8080/api/pub/post',
 				method: 'POST',

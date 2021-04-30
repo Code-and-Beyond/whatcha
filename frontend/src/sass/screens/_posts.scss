@@ -4,6 +4,7 @@
     flex: 0.4;
 
     &__header {
+		height: 15rem;
         padding: 2rem;
         background-color: $color-white-head;
         box-shadow: 0 0.4rem 0.9rem rgba($color-black, 0.25);
@@ -39,7 +40,7 @@
     }
 
     &__container {
-        max-height: 84.5vh;
+        height: calc(100% - 15rem);
         scroll-behavior: smooth;
         overflow-y: scroll;
 
