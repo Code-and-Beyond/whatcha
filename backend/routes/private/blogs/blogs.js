@@ -19,7 +19,8 @@ module.exports = function (app, connection) {
 			const uid = req.body.uid;
 			const title = req.body.title;
 			const content = req.body.content;
-			connection.query("INSERT INTO whatcha.`blogs-list` (`uid`, `title`, `content`) values(?,?,?)", [uid, title, content],
+			const dateCreated = new Date();
+			connection.query("INSERT INTO whatcha.`blogs-list` (`uid`, `title`, `content`,`createdAt`) values(?,?,?,?)", [uid, title, content, dateCreated],
 				function (error, result, fields) {
 					if (error) { res.json(error); }
 					else {

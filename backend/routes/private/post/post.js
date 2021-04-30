@@ -32,6 +32,7 @@ module.exports = function (app, connection) {
 	app.route('/api/pub/post').post(async function (req, res, nex) {
 		const id = req.body.uid;
 		const content = req.body.content;
+		const dateCreated = new Date();
 		const fileStr = req.body.encodedImg;
 		let uploadResponse;
 		try {
@@ -41,8 +42,8 @@ module.exports = function (app, connection) {
 		}
 		const imgUrl = uploadResponse.secure_url;
 		connection.query(
-			'INSERT INTO whatcha.`posts-list` (`uid`,`content`,`imgUrl`) values(?,?,?)',
-			[id, content, imgUrl],
+			'INSERT INTO whatcha.`posts-list` (`uid`,`content`,`imgUrl`, `createdAt`) values(?,?,?,?)',
+			[id, content, imgUrl, dateCreated],
 			function (error, result, fields) {
 				if (error) {
 					console.log('itsme');

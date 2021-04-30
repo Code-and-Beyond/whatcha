@@ -57,8 +57,9 @@ module.exports = function (app, connection) {
 		.post(function (req, res, next) {
 			const uid = req.params.uid;
 			const pid = req.params.pid;
+			const dateUpvoted = new Date();
 
-			connection.query("INSERT INTO whatcha.`user-upvotes` (`uid`,`pid`) values(?,?)", [uid, pid],
+			connection.query("INSERT INTO whatcha.`user-upvotes` (`uid`,`pid`,`createdAt`) values(?,?,?)", [uid, pid, dateUpvoted],
 				(error, result, fields) => {
 					if (error) { res.json(error); }
 					else {

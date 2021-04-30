@@ -1,4 +1,5 @@
 const auth = require('../../helpers/auth');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = function (app, userConnection, axios) {
 	app.route('/auth/google').post(function (req, res, nex) {
@@ -32,9 +33,18 @@ module.exports = function (app, userConnection, axios) {
 							});
 						} else {
 							if (results.length < 1) {
+								const uid = uuidv4();
 								userConnection.query(
-									'INSERT INTO whatcha.users (`id`, `username`, `fname`, `lname`, `fullname`, `image`) VALUES ( UUID(), ?, ?, ?, ?, ?)',
+									'INSERT INTO whatcha.`users-info` (`uid`) VALUES(?)', [uid], function (error, results, fields) {
+										if (error) {
+											console.log(error);
+										}
+									}
+								);
+								userConnection.query(
+									'INSERT INTO whatcha.users (`id`, `username`, `fname`, `lname`, `fullname`, `image`) VALUES (?, ?, ?, ?, ?, ?)',
 									[
+										uid,
 										googleData.email,
 										googleData.given_name,
 										googleData.family_name,
