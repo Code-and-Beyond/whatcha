@@ -59,7 +59,7 @@ const EditProfile = (props) => {
 						{ update ?
 							<h1 className='h h--2'>updating...</h1>
 							:
-							<h1 className='h h--2'>Hi there! Ramji</h1>
+							<h1 className='h h--2'>Hi there! { getUser().fname }</h1>
 						}
 
 					</div>

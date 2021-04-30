@@ -45,7 +45,7 @@ const CreateBlogs = () => {
 	};
 
 	return (
-		<div>
+		<div className='u-p-v-m u-p-h-m'>
 			<Row ai='c' jc='sb' extraStyle='u-m-b-s'>
 				{ uploading ?
 					<h1 className='h h--2'>Uploading...</h1>

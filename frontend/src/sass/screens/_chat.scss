@@ -1,6 +1,68 @@
 .chat {
-	padding: 2rem;
-    background-color: $color-black-light;
-    flex: 0.35;
-	max-width: 100%;
+	&__header {
+		background-color: $color-black;
+		padding: 0.5rem 2rem;
+		height: 7rem;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		&--icon {
+			filter: brightness(0) invert(1);
+			height: 2.5rem;
+			width: 2.5rem;
+			margin-right: 1rem;
+			cursor: pointer;
+			opacity: 0.7;
+			transition: 0.2s all ease-in-out;
+
+			&:hover {
+				opacity: 1;
+				transform: scale(1.1);
+			}
+		}
+
+		& > div {
+			margin-top: .5rem;
+		}
+
+		&--container {
+			border-radius: 40rem;
+            margin-left: auto;
+            padding: 1rem 1.3rem;
+            transition: all 0.2s ease-in-out;
+            height: min-content;
+
+			&:hover {
+				background-color: $color-black-tray;
+			}
+		}
+
+		&--dots {
+			transform: rotate(-90deg);
+            height: 2rem;
+			filter: brightness(0) invert(1);
+		}
+	}
+
+
+	&__contact {
+		border-bottom: .1rem solid $color-black-light;
+		padding: 0.5rem 2rem;
+		background-color: $color-black-tray;
+		display: flex;
+		transition: 0.3s all ease-in-out;
+
+		&:hover {
+			background-color: $color-black-light;
+			cursor: pointer;
+		}
+	}
+
+	&__space {
+		background: url('../../assets/backgrounds/chat-background2.jpg');
+		background-repeat: no-repeat;
+		background-size: auto;
+		height: calc(100vh  - 7rem);
+	}
 }

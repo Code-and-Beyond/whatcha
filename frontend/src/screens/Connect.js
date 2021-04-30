@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import CreateBlogs from '../components/Blogs/CreateBlogs';
+import Chat from './Chat';
 
 const ChatScreen = () => {
 	const show = useSelector(state => state.connectState.show);
@@ -8,8 +9,7 @@ const ChatScreen = () => {
 	const getWindow = () => {
 		switch (show) {
 			case 'chats':
-				console.log('chats');
-				break;
+				return <Chat />;
 			case 'blogs':
 				return <CreateBlogs />;
 			default:
@@ -18,7 +18,7 @@ const ChatScreen = () => {
 	};
 
 	return (
-		<div className="chat">
+		<div className='connect'>
 			{getWindow() }
 		</div>
 	);

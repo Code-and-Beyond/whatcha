@@ -9,7 +9,7 @@ import {
 const initialState = {
 	loading: false,
 	allChats: [],
-	show: 'blogs',
+	show: 'chats',
 	message: ''
 };
 
