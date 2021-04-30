@@ -64,5 +64,38 @@
 		background-repeat: no-repeat;
 		background-size: auto;
 		height: calc(100vh  - 7rem);
+		display: flex;
+		flex-direction: column;
+
+		&--keyboard {
+			background-color: $color-black-tray;
+			padding: 0.2rem 1rem;
+			padding-left: 1.5rem;
+			display: flex;
+			align-items: center;
+			margin-top: auto;
+
+			& > textarea {
+				padding: inherit 2rem;
+				border-radius: 2.5rem;
+				border: none;
+				resize: vertical;
+				padding-left: 2rem;
+				color: $color-white;
+				width: 100%;
+				min-height: 4.5rem;
+				background-color: $color-white-head !important;
+
+				&::-webkit-scrollbar-thumb {
+					background: none;
+				}
+			}
+
+			&-send {
+				margin-left: 1.5rem;
+				margin-right: 0;
+				filter: brightness(1) invert(1);
+			}
+		}
 	}
 }
