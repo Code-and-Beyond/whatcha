@@ -11,14 +11,13 @@ const auth = require('./helpers/auth');
 
 const app = express();
 
-
 var checkUserFilter = function (req, res, nex) {
-	const regex = '/api/pvt/';
-	if (req._parsedUrl.pathname.match(regex)) {
-		auth.authenticateToken(req, res, nex);
-	} else {
-		nex();
-	}
+    const regex = '/api/pvt/';
+    if (req._parsedUrl.pathname.match(regex)) {
+        auth.authenticateToken(req, res, nex);
+    } else {
+        nex();
+    }
 };
 
 app.use(cors());
@@ -38,6 +37,8 @@ require('./routes/private/posts/posts')(app, connection);
 require('./routes/private/post/post')(app, connection);
 require('./routes/private/blogs/blogs')(app, connection);
 require('./routes/private/users/users')(app, connection);
+require('./routes/private/chat/chat')(app, connection);
+require('./routes/private/chat/messages')(app, connection);
 
 /*  PRODUCTION  */
 // var key = fs.readFileSync(__dirname + '/ssl/server.key');
@@ -56,4 +57,3 @@ require('./routes/private/users/users')(app, connection);
 /*  DEVELOPMENT */
 app.set('port', process.env.PORT || 8080);
 app.listen(8080, () => console.log('server is running on port 8080'));
-
