@@ -3,6 +3,8 @@ import { getUser } from '../../helpers/session';
 import { useDispatch } from 'react-redux';
 import { showChats, showCreateBlogs } from '../../store/actions/index';
 import logo from '../../assets/Logos/company_logo.png';
+import bookmark from '../../assets/icons/bookmark.svg';
+
 import chat from '../../assets/icons/chat.svg';
 import write from '../../assets/icons/pencil.svg';
 
@@ -17,6 +19,7 @@ const FeaturesHeader = () => {
 					<Avatar src={ getUser().image } extraStyle="u-c-pointer" alt="profile logo" />
 					: null
 			}
+			<Avatar src={ bookmark } bg noRad extraStyle="u-c-pointer" alt="Chats logo" size='3rem' handleClick={ () => dispatch(showChats()) } />
 			<div className='header__line' />
 			<Avatar src={ chat } bg noRad extraStyle="u-c-pointer" alt="Chats logo" size='3.5rem' handleClick={ () => dispatch(showChats()) } />
 			<Avatar src={ write } bg noRad extraStyle="u-c-pointer" alt="Chats logo" size='3.5rem' handleClick={ () => dispatch(showCreateBlogs()) } />
