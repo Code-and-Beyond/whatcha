@@ -14,7 +14,7 @@ const ChatContact = (props) => {
 			/>
 			<div className='u-m-l-m'>
 				<p className='h h--5 '>{ name }</p>
-				<p className='b b--3'>Yes chat is still going on?</p>
+				<p className='b b--3'>Is the chat still going on?</p>
 			</div>
 			<p className='b b--3 u-m-l-auto'>10:49</p>
 		</div>

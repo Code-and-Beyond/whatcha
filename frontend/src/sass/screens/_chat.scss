@@ -67,6 +67,11 @@
 		display: flex;
 		flex-direction: column;
 
+		&--messages {
+			display: flex;
+			flex-direction: column;
+		}
+
 		&--keyboard {
 			background-color: $color-black-tray;
 			padding: 0.2rem 1rem;

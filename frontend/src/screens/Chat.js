@@ -14,8 +14,8 @@ const Chat = () => {
 		<div>
 			<h1 className='b b--3 u-m-v-m text--center h--disabled'>Your connections will appear here</h1>
 			<ChatContact name='Ramji Rathore' handleClick={ () => setOpenChat(true) } />
-			<ChatContact name='Hemant Panwar' />
-			<ChatContact name='Prerna Singh' />
+			<ChatContact name='Hemant Panwar' handleClick={ () => setOpenChat(true) } />
+			<ChatContact name='Prerna Singh' handleClick={ () => setOpenChat(true) } />
 			<ChatContact name='Sukant Arora' />
 			<ChatContact name='Praveen Mishra' />
 			<ChatContact name='Shreyansh chouhan' />
@@ -26,7 +26,7 @@ const Chat = () => {
 
 	return (
 		<div>
-			<ChatHeader openChat={ openChat } user={ { fname: 'Ramji' } } goBack={ () => setOpenChat(false) } />
+			<ChatHeader openChat={ openChat } user={ { fname: 'Hemant Panwar' } } goBack={ () => setOpenChat(false) } />
 			{openChat ? getRequiredChatSpace() : getConnections() }
 		</div>
 	);
