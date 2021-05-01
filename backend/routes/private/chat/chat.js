@@ -1,8 +1,7 @@
 module.exports = function (app, connection) {
     // create chat room
     app.route('/api/pub/chat').post(function (req, res, next) {
-        const userOne = req.body.userOne;
-        const userTwo = req.body.userTwo;
+        const { useerOne, userTwo } = req.body;
         const connectionExists = true;
         connection.query(
             'INSERT INTO whatcha.`chat-rooms` (`chatRoomId`, `userOne`, `userTwo`, `connectionExists`) values (UUID(), ?, ?, ?)',
@@ -27,7 +26,7 @@ module.exports = function (app, connection) {
 
     // get chat room Id from user Id
     app.route('/api/pub/chat').get(function (req, res, next) {
-        const uid = req.query.uid;
+        const { uid } = req.query;
         connection.query(
             'SELECT * FROM whatcha.`chat-rooms` WHERE `userOne` = ? OR `userTwo` = ?',
             [uid, uid],
@@ -51,7 +50,7 @@ module.exports = function (app, connection) {
 
     // get chat room
     app.route('/api/pub/chat/:chatRoomId').get(function (req, res, next) {
-        const chatRoomId = req.params.chatRoomId;
+        const { chatRoomId } = req.params;
         connection.query(
             'SELECT * FROM whatcha.`chat-rooms` WHERE `chatRoomId` = ?',
             [chatRoomId],
@@ -90,7 +89,9 @@ module.exports = function (app, connection) {
 
             updateColumns([
                 'userOne',
+                'socketOne',
                 'userTwo',
+                'socketTwo',
                 'connectionExists',
                 'latestMessageId',
             ]);
@@ -127,7 +128,7 @@ module.exports = function (app, connection) {
 
     // delete a chat room
     app.route('/api/pub/chat/:chatRoomId').delete(function (req, res, next) {
-        const chatRoomId = req.params.chatRoomId;
+        const { chatRoomId } = req.params;
         connection.query(
             'DELETE FROM whatcha.`chat-rooms` WHERE `chatRoomId`= ? ',
             [chatRoomId],
@@ -155,7 +156,7 @@ module.exports = function (app, connection) {
         res,
         next
     ) {
-        const chatRoomId = req.params.chatRoomId;
+        const { chatRoomId } = req.params;
         connection.query(
             'SELECT * FROM whatcha.`chat-messages` WHERE `chatRoomId` = ?',
             [chatRoomId],

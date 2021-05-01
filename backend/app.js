@@ -56,4 +56,8 @@ require('./routes/private/chat/messages')(app, connection);
 
 /*  DEVELOPMENT */
 app.set('port', process.env.PORT || 8080);
-app.listen(8080, () => console.log('server is running on port 8080'));
+const server = app.listen(8080, () =>
+    console.log('server is running on port 8080')
+);
+
+require('./sockets')(server, connection);
