@@ -89,6 +89,12 @@ module.exports = (server, connection) => {
         );
     };
 
+    // chatRoom : chatRoomId, userOne, userTwo, socketOne, socketTwo, latestMessagId
+
+    // socket.emit('join', {userId, chatRoom}, (resChatRoom) => {
+
+    // })
+
     io.on('connection', (socket) => {
         socket.on('join', ({ userId, chatRoom }, callback) => {
             // console.log('join', socket.id);

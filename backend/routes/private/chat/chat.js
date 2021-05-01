@@ -1,7 +1,7 @@
 module.exports = function (app, connection) {
     // create chat room
     app.route('/api/pub/chat').post(function (req, res, next) {
-        const { useerOne, userTwo } = req.body;
+        const { userOne, userTwo } = req.body;
         const connectionExists = true;
         connection.query(
             'INSERT INTO whatcha.`chat-rooms` (`chatRoomId`, `userOne`, `userTwo`, `connectionExists`) values (UUID(), ?, ?, ?)',
@@ -25,11 +25,34 @@ module.exports = function (app, connection) {
     });
 
     // get chat room Id from user Id
-    app.route('/api/pub/chat').get(function (req, res, next) {
+    /* app.route('/api/pub/chat').get(function (req, res, next) {
         const { uid } = req.query;
         connection.query(
             'SELECT * FROM whatcha.`chat-rooms` WHERE `userOne` = ? OR `userTwo` = ?',
             [uid, uid],
+            function (error, result, fields) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) {
+                    res.json(error);
+                } else {
+                    res.json({
+                        error: false,
+                        data: result,
+                    });
+                }
+            }
+        );
+    }); */
+
+    app.route('/api/pub/chat').get(function (req, res, next) {
+        const { uid } = req.query;
+        connection.query(
+            'SELECT whatcha.`chat-rooms`.*, whatcha.`users`.image, whatcha.`users`.fullname, whatcha.`users`.id  FROM whatcha.`chat-rooms` INNER JOIN whatcha.`users` ON whatcha.`chat-rooms`.userTwo = whatcha.`users`.id OR whatcha.`chat-rooms`.userOne = whatcha.`users`.id WHERE (whatcha.`chat-rooms`.userOne = ? OR whatcha.`chat-rooms`.userTwo = ?) AND whatcha.`users`.id != ?;',
+            [uid, uid, uid],
             function (error, result, fields) {
                 res.header('Access-Control-Allow-Origin', '*');
                 res.header(
