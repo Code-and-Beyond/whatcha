@@ -11,6 +11,7 @@ import loadingReducer from './store/reducers/loading';
 import loggedInReducer from './store/reducers/user';
 import loginModalReducer from './store/reducers/loginModal';
 import alertReducer from './store/reducers/snackbar';
+import featureReducer from './store/reducers/features';
 import connectReducer from './store/reducers/connect';
 
 
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
 	loginModalState: loginModalReducer,
 	alertState: alertReducer,
 	loggedInState: loggedInReducer,
+	featureState: featureReducer,
 	connectState: connectReducer
 });
 
@@ -39,7 +41,4 @@ ReactDOM.render(
 	document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

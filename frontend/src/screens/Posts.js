@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 import PostHeader from '../components/Header/PostNav';
@@ -18,6 +19,7 @@ import React from 'react';
 
 const PostsScreen = () => {
 	const [posts, setPosts] = useState([]);
+	const feature = useSelector(state => state.featureState.show);
 
 	const initialAttachment = {
 		raw: '',
@@ -42,6 +44,7 @@ const PostsScreen = () => {
 				if (res.status === 200 && !res.data.error) {
 					const data = res.data.data;
 					setPosts(data);
+					console.log(data);
 				}
 			})
 			.catch((err) => console.log(err))
@@ -77,6 +80,7 @@ const PostsScreen = () => {
 			axios.get('http://localhost:8080/api/pub/users/upvote/' + getUser().id)
 				.then((res) => {
 					if (res.status === 200 && !res.data.error) {
+						console.log('hey');
 						fetchAllPosts();
 						setUpvotedPosts(res.data.data);
 					}
@@ -84,6 +88,12 @@ const PostsScreen = () => {
 		}
 
 	}, []);
+
+	useEffect(() => {
+		if (feature === 'saved') {
+
+		}
+	}, [feature]);
 
 	const handlePostUpload = () => {
 		setShowPostModal(false);
