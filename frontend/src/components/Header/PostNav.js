@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import TextButton from '../../components/Button/Text';
-import Avatar from '../Avatar/Avatar';
-import user from '../../assets/profile/user.svg';
-import { setLogout, getUser } from '../../helpers/session';
+import { setLogout } from '../../helpers/session';
 import { toggleLoggedIn } from '../../store/actions/index';
 
 const PostNavHeader = (props) => {
 	const dispatch = useDispatch();
 	const [active, setActive] = useState('feed');
 
-	let classes = "h h--3 u-m-l-m";
+	let classes = "h h--3 u-m-r-m";
 
 	const handleShowFeed = () => {
 		setActive('feed');
@@ -32,11 +30,6 @@ const PostNavHeader = (props) => {
 	return (
 		<div className="posts__header">
 			<div className="posts__header--top">
-				<Avatar
-					src={ getUser() ? getUser().image : user }
-					extraStyle="u-c-pointer"
-					alt="user avatar"
-				/>
 				<h3 className={ classes } onClick={ handleShowFeed } style={ { color: active === 'feed' ? '#56fe99' : 'white' } }>Feed</h3>
 				<h3 className={ classes } onClick={ handleShowTrending } style={ { color: active === 'trending' ? '#56fe99' : 'white' } }>Trending</h3>
 				<h3 className={ classes } onClick={ handleShowBlogs } style={ { color: active === 'blogs' ? '#56fe99' : 'white' } }>Blogs</h3>

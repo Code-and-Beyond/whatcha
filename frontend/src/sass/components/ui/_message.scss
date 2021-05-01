@@ -1,0 +1,61 @@
+.message {
+	box-shadow: 0 0.3rem 0.8rem rgba($color-black, 0.4);
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+	display: flex;
+	margin: 0.3rem 0;
+	max-width: 45%;
+	justify-content: space-between;
+	
+	&__sent {
+		position: relative;
+		background-color: $color-green-teal;
+		border-top-right-radius: 0;
+		align-self: flex-end;
+	
+		& > :first-child {
+			font-weight: 300;
+		}
+
+		& > :nth-child(2) {
+			align-self: flex-end;
+		} 
+
+		&--arrow {
+			position: absolute;
+			right: -1rem;
+			top: 0;
+			width: 0; 
+			height: 0; 
+			border-bottom: 1.3rem solid transparent;
+			border-left: 1rem solid $color-green-teal;
+		}
+	}
+
+	&__received {
+		position: relative;
+		background-color: $color-black-tray;
+		border-top-left-radius: 0;
+		align-self:flex-start;
+
+		& > :first-child {
+			font-weight: 300;
+		}
+
+		& > :nth-child(2) {
+			align-self: flex-end;
+		} 
+
+		&--arrow {
+			position: absolute;
+			left: -1rem;
+			top: 0;
+			width: 0; 
+			height: 0; 
+			border-bottom: 1.3rem solid transparent;
+			border-right: 1rem solid $color-black-tray;
+		}
+	}
+
+	
+}
