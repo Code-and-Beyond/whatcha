@@ -65,14 +65,12 @@ const PostsScreen = () => {
 				if (res.status === 200 && !res.data.error) {
 					const data = res.data.data;
 					setBlogs(data);
-					console.log(data);
 				}
 			})
 			.catch((err) => console.log(err));
 	}, [showBlogs]);
 
 	useEffect(() => {
-		console.log('im running');
 		if (getUser()) {
 			axios.get('http://localhost:8080/api/pub/users/upvote/' + getUser().id)
 				.then((res) => {
@@ -292,7 +290,7 @@ const PostsScreen = () => {
 
 	const getAllBlogs = () => (
 		(blogs.length > 0 && showBlogs) ?
-			blogs.map((blog) => <Blog title={ blog.title } content={ blog.content } author={ blog.fullname } uploadedOn={ blog.createdAt.split('T')[0] } />) :
+			blogs.map((blog, index) => <Blog key={ index } title={ blog.title } content={ blog.content } author={ blog.fullname } uploadedOn={ blog.createdAt.split('T')[0] } />) :
 			<div className='d--f jc--c u-p-v-b'>
 				<Spinner loading={ blogs.length === 0 } />
 			</div>
