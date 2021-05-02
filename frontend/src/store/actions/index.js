@@ -8,7 +8,7 @@ export {
 	initUserConnections,
 	initAllUsers,
 	followUser,
-	unfollowUser
+	unfollowUser,
 } from './user';
-export { showChats, showCreateBlogs, fetchChats } from './connect';
+export { showChats, showCreateBlogs, fetchChatsRooms, createChatRoom } from './connect';
 export { showProfile, showSavePosts, showConnections } from './features';

@@ -8,7 +8,7 @@ import {
 
 const initialState = {
 	loading: false,
-	allChats: [],
+	chatRooms: [],
 	show: 'chats',
 	message: ''
 };
@@ -25,7 +25,7 @@ const handleToggle = (state = initialState, action) => {
 		case FETCH_CHATS_SUCCESS:
 			return {
 				...state,
-				allChats: []
+				chatRooms: action.rooms
 			};
 
 		case FETCH_CHATS_FAILURE:

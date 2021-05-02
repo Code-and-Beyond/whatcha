@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../helpers/session';
-import { initUserConnections, initAllUsers, followUser, unfollowUser } from '../store/actions/index';
+import { initUserConnections, initAllUsers, followUser, unfollowUser, createChatRoom } from '../store/actions/index';
 
 import Connection from '../components/Features/Connection';
 
@@ -28,8 +28,8 @@ const Connections = () => {
 
 	const onFollowUser = (id) => {
 		dispatch(followUser(currUser, id));
+		dispatch(createChatRoom(currUser, id));
 		setActive(0);
-
 	};
 
 	const onUnFollowUser = (id) => {

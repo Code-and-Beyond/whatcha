@@ -66,4 +66,10 @@
 			text-transform: capitalize;
 		}
 	}
+
+	&__icon {
+		height: 2rem !important;
+		width: 2rem !important;
+		filter: brightness(0) invert(1);
+	}
 }

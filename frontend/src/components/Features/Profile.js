@@ -57,7 +57,7 @@ const Profile = () => {
 							<h2 className="a a--1 h--disabled">{ getUser().username }</h2>
 
 							{
-								!profileLoading ?
+								!profileLoading && profileInfo ?
 									<>
 										{ profileInfo.bio ?
 											<h2 className="a a--1 u-m-v-s">
