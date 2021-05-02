@@ -87,7 +87,7 @@ export const followUser = (uid1, uid2) => {
 			.post('http://localhost:8080/api/pub/connection/' + uid1 + '/' + uid2)
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
-					initAllUsers();
+					// initAllUsers();
 					console.log('followed');
 				}
 			})
@@ -103,7 +103,7 @@ export const unfollowUser = (uid1, uid2) => {
 			.delete('http://localhost:8080/api/pub/connection/' + uid1 + '/' + uid2)
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
-					initUserConnections();
+					// initUserConnections();
 					console.log('unfollowed');
 				}
 			})
