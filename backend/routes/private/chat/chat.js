@@ -28,7 +28,7 @@ module.exports = function (app, connection) {
 	app.route('/api/pub/chat').get(function (req, res, next) {
 		const { uid } = req.query;
 		connection.query(
-			'SELECT whatcha.`chat-rooms`.*, whatcha.`users`.image, whatcha.`users`.fullname, whatcha.`users`.id, whatcha.`chat-messages`.sender, whatcha.`chat-messages`.receiver, whatcha.`chat-messages`.`text`, whatcha.`chat-messages`.`time`, whatcha.`chat-messages`.received, whatcha.`chat-messages`.seen FROM whatcha.`chat-rooms` INNER JOIN whatcha.`users` ON whatcha.`chat-rooms`.userTwo = whatcha.`users`.id OR whatcha.`chat-rooms`.userOne = whatcha.`users`.id INNER JOIN whatcha.`chat-messages` ON whatcha.`chat-rooms`.latestMessageId = whatcha.`chat-messages`.messageId WHERE (whatcha.`chat-rooms`.userOne = ? OR whatcha.`chat-rooms`.userTwo = ?) AND whatcha.`users`.id != ?',
+			'SELECT whatcha.`chat-rooms`.*, whatcha.`users`.image, whatcha.`users`.fullname, whatcha.`users`.id, whatcha.`chat-messages`.sender, whatcha.`chat-messages`.receiver, whatcha.`chat-messages`.`text`, whatcha.`chat-messages`.`time`, whatcha.`chat-messages`.received, whatcha.`chat-messages`.seen FROM whatcha.`chat-rooms` INNER JOIN whatcha.`users` ON whatcha.`chat-rooms`.userTwo = whatcha.`users`.id OR whatcha.`chat-rooms`.userOne = whatcha.`users`.id INNER JOIN whatcha.`chat-messages` ON whatcha.`chat-rooms`.latestMessageId = whatcha.`chat-messages`.messageId WHERE (whatcha.`chat-rooms`.userOne = ? OR whatcha.`chat-rooms`.userTwo = ?) AND whatcha.`users`.id != ? ORDER BY whatcha.`chat-messages`.time DESC',
 			[uid, uid, uid],
 			function (error, result, fields) {
 				res.header('Access-Control-Allow-Origin', '*');

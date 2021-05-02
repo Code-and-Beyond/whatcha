@@ -18,7 +18,7 @@ const Chat = () => {
 		if (getUser()) {
 			dispatch(fetchChatsRooms(getUser().id));
 		}
-	}, [dispatch]);
+	}, [dispatch, openChat]);
 
 	const handleChatClick = (chatRoom) => {
 		setOpenChat(true);
@@ -34,27 +34,32 @@ const Chat = () => {
 	const getConnections = () => (
 		<div>
 			<h1 className="b b--3 u-m-v-m text--center h--disabled">
-				Your connections will appear here
+				Your chats will appear here
             </h1>
-			{chatList && chatList.length
-				? chatList.map((connection) => (
-					<ChatContact
-						dp={ connection.image }
-						key={ connection.id }
-						name={ connection.fullname }
-						handleClick={ () => handleChatClick(connection) }
-					/>
-				))
-				: null }
+			<div className='chat__space--messages'>
+				{ chatList && chatList.length
+					? chatList.map((connection) => (
+						<ChatContact
+							{ ...connection }
+							key={ connection.id }
+							handleClick={ () => handleChatClick(connection) }
+						/>
+					))
+					: null }
+			</div>
 		</div>
 	);
+
+	const handleGoBack = () => {
+		setOpenChat(false);
+	};
 
 	return (
 		<div>
 			<ChatHeader
 				openChat={ openChat }
-				user={ { fname: 'Hemant Panwar' } }
-				goBack={ () => setOpenChat(false) }
+				{ ...currChatRoom }
+				goBack={ handleGoBack }
 			/>
 			{openChat ? getRequiredChatSpace() : getConnections() }
 		</div>
