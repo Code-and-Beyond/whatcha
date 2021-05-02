@@ -42,7 +42,7 @@ module.exports = (server, connection) => {
             args.queryArray,
             function (error, result, fields) {
                 if (error) console.log(error);
-                else console.log('success');
+                else console.log('Chat Room updated!');
             }
         );
     };
@@ -73,48 +73,111 @@ module.exports = (server, connection) => {
             ],
             function (error, result, fields) {
                 if (error) console.log(error);
-                else console.log('success');
+                else console.log('Message posted!');
             }
         );
     };
 
-    const getChatRoomFromSocket = (socketId) => {
-        connection.query(
+    const getChatRoomFromSocket = async (socketId) => {
+        let chatRoom = null;
+        await connection.query(
             'SELECT * FROM whatcha.`chat-rooms` WHERE `socketOne` = ? OR `socketTwo` = ?',
             [socketId, socketId],
             function (error, result, fields) {
                 if (error) console.log(error);
-                else console.log('success');
+                else {
+                    console.log('Got chat room from socket id!');
+                    chatRoom = result;
+                }
             }
         );
+        return chatRoom;
     };
 
-    // chatRoom : chatRoomId, userOne, userTwo, socketOne, socketTwo, latestMessagId
-
-    // socket.emit('join', {userId, chatRoom}, (resChatRoom) => {
-
-    // })
+    // chatRoom : {chatRoomId, userOne, userTwo, socketOne, socketTwo, latestMessagId}
 
     io.on('connection', (socket) => {
-        socket.on('join', ({ userId, chatRoom }, callback) => {
-            // console.log('join', socket.id);
+        socket.on('join', ({ userId, chatRoomId }, callback) => {
+            console.log('join', socket.id);
 
-            if (
-                userId === chatRoom.userOne &&
-                socket.id !== chatRoom.socketOne
-            ) {
-                chatRoom.socketOne = socket.id;
-            } else if (
-                userId === chatRoom.userTwo &&
-                socket.id !== chatRoom.socketTwo
-            ) {
-                chatRoom.socketTwo = socket.id;
-            }
+            const query = connection.query(
+                'SELECT * FROM whatcha.`chat-rooms` WHERE `chatRoomId` = ?',
+                [chatRoomId]
+            );
 
-            // push chatRoom to db
-            updateChatRoom(chatRoom.chatRoomId, chatRoom);
+            query.on('result', (chatRoom) => {
+                console.log('chat Room received:', chatRoom.chatRoomId);
 
-            callback(chatRoom);
+                if (
+                    userId === chatRoom.userOne &&
+                    socket.id !== chatRoom.socketOne
+                ) {
+                    chatRoom.socketOne = socket.id;
+                    if (
+                        chatRoom.socketTwo !== undefined &&
+                        chatRoom.socketTwo !== null
+                    )
+                        io.to(chatRoom.socketTwo).emit(
+                            'receiverAvailable',
+                            socket.id
+                        );
+                } else if (
+                    userId === chatRoom.userTwo &&
+                    socket.id !== chatRoom.socketTwo
+                ) {
+                    chatRoom.socketTwo = socket.id;
+                    if (
+                        chatRoom.socketOne !== undefined &&
+                        chatRoom.socketOne !== null
+                    )
+                        io.to(chatRoom.socketOne).emit(
+                            'receiverAvailable',
+                            socket.id
+                        );
+                }
+
+                // push chatRoom to db
+                updateChatRoom(chatRoom.chatRoomId, chatRoom);
+
+                callback(chatRoom);
+            });
+
+            // getChatRoomFromId(chatRoomId).then((chatRoom) => {
+            //     console.log('chat Room received:', chatRoom.chatRoomId);
+
+            //     if (
+            //         userId === chatRoom.userOne &&
+            //         socket.id !== chatRoom.socketOne
+            //     ) {
+            //         chatRoom.socketOne = socket.id;
+            //         if (
+            //             chatRoom.socketTwo !== undefined &&
+            //             chatRoom.socketTwo !== null
+            //         )
+            //             io.to(chatRoom.socketTwo).emit(
+            //                 'receiverAvailable',
+            //                 socket.id
+            //             );
+            //     } else if (
+            //         userId === chatRoom.userTwo &&
+            //         socket.id !== chatRoom.socketTwo
+            //     ) {
+            //         chatRoom.socketTwo = socket.id;
+            //         if (
+            //             chatRoom.socketOne !== undefined &&
+            //             chatRoom.socketOne !== null
+            //         )
+            //             io.to(chatRoom.socketOne).emit(
+            //                 'receiverAvailable',
+            //                 socket.id
+            //             );
+            //     }
+
+            //     // push chatRoom to db
+            //     updateChatRoom(chatRoom.chatRoomId, chatRoom);
+
+            //     callback(chatRoom);
+            // });
         });
 
         // message: {chatRoomId, sender, receiver, receiverSocket, text, time}
@@ -125,7 +188,6 @@ module.exports = (server, connection) => {
                 receiver,
                 receiverSocket,
                 text,
-                time,
             } = message;
 
             // construct message object
@@ -136,13 +198,14 @@ module.exports = (server, connection) => {
                 sender,
                 receiver,
                 text,
-                time,
+                time: new Date(),
                 received: false,
                 seen: false,
             };
 
             // check if the message has the socket of this user
             if (receiverSocket !== undefined) {
+                console.log('receiverSocket', receiverSocket);
                 io.to(receiverSocket).emit('message', {
                     ...messageObj,
                     received: true,
@@ -161,11 +224,28 @@ module.exports = (server, connection) => {
         socket.on('disconnect', async (reason) => {
             console.log('disconnect', socket.id);
 
-            const chatRoom = await getChatRoomFromSocket(socket.id);
-            if (chatRoom.socketOne === socket.id) chatRoom.socketOne = null;
-            else chatRoom.socketTwo = null;
+            const query = connection.query(
+                'SELECT * FROM whatcha.`chat-rooms` WHERE `socketOne` = ? OR `socketTwo` = ?',
+                [socket.id, socket.id]
+            );
 
-            updateChatRoom(chatRoom);
+            query.on('result', (chatRoom) => {
+                if (chatRoom) {
+                    if (chatRoom.socketOne === socket.id)
+                        chatRoom.socketOne = null;
+                    else chatRoom.socketTwo = null;
+
+                    updateChatRoom(chatRoom.chatRoomId, chatRoom);
+                }
+            });
+
+            // const chatRoom = await getChatRoomFromSocket(socket.id);
+            // if (chatRoom) {
+            //     if (chatRoom.socketOne === socket.id) chatRoom.socketOne = null;
+            //     else chatRoom.socketTwo = null;
+
+            //     updateChatRoom(chatRoom);
+            // }
         });
     });
 };

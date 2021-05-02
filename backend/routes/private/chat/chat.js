@@ -25,33 +25,10 @@ module.exports = function (app, connection) {
     });
 
     // get chat room Id from user Id
-    /* app.route('/api/pub/chat').get(function (req, res, next) {
-        const { uid } = req.query;
-        connection.query(
-            'SELECT * FROM whatcha.`chat-rooms` WHERE `userOne` = ? OR `userTwo` = ?',
-            [uid, uid],
-            function (error, result, fields) {
-                res.header('Access-Control-Allow-Origin', '*');
-                res.header(
-                    'Access-Control-Allow-Headers',
-                    'Origin, X-Requested-With, Content-Type, Accept'
-                );
-                if (error) {
-                    res.json(error);
-                } else {
-                    res.json({
-                        error: false,
-                        data: result,
-                    });
-                }
-            }
-        );
-    }); */
-
     app.route('/api/pub/chat').get(function (req, res, next) {
         const { uid } = req.query;
         connection.query(
-            'SELECT whatcha.`chat-rooms`.*, whatcha.`users`.image, whatcha.`users`.fullname, whatcha.`users`.id  FROM whatcha.`chat-rooms` INNER JOIN whatcha.`users` ON whatcha.`chat-rooms`.userTwo = whatcha.`users`.id OR whatcha.`chat-rooms`.userOne = whatcha.`users`.id WHERE (whatcha.`chat-rooms`.userOne = ? OR whatcha.`chat-rooms`.userTwo = ?) AND whatcha.`users`.id != ?;',
+            'SELECT whatcha.`chat-rooms`.*, whatcha.`users`.image, whatcha.`users`.fullname, whatcha.`users`.id, whatcha.`chat-messages`.sender, whatcha.`chat-messages`.receiver, whatcha.`chat-messages`.`text`, whatcha.`chat-messages`.`time`, whatcha.`chat-messages`.received, whatcha.`chat-messages`.seen FROM whatcha.`chat-rooms` INNER JOIN whatcha.`users` ON whatcha.`chat-rooms`.userTwo = whatcha.`users`.id OR whatcha.`chat-rooms`.userOne = whatcha.`users`.id INNER JOIN whatcha.`chat-messages` ON whatcha.`chat-rooms`.latestMessageId = whatcha.`chat-messages`.messageId WHERE (whatcha.`chat-rooms`.userOne = ? OR whatcha.`chat-rooms`.userTwo = ?) AND whatcha.`users`.id != ?',
             [uid, uid, uid],
             function (error, result, fields) {
                 res.header('Access-Control-Allow-Origin', '*');
