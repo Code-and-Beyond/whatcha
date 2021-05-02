@@ -21,7 +21,7 @@ const ChatHeader = (props) => {
 		<div className='chat__header'>
 			{goBack() }
 			<Avatar
-				src={ openChat ? userProfile : getUser().image }
+				src={ openChat ? userProfile : getUser() ? getUser().image : userProfile }
 				extraStyle="u-c-pointer"
 				alt="user avatar"
 				size='5rem'

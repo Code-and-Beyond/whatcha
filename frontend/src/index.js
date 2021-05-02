@@ -8,7 +8,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import loadingReducer from './store/reducers/loading';
-import loggedInReducer from './store/reducers/user';
+import userReducer from './store/reducers/user';
 import loginModalReducer from './store/reducers/loginModal';
 import alertReducer from './store/reducers/snackbar';
 import featureReducer from './store/reducers/features';
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 	loadingState: loadingReducer,
 	loginModalState: loginModalReducer,
 	alertState: alertReducer,
-	loggedInState: loggedInReducer,
+	userState: userReducer,
 	featureState: featureReducer,
 	connectState: connectReducer
 });
