@@ -10,7 +10,7 @@ const Avatar = (props) => {
 	};
 
 	return (
-		<div className={ bg ? 'avatar avatar__back' : null } onClick={ props.handleClick }>
+		<div className={ bg ? 'avatar avatar__back' : null } onClick={ props.handleClick } style={ { display: 'flex', alignItems: 'center' } }>
 			<img
 				src={ src }
 				className={ getClasses() }

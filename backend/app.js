@@ -38,6 +38,7 @@ require('./routes/private/blogs/blogs')(app, connection);
 require('./routes/private/users/users')(app, connection);
 require('./routes/private/chat/chat')(app, connection);
 require('./routes/private/chat/messages')(app, connection);
+require('./routes/private/users/connections')(app, connection);
 
 /*  PRODUCTION  */
 // var key = fs.readFileSync(__dirname + '/ssl/server.key');

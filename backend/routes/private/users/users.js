@@ -52,6 +52,23 @@ module.exports = function (app, connection) {
 		});
 
 
+	app.route(`/api/pub/allUsers`)
+		.get(function (req, res, next) {
+			const uid = req.params.uid;
+			connection.query('SELECT whatcha.`users`.* ,whatcha.`users-info`.bio FROM whatcha.`users` INNER JOIN whatcha.`users-info` ON whatcha.`users-info`.uid = whatcha.`users`.id', (error, result, fields) => {
+				if (error) { res.json(error); }
+				else {
+					res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+					res.header('Access-Control-Allow-Origin', '*');
+					res.json({
+						error: false,
+						data: result
+					});
+				}
+			});
+		});
+
+
 	// increase upvote of an post
 	app.route('/api/pub/users/upvote/:uid/:pid')
 		.post(function (req, res, next) {

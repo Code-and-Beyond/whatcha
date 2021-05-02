@@ -33,12 +33,15 @@
         }
         &--warning {
             background-color: $color-yellow;
+            color: $color-white !important;
         }
         &--info {
             background-color: $color-blue;
+            color: $color-white !important;
         }
         &--success {
             background-color: $color-green;
+            color: $color-white !important;
         }
     }
 
@@ -65,10 +68,10 @@
         }
         &--warning {
             border: 0.2rem $color-yellow solid;
-            color: $color-black !important;
+            color: $color-yellow !important;
             &:hover {
                 background-color: $color-yellow;
-                color: $color-black !important;
+                color: $color-white !important;
             }
         }
         &--info {
@@ -81,7 +84,7 @@
         }
         &--success {
             border: 0.2rem $color-green solid;
-            color: $color-black !important;
+            color: $color-green !important;
             &:hover {
                 background-color: $color-green;
                 color: $color-black !important;
