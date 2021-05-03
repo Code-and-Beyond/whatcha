@@ -33,7 +33,7 @@ module.exports = function (app, connection) {
     app.route('/api/pub/posts/:postId/comments').get(function (req, res, next) {
         const { postId } = req.params;
         connection.query(
-            'SELECT whatcha.`posts-comments`.*, whatcha.`users`.fullname, whatcha.`users`.image FROM whatcha.`posts-comments` INNER JOIN whatcha.`users` ON whatcha.`posts-comments`.uid = whatcha.`users`.id WHERE `pid` = ?',
+            'SELECT whatcha.`posts-comments`.*, whatcha.`users`.fullname, whatcha.`users`.image, whatcha.`users-info`.bio FROM whatcha.`posts-comments` INNER JOIN whatcha.`users` INNER JOIN whatcha.`users-info` ON whatcha.`posts-comments`.uid = whatcha.`users`.id AND whatcha.`users-info`.uid = whatcha.`users`.id WHERE `pid` = ? ORDER BY createdAt DESC',
             [postId],
             function (error, result, fields) {
                 res.header('Access-Control-Allow-Origin', '*');

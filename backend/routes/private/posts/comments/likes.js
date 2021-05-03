@@ -37,7 +37,7 @@ module.exports = function (app, connection) {
     ) {
         const { commentId } = req.params;
         connection.query(
-            'SELECT whatcha.`comments-likes`.* , whatcha.`users`.fullname, whatcha.`users`.image FROM whatcha.`comments-likes` INNER JOIN whatcha.`users` ON whatcha.`comments-likes`.uid = whatcha.`users`.id WHERE `commentId` = ?',
+            'SELECT whatcha.`comments-likes`.* , whatcha.`users`.fullname, whatcha.`users`.image, whatcha.`users-info`.bio FROM whatcha.`comments-likes` INNER JOIN whatcha.`users` INNER JOIN whatcha.`users-info` ON whatcha.`comments-likes`.uid = whatcha.`users`.id AND whatcha.`users-info`.uid = whatcha.`users`.id WHERE `commentId` = ?',
             [commentId],
             function (error, result, fields) {
                 res.header('Access-Control-Allow-Origin', '*');
