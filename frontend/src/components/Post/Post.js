@@ -312,7 +312,7 @@ const Post = (props) => {
 					/>
 					{ getUser() && newComment !== '' ? (
 						<FillButton
-							extraStyle="u-m-l-auto a--2"
+							extraStyle="u-m-l-xs u-p-h-m a--2 post__input--btn"
 							text="Post"
 							type={ 1 }
 							onClickHandler={ () => postComment() }

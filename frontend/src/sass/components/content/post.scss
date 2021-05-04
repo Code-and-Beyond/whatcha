@@ -48,11 +48,16 @@
 
     &__input {
         width: 100%;
+		padding: 0.5rem 1rem !important;
         color: $color-black !important;
         &:focus {
             box-shadow: none !important;
             border-color: $color-blue-dark !important;
         }
+
+		&--btn {
+			border-radius: 5rem !important;
+		}
     }
 
     &__icons {

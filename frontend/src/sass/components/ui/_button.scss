@@ -48,7 +48,9 @@
     &--no-fill {
         background-color: $color-white;
         &--normal {
-            border: 0.1rem $color-gray solid;
+            color: $color-black !important;
+            border: 0.1rem $color-grey solid;
+			background-color: $color-gray;
         }
         &--primary {
             border: 0.2rem $color-primary solid;

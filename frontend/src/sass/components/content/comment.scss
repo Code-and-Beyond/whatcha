@@ -52,6 +52,21 @@
 		}
 	}
 
+	&__input {
+		outline: none !important;
+		border: none !important;
+		box-shadow: none !important;
+		margin: 1rem 0;
+		background-color: $color-gray !important;
+		padding: 0.4rem 1rem !important;
+		border-radius: 0.5rem !important;
+		width: 100%;
+		&--btn {
+			width: max-content !important;
+			height: 3rem;
+		}
+	}
+
 	& h2 {
 		font-weight: 500;
 	}

@@ -4,6 +4,9 @@ import { getUser } from '../../helpers/session';
 
 import Avatar from '../Avatar/Avatar';
 import Row from '../Row/Row';
+import Input from '../Input/Input';
+import FillButton from '../Button/Fill';
+import NoFillButton from '../Button/NoFIll';
 
 import likeIcon from '../../assets/icons/like.svg';
 import likedIcon from '../../assets/icons/liked.svg';
@@ -18,6 +21,7 @@ const Comment = (props) => {
 	const [like, setLike] = useState(false);
 	const [likesCounter, setLikesCounter] = useState(likesCount);
 	const [showPopover, setShowPopover] = useState(false);
+	const [edit, setEdit] = useState({ text: text, show: false });
 
 	const checkForLike = (commentId) => {
 		axios({
@@ -97,36 +101,63 @@ const Comment = (props) => {
 		}
 	};
 
+	const getCommentBody = () => (
+		<div className="comment__container">
+			<Row ai="c" jc="sb">
+				<h2 className="b b--3 text--black">{ name }</h2>
+				<div className='comment__dots'>
+					<p className="b b--4 text--black">{ commentTime }</p>
+					<img
+						src={ dots }
+						alt="three dots"
+						className="comment__dots--icon u-c-pointer"
+						onClick={ () => setShowPopover(!showPopover) }
+					/>
+					{ showPopover && getUser().id === uid ? (
+						<div className="menu comment__dots--popover">
+							<p className="b b--4" onClick={ () => { setEdit({ ...edit, show: true }); setShowPopover(false); } }>
+								Edit
+                   			</p>
+
+							{/** place comment delete handler here*/ }
+							<p className="b b--4">Delete </p>
+						</div>
+					) : null }
+				</div>
+			</Row>
+			<p className="b b--4 text--black">{ bio }</p>
+			{ edit.show ?
+				<div>
+					<Input
+						extraStyle='comment__input h h--5'
+						value={ edit.text }
+						handleInput={ (val) => setEdit({ ...edit, text: val }) }
+					/>
+					<Row ai='jc'>
+						<FillButton
+							extraStyle="a a--2 comment__input--btn"
+							text="Save"
+							type={ 1 }
+						// onClickHandler={ Place update comment handler }
+						/>
+						<NoFillButton
+							extraStyle="u-m-l-s a a--2 comment__input--btn"
+							text="Cancel"
+							onClickHandler={ () => setEdit({ ...edit, show: false }) }
+						/>
+					</Row>
+				</div>
+				:
+				<p className="comment__body b b--3">{ text }</p>
+			}
+		</div >
+	);
+
 	return (
 		<Row extraStyle="u-m-t-s" ai='fs'>
 			<Avatar src={ image } alt="user avatar" size="4.5rem" />
 			<div className="comment">
-				<div className="comment__container">
-					<Row ai="c" jc="sb">
-						<h2 className="b b--3 text--black">{ name }</h2>
-						<div className='comment__dots'>
-							<p className="b b--4 text--black">{ commentTime }</p>
-							<img
-								src={ dots }
-								alt="three dots"
-								className="comment__dots--icon u-c-pointer"
-								onClick={ () => setShowPopover(!showPopover) }
-							/>
-							{ showPopover && getUser().id === uid ? (
-								<div className="menu comment__dots--popover">
-									<p className="b b--4">
-										Edit
-                   				     </p>
-									<p className="b b--4">
-										Delete
-                 			       </p>
-								</div>
-							) : null }
-						</div>
-					</Row>
-					<p className="b b--4 text--black">{ bio }</p>
-					<p className="comment__body b b--3">{ text }</p>
-				</div>
+				{ getCommentBody() }
 				<div className='comment__container--likeContainer' onClick={ handleToogleLike }>
 					{ like ?
 						<img src={ likedIcon } className="comment__container--like comment__container--liked" alt="liked icon" />
@@ -138,7 +169,7 @@ const Comment = (props) => {
 					</p>
 				</div>
 			</div>
-		</Row>
+		</Row >
 	);
 };
 
