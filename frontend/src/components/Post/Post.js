@@ -16,6 +16,8 @@ import share from '../../assets/icons/share.svg';
 import comment from '../../assets/icons/comment.svg';
 import axios from 'axios';
 
+import FillButton from '../../components/Button/Fill';
+
 const Post = (props) => {
     const {
         postId,
@@ -33,11 +35,12 @@ const Post = (props) => {
     const [upvote, setUpvote] = useState(upvoteState);
     const [upvoteCount, setUpvoteCount] = useState(upvotesCount);
     const [openComments, setOpenComments] = useState(false);
-    const [addComment, setAddComment] = useState('');
+    const [newComment, setNewComment] = useState('');
     const [, setSharePopup] = useState(false);
     const [showPopover, setShowPopover] = useState(false);
 
     const [comments, setComments] = useState([]);
+    const [commentsCounter, setCommentsCounter] = useState(commentsCount);
 
     const daysCount = moment(new Date(createdAt)).fromNow();
 
@@ -186,10 +189,12 @@ const Post = (props) => {
         );
     };
 
-    const fetchComments = () => {
-        if (!openComments) {
-            axios
-                .get(`http://localhost:8080/api/pub/posts/${postId}/comments`)
+    const fetchComments = (gotNewComment) => {
+        if (!openComments || gotNewComment) {
+            axios({
+                method: 'GET',
+                url: `http://localhost:8080/api/pub/posts/${postId}/comments`,
+            })
                 .then((res) => {
                     if (res.status === 200 && !res.data.error) {
                         const data = res.data.data;
@@ -226,7 +231,7 @@ const Post = (props) => {
                             Upvote{!upvote ? '' : 'd'}
                         </h3>
                     </span>
-                    <span onClick={() => fetchComments()}>
+                    <span onClick={() => fetchComments(false)}>
                         <img
                             src={comment}
                             className="post__icons--share"
@@ -249,10 +254,45 @@ const Post = (props) => {
                         className="post__icons--upvotesDone"
                         alt="upvote"
                     />{' '}
-                    {upvoteCount} upvotes - {commentsCount} comments
+                    {upvoteCount} upvote{upvoteCount !== 1 ? 's' : ''} -{' '}
+                    {commentsCounter} comment{commentsCounter !== 1 ? 's' : ''}
                 </div>
             </React.Fragment>
         );
+    };
+
+    const postComment = () => {
+        axios({
+            method: 'POST',
+            url: `http://localhost:8080/api/pub/posts/${postId}/comments`,
+            data: {
+                uid: getUser().id,
+                text: newComment,
+            },
+        })
+            .then((res) => {
+                if (res.status === 200 && !res.data.error) {
+                    fetchComments(true);
+                    axios({
+                        method: 'PUT',
+                        url: `http://localhost:8080/api/pub/post/${postId}`,
+                        data: {
+                            comments: commentsCounter + 1,
+                        },
+                    })
+                        .then((res) => {
+                            if (res.status === 200 && !res.data.error) {
+                                const data = res.data.message;
+                                setCommentsCounter(commentsCounter + 1);
+                                console.log(data);
+                            }
+                        })
+                        .catch((err) => console.log(err));
+                }
+            })
+            .catch((err) => console.log(err));
+
+        setNewComment('');
     };
 
     const showComments = () => {
@@ -265,11 +305,19 @@ const Post = (props) => {
                         size="4.5rem"
                     />
                     <Input
-                        value={addComment}
-                        handleInput={(val) => setAddComment(val)}
+                        value={newComment}
+                        handleInput={(val) => setNewComment(val)}
                         placeholder="Add a comment"
                         extraStyle="post__input u-m-l-xs"
                     />
+                    {getUser() && newComment !== '' ? (
+                        <FillButton
+                            extraStyle="u-m-l-auto a--2"
+                            text="Post"
+                            type={1}
+                            onClickHandler={() => postComment()}
+                        />
+                    ) : null}
                 </Row>
                 {comments &&
                     comments.map((comment) => (
