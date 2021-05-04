@@ -13,6 +13,7 @@ import loginModalReducer from './store/reducers/loginModal';
 import alertReducer from './store/reducers/snackbar';
 import featureReducer from './store/reducers/features';
 import connectReducer from './store/reducers/connect';
+import postReducer from './store/reducers/posts';
 
 
 
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
 	alertState: alertReducer,
 	userState: userReducer,
 	featureState: featureReducer,
-	connectState: connectReducer
+	connectState: connectReducer,
+	postState: postReducer
 });
 
 const composeEnhancers =

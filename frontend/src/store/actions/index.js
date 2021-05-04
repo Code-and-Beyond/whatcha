@@ -11,4 +11,5 @@ export {
 	unfollowUser,
 } from './user';
 export { showChats, showCreateBlogs, fetchChatsRooms, createChatRoom } from './connect';
-export { showProfile, showSavePosts, showConnections } from './features';
+export { showProfile, showConnections } from './features';
+export { showFeed, showTrending, showBlogs, showSavedPosts, fetchAllPosts, fetchTrendingPosts, fetchBlogs } from './posts';

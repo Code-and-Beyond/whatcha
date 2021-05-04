@@ -6,12 +6,6 @@ export const showProfile = () => {
 	};
 };
 
-export const showSavePosts = () => {
-	return {
-		type: actionTypes.SHOW_SAVED_POSTS,
-	};
-};
-
 export const showConnections = () => {
 	return {
 		type: actionTypes.SHOW_CONNECTIONS,

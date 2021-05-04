@@ -7,7 +7,7 @@ import ChatContact from '../components/Chat/ChatContact';
 import ChatHeader from '../components/Chat/ChatHeader';
 import ChatSpace from '../components/Chat/ChatSpace';
 
-const Chat = () => {
+const ChatScreen = () => {
 	const dispatch = useDispatch();
 	const chatList = useSelector(state => state.connectState.chatRooms);
 	const [openChat, setOpenChat] = useState(false);
@@ -66,4 +66,4 @@ const Chat = () => {
 	);
 };
 
-export default Chat;
+export default ChatScreen;
