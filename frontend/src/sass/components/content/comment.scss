@@ -9,6 +9,62 @@
 		padding: 1rem;
 		background-color: $color-white-light;
 		border-radius: 0.5rem;
+		min-height: 8rem;
+
+		&--likeContainer {
+			padding: 0.5rem;
+			display: flex;
+			align-items: flex-start;
+			transition: 0.3s all ease-in-out;
+		}
+
+		&--like {
+			cursor: pointer;
+			width: 1.8rem;
+			border-radius: 0;
+			box-shadow: none;
+			margin: 0 0.5rem;
+			padding-right: .5rem;
+			border-right: .1rem solid $color-grey;
+		}
+
+		&--liked {
+			filter: invert(13%) sepia(98%) saturate(4476%) hue-rotate(242deg) brightness(63%) contrast(136%);
+		}
+
+
+	}
+
+	&__dots {
+		position: relative;
+		display: flex;
+		align-items: center;
+		&--icon {
+			opacity: 0.8;
+			height: 1.2rem;
+			width: 1.2rem;
+			margin-left:1rem;
+		}
+
+		&--popover {
+			top: 1.5rem !important;
+			right: -0.5rem !important;
+		}
+	}
+
+	&__input {
+		outline: none !important;
+		border: none !important;
+		box-shadow: none !important;
+		margin: 1rem 0;
+		background-color: $color-gray !important;
+		padding: 0.4rem 1rem !important;
+		border-radius: 0.5rem !important;
+		width: 100%;
+		&--btn {
+			width: max-content !important;
+			height: 3rem;
+		}
 	}
 
 	& h2 {

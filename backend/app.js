@@ -39,6 +39,8 @@ require('./routes/private/users/users')(app, connection);
 require('./routes/private/chat/chat')(app, connection);
 require('./routes/private/chat/messages')(app, connection);
 require('./routes/private/users/connections')(app, connection);
+require('./routes/private/posts/comments/comments')(app, connection);
+require('./routes/private/posts/comments/likes')(app, connection);
 
 /*  PRODUCTION  */
 // var key = fs.readFileSync(__dirname + '/ssl/server.key');
