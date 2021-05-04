@@ -31,7 +31,7 @@ export const fetchChatsRooms = (currentUserId) => {
 		})
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
-					console.log(res.data.data);
+					// console.log(res.data.data);
 					dispatch(fetchChatsSuccess(res.data.data));
 				}
 			})
@@ -78,7 +78,7 @@ export const deleteChatRoom = (chatRoomId) => {
 
 		}).then((res) => {
 			if (res.status === 200 && !res.data.error) {
-				console.log(res.data);
+				// console.log(res.data);
 			}
 		}).catch((err) => console.log(err));
 	};

@@ -49,7 +49,6 @@ export const fetchAllPosts = () => {
 		axios.get('http://localhost:8080/api/pub/posts')
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
-					console.log('allPosts', res.data.data);
 					dispatch(postsLoading(false));
 					dispatch({
 						type: actionTypes.FETCH_ALL_POSTS,
@@ -70,7 +69,6 @@ export const fetchTrendingPosts = () => {
 		axios.get('http://localhost:8080/api/pub/posts/trending')
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
-					console.log('trending', res.data.data);
 					dispatch(postsLoading(false));
 					dispatch({
 						type: actionTypes.FETCH_TRENDING_POSTS,
@@ -91,7 +89,6 @@ export const fetchBlogs = () => {
 		axios.get('http://localhost:8080/api/pub/blogs')
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
-					console.log('blogs', res.data.data);
 					dispatch(postsLoading(false));
 					dispatch({
 						type: actionTypes.FETCH_BLOGS,

@@ -19,7 +19,6 @@ const initialState = {
 };
 
 const handlePosts = (state = initialState, action) => {
-	console.log(action);
 	switch (action.type) {
 		case POSTS_LOADING:
 			return {
