@@ -113,7 +113,7 @@ module.exports = function (app, connection) {
         const { commentId } = req.params;
         connection.query(
             'DELETE FROM whatcha.`posts-comments` WHERE `commentId`= ?',
-            [chatRoomId],
+            [commentId],
             function (error, result, fields) {
                 res.header('Access-Control-Allow-Origin', '*');
                 res.header(
