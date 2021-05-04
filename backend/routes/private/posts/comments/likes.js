@@ -57,6 +57,34 @@ module.exports = function (app, connection) {
         );
     });
 
+    // get a like
+    app.route('/api/pub/posts/comments/:commentId/likes/:uid').get(function (
+        req,
+        res,
+        next
+    ) {
+        const { commentId, uid } = req.params;
+        connection.query(
+            'SELECT * FROM whatcha.`comments-likes` WHERE `commentId` = ? AND `uid` = ?',
+            [commentId, uid],
+            function (error, result, fields) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) {
+                    res.json(error);
+                } else {
+                    res.json({
+                        error: false,
+                        data: result,
+                    });
+                }
+            }
+        );
+    });
+
     // remove a like from a comment
     app.route('/api/pub/posts/comments/:commentId/likes/:uid').delete(function (
         req,

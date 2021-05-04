@@ -38,7 +38,6 @@ const Post = (props) => {
     const [newComment, setNewComment] = useState('');
     const [, setSharePopup] = useState(false);
     const [showPopover, setShowPopover] = useState(false);
-
     const [comments, setComments] = useState([]);
     const [commentsCounter, setCommentsCounter] = useState(commentsCount);
 
@@ -189,20 +188,21 @@ const Post = (props) => {
         );
     };
 
-    const fetchComments = (gotNewComment) => {
+    const fetchComments = async (gotNewComment) => {
         if (!openComments || gotNewComment) {
-            axios({
-                method: 'GET',
-                url: `http://localhost:8080/api/pub/posts/${postId}/comments`,
-            })
-                .then((res) => {
-                    if (res.status === 200 && !res.data.error) {
-                        const data = res.data.data;
-                        setComments(data);
-                        console.log(data);
-                    }
-                })
-                .catch((err) => console.log(err));
+            try {
+                const res = await axios({
+                    method: 'GET',
+                    url: `http://localhost:8080/api/pub/posts/${postId}/comments`,
+                });
+                if (res.status === 200 && !res.data.error) {
+                    const data = res.data.data;
+                    setComments(data);
+                    console.log(data);
+                }
+            } catch (err) {
+                console.log(err);
+            }
             setOpenComments(true);
         } else {
             setOpenComments(false);
@@ -323,11 +323,13 @@ const Post = (props) => {
                     comments.map((comment) => (
                         <Comment
                             key={comment.commentId}
+                            commentId={comment.commentId}
                             name={comment.fullname}
                             image={comment.image}
                             bio={comment.bio}
                             time={comment.createdAt}
                             text={comment.text}
+                            likesCount={comment.likesCount}
                         />
                     ))}
             </div>
