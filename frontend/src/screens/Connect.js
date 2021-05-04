@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import CreateBlogs from '../components/Blogs/CreateBlogs';
 import Chat from './Chat';
 
-const ChatScreen = () => {
+const ConnectScreen = () => {
 	const show = useSelector(state => state.connectState.show);
 
 	const getWindow = () => {
@@ -24,4 +24,4 @@ const ChatScreen = () => {
 	);
 };
 
-export default ChatScreen;
+export default ConnectScreen;

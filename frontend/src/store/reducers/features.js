@@ -1,6 +1,5 @@
 import {
 	SHOW_PROFILE,
-	SHOW_SAVED_POSTS,
 	SHOW_CONNECTIONS
 } from "../actions/actionTypes";
 
@@ -14,12 +13,6 @@ const handleToggle = (state = initialState, action) => {
 			return {
 				...state,
 				show: 'profile',
-			};
-
-		case SHOW_SAVED_POSTS:
-			return {
-				...state,
-				show: 'saved',
 			};
 
 		case SHOW_CONNECTIONS:

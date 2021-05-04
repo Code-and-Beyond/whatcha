@@ -1,48 +1,54 @@
 import React from 'react';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FillButton from '../../components/Button/Fill';
 import { setLogout } from '../../helpers/session';
-import { toggleLoggedIn } from '../../store/actions/index';
+import { toggleLoggedIn, showFeed, showTrending, showBlogs } from '../../store/actions/index';
 
 const PostNavHeader = (props) => {
 	const dispatch = useDispatch();
-	const showSavePosts = useSelector(state => state.featureState.show === 'saved');
-	const [active, setActive] = useState('feed');
+	const show = useSelector(state => state.postState.show);
+	const showSavedPosts = useSelector(state => state.postState.show === 'saved');
 
 	let classes = "h h--3 u-m-r-m";
+	const colorGreen = '#56fe99';
+	const colorWhite = '#ffffff';
+
+	const handleLogout = () => {
+		setLogout();
+		setTimeout(() => {
+			dispatch(toggleLoggedIn(false));
+		}, 1000);
+	};
 
 	const handleShowFeed = () => {
-		setActive('feed');
-		props.handleFeed();
-		props.handleBlogs(false);
+		dispatch(showFeed());
+		// dispatch(fetchAllPosts());
 	};
 
 	const handleShowTrending = () => {
-		setActive('trending');
-		props.handleTrending();
-		props.handleBlogs(false);
+		dispatch(showTrending());
+		// dispatch(fetchTrendingPosts());
+
 	};
 
 	const handleShowBlogs = () => {
-		setActive('blogs');
-		props.handleBlogs(true);
+		dispatch(showBlogs());
+		// dispatch(fetchBlogs());
 	};
-
 
 	return (
 		<div className="posts__header">
 			<div className="posts__header--top">
-				{ showSavePosts ?
-					<h3 className={ classes } style={ { color: '#56fe99' } } >Saved Posts</h3>
+				{ showSavedPosts ?
+					<h3 className={ classes } style={ { color: colorGreen } } >Saved Posts</h3>
 					:
 					<React.Fragment>
-						<h3 className={ classes } onClick={ handleShowFeed } style={ { color: active === 'feed' ? '#56fe99' : 'white' } }>Feed</h3>
-						<h3 className={ classes } onClick={ handleShowTrending } style={ { color: active === 'trending' ? '#56fe99' : 'white' } }>Trending</h3>
-						<h3 className={ classes } onClick={ handleShowBlogs } style={ { color: active === 'blogs' ? '#56fe99' : 'white' } }>Blogs</h3>
+						<h3 className={ classes } onClick={ handleShowFeed } style={ { color: show === 'feed' ? colorGreen : colorWhite } }>Feed</h3>
+						<h3 className={ classes } onClick={ handleShowTrending } style={ { color: show === 'trending' ? colorGreen : colorWhite } }>Trending</h3>
+						<h3 className={ classes } onClick={ handleShowBlogs } style={ { color: show === 'blogs' ? colorGreen : colorWhite } }>Blogs</h3>
 					</React.Fragment>
 				}
-				<FillButton extraStyle="u-m-l-auto a--2" text="Logout" type={ 1 } onClickHandler={ () => { dispatch(toggleLoggedIn(false)); setLogout(); } } />
+				<FillButton extraStyle="u-m-l-auto a--2" text="Logout" type={ 1 } onClickHandler={ handleLogout } />
 			</div>
 			<div
 				className="posts__header--start"

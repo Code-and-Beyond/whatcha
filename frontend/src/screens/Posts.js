@@ -1,32 +1,37 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUser, getAccessToken, setAccessToken, setRefreshToken } from '../helpers/session';
+import { showFeed, fetchAllPosts, fetchTrendingPosts } from '../store/actions/index';
 
-import PostHeader from '../components/Header/PostNav';
 import Post from '../components/Post/Post';
 import Modal from '../components/Modal/Modal';
+import PostHeader from '../components/Header/PostNav';
 import TextBox from '../components/TextBox/TextBox';
 import FillButton from '../components/Button/Fill';
 import Row from '../components/Row/Row';
 import Icon from '../components/Icon/Icon';
+import Spinner from '../components/Spinner/Spinner';
+import Blog from '../components/Blog/Blog';
 
 import imageIcon from '../assets/icons/ico-image.svg';
 import trashIcon from '../assets/icons/ico-trash.svg';
-import { getUser, getAccessToken, setAccessToken, setRefreshToken } from '../helpers/session';
-import Blog from '../components/Blog/Blog';
-import Spinner from '../components/Spinner/Spinner';
-import React from 'react';
 
 const PostsScreen = () => {
-	const [posts, setPosts] = useState([]);
-	const feature = useSelector(state => state.featureState.show);
+	const dispatch = useDispatch();
+	const currSelected = useSelector(state => state.postState.show);
+	const loadingSelected = useSelector(state => state.postState.loading);
+	const posts = useSelector(state => state.postState.posts);
+	const trendingPosts = useSelector(state => state.postState.trending);
+	const blogs = useSelector(state => state.postState.blogs);
 
 	const initialAttachment = {
 		raw: '',
 		preview: '',
 	};
 
-	// POSTS 
+	// POST DATA
 	const [postContent, setPostContent] = useState('');
 	const [attachment, setAttachment] = useState(initialAttachment);
 	const [upvotedPosts, setUpvotedPosts] = useState([]);
@@ -34,64 +39,18 @@ const PostsScreen = () => {
 	const [editPost, setEditPost] = useState({ show: false, id: null });
 	const [uploadPost, setUploadPost] = useState(false);
 
-	//BLOGS
-	const [showBlogs, setShowBlogs] = useState(false);
-	const [blogs, setBlogs] = useState([]);
-
-	const fetchAllPosts = () => (
-		axios.get('http://localhost:8080/api/pub/posts')
-			.then((res) => {
-				if (res.status === 200 && !res.data.error) {
-					const data = res.data.data;
-					setPosts(data);
-					console.log(data);
-				}
-			})
-			.catch((err) => console.log(err))
-	);
-
-	const fetchTrendingPosts = () => (
-		axios.get('http://localhost:8080/api/pub/posts/trending')
-			.then((res) => {
-				if (res.status === 200 && !res.data.error) {
-					const data = res.data.data;
-					setPosts(data);
-					console.log(data);
-				}
-			})
-			.catch((err) => console.log(err))
-	);
-
-	useEffect(() => {
-		axios.get('http://localhost:8080/api/pub/blogs')
-			.then((res) => {
-				if (res.status === 200 && !res.data.error) {
-					const data = res.data.data;
-					setBlogs(data);
-				}
-			})
-			.catch((err) => console.log(err));
-	}, [showBlogs]);
 
 	useEffect(() => {
 		if (getUser()) {
 			axios.get('http://localhost:8080/api/pub/users/upvote/' + getUser().id)
 				.then((res) => {
 					if (res.status === 200 && !res.data.error) {
-						console.log('hey');
-						fetchAllPosts();
+						dispatch(showFeed());
 						setUpvotedPosts(res.data.data);
 					}
 				}).catch((err) => console.log(err));
 		}
-
-	}, []);
-
-	useEffect(() => {
-		if (feature === 'saved') {
-
-		}
-	}, [feature]);
+	}, [dispatch]);
 
 	const handlePostUpload = () => {
 		setShowPostModal(false);
@@ -128,8 +87,7 @@ const PostsScreen = () => {
 						setUploadPost(false);
 						setAccessToken(res.data.tokens.access);
 						setRefreshToken(res.data.tokens.refresh);
-						fetchAllPosts();
-						// console.log(res.data.data);
+						dispatch(fetchAllPosts());
 					}
 				})
 				.catch((err) => console.log(err));
@@ -160,7 +118,8 @@ const PostsScreen = () => {
 				setAttachment(initialAttachment);
 				setEditPost({ show: false, id: null });
 				// console.log(res.data.data);
-				fetchAllPosts();
+				dispatch(fetchAllPosts());
+				dispatch(fetchTrendingPosts());
 			}
 		}).catch((err) => console.log(err));
 	};
@@ -181,8 +140,8 @@ const PostsScreen = () => {
 	};
 
 	const handleDeletePost = (postId) => {
-		const tempPosts = posts.filter((post) => post.pid !== postId);
-		setPosts(tempPosts);
+		// const tempPosts = posts.filter((post) => post.pid !== postId);
+		// setPosts(tempPosts);
 		axios({
 			url: 'http://localhost:8080/api/pvt/post/' + postId,
 			method: 'DELETE',
@@ -196,6 +155,8 @@ const PostsScreen = () => {
 				console.log(res.data.message);
 				setAccessToken(res.data.tokens.access);
 				setRefreshToken(res.data.tokens.refresh);
+				dispatch(fetchAllPosts());
+				dispatch(fetchTrendingPosts());
 			}
 		}).catch((err) => console.log(err));
 	};
@@ -280,9 +241,28 @@ const PostsScreen = () => {
 	};
 
 	const getAllPosts = () => (
-		(posts.length && !showBlogs) && posts.map((post, index) => (
+		(posts.length && posts.map((post, index) =>
 			< Post
-				key={ index }
+				key={ post.pid }
+				postId={ post.pid }
+				content={ post.content }
+				upvotesCount={ post.upvotes }
+				attachment={ post.imgUrl }
+				createdAt={ post.createdAt }
+				name={ post.fullname }
+				email={ post.username }
+				displayPicture={ post.image }
+				upvoteState={ checkForUpvote(post.pid) }
+				handleDeletePost={ handleDeletePost }
+				handleEditPost={ handleEditPost }
+			/>
+		))
+	);
+
+	const getTrendingPosts = () => (
+		(trendingPosts.length && trendingPosts.map((post, index) =>
+			<Post
+				key={ post.pid }
 				postId={ post.pid }
 				content={ post.content }
 				upvotesCount={ post.upvotes }
@@ -299,26 +279,48 @@ const PostsScreen = () => {
 	);
 
 	const getAllBlogs = () => (
-		(blogs.length > 0 && showBlogs) ?
-			blogs.map((blog, index) => <Blog key={ index } title={ blog.title } content={ blog.content } author={ blog.fullname } uploadedOn={ blog.createdAt.split('T')[0] } />) :
-			<div className='d--f jc--c u-p-v-b'>
-				<Spinner loading={ blogs.length === 0 } />
-			</div>
+		(blogs.length > 0 && blogs.map((blog, index) =>
+			<Blog
+				key={ index }
+				title={ blog.title }
+				content={ blog.content }
+				author={ blog.fullname }
+				uploadedOn={ blog.createdAt.split('T')[0] }
+			/>
+		))
 	);
 
+	const getSpinner = () => (
+		<div className='d--f jc--c u-p-v-b'>
+			<Spinner loading={ blogs.length === 0 } />
+		</div>
+	);
+
+	const showSelected = () => {
+		console.log(currSelected);
+		switch (currSelected) {
+			case 'feed':
+				return getAllPosts();
+			case 'trending':
+				return getTrendingPosts();
+			case 'blogs':
+				return getAllBlogs();
+			case 'saved':
+				return getAllBlogs();
+			default:
+				return getAllPosts();
+		}
+	};
 
 	return (
 		<div className="posts">
 			<PostHeader
 				setShowPostModal={ () => setShowPostModal(true) }
-				handleTrending={ fetchTrendingPosts }
-				handleFeed={ fetchAllPosts }
-				handleBlogs={ (val) => setShowBlogs(val) }
 			/>
 			{getModal() }
 			<div className="posts__container u-p-h-m">
 				{ getPostLoadingCard() }
-				{ showBlogs ? getAllBlogs() : getAllPosts() }
+				{ loadingSelected ? getSpinner() : showSelected() }
 			</div>
 		</div>
 	);

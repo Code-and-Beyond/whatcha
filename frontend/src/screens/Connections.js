@@ -5,9 +5,7 @@ import { initUserConnections, initAllUsers, followUser, unfollowUser, createChat
 
 import Connection from '../components/Features/Connection';
 
-
-
-const Connections = () => {
+const ConnectionsScreen = () => {
 	const dispatch = useDispatch();
 	const userConnections = useSelector(state => state.userState.connections);
 	const allUsers = useSelector(state => state.userState.users);
@@ -66,4 +64,4 @@ const Connections = () => {
 	);
 };
 
-export default Connections;
+export default ConnectionsScreen;
