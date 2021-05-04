@@ -1,13 +1,21 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import FillButton from '../../components/Button/Fill';
 import { setLogout } from '../../helpers/session';
-import { toggleLoggedIn, showFeed, showTrending, showBlogs } from '../../store/actions/index';
+import {
+	toggleLoggedIn,
+	showFeed,
+	showTrending,
+	showBlogs
+} from '../../store/actions/index';
+import FillButton from '../../components/Button/Fill';
+
+import leftArrow from '../../assets/icons/left-arrow.svg';
+
 
 const PostNavHeader = (props) => {
 	const dispatch = useDispatch();
 	const show = useSelector(state => state.postState.show);
-	const showSavedPosts = useSelector(state => state.postState.show === 'saved');
+	const savedSelected = useSelector(state => state.postState.show === 'saved');
 
 	let classes = "h h--3 u-m-r-m";
 	const colorGreen = '#56fe99';
@@ -36,11 +44,23 @@ const PostNavHeader = (props) => {
 		// dispatch(fetchBlogs());
 	};
 
+	const goBack = () => (
+		<img
+			src={ leftArrow }
+			className="chat__header--icon u--icon"
+			alt="go back"
+			onClick={ () => dispatch(showFeed()) }
+		/>
+	);
+
 	return (
 		<div className="posts__header">
 			<div className="posts__header--top">
-				{ showSavedPosts ?
-					<h3 className={ classes } style={ { color: colorGreen } } >Saved Posts</h3>
+				{ savedSelected ?
+					<React.Fragment>
+						{ goBack() }
+						<h3 className={ classes } style={ { color: colorGreen } } >Saved Posts</h3>
+					</React.Fragment>
 					:
 					<React.Fragment>
 						<h3 className={ classes } onClick={ handleShowFeed } style={ { color: show === 'feed' ? colorGreen : colorWhite } }>Feed</h3>
