@@ -2,8 +2,10 @@ import { useState } from 'react';
 
 import Input from '../Input/Input';
 import FillButton from '../Button/Fill';
-import Row from '../Row/Row';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import Row from '../Row/Row';
+import { fetchProfile } from '../../store/actions/index';
 
 import gobackIcon from '../../assets/icons/goback.svg';
 import { getUser } from '../../helpers/session';
@@ -11,6 +13,7 @@ import { getUser } from '../../helpers/session';
 const EditProfile = (props) => {
 
 	const { website, bio, location, organization } = props;
+	const dispatch = useDispatch();
 
 	const [bioData, setBioData] = useState(bio);
 	const [link, setLink] = useState(website);
@@ -39,7 +42,7 @@ const EditProfile = (props) => {
 		}).then((res) => {
 			if (res.status === 200 && !res.data.error) {
 				setUpdate(false);
-				props.fetchProfile();
+				dispatch(fetchProfile(getUser()));
 				console.log(res.data);
 			}
 		}).catch((err) => console.log(err));

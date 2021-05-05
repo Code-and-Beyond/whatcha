@@ -1,6 +1,7 @@
 import {
 	SHOW_PROFILE,
-	SHOW_CONNECTIONS
+	SHOW_CONNECTIONS,
+	SHOW_SELECTED_PROFILE
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -19,6 +20,11 @@ const handleToggle = (state = initialState, action) => {
 			return {
 				...state,
 				show: 'connections',
+			};
+		case SHOW_SELECTED_PROFILE:
+			return {
+				...state,
+				show: 'selected',
 			};
 
 		default:

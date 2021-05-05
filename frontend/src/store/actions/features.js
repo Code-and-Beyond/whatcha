@@ -11,3 +11,9 @@ export const showConnections = () => {
 		type: actionTypes.SHOW_CONNECTIONS,
 	};
 };
+
+export const showSelectedProfile = () => {
+	return {
+		type: actionTypes.SHOW_SELECTED_PROFILE
+	};
+};

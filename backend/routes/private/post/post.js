@@ -168,7 +168,6 @@ module.exports = function (app, connection) {
 
 			connection.query("DELETE FROM whatcha.`saved-posts` WHERE `uid` = ? AND `pid`= ? ", [uid, postId],
 				function (error, result, fields) {
-					console.log(result);
 					if (error) { res.sendStatus(500); }
 					else {
 						res.header('Access-Control-Allow-Origin', '*');

@@ -5,15 +5,22 @@ import {
 	FETCH_USER_CONNECTIONS_FAILED,
 	FETCH_ALL_USERS_START,
 	FETCH_ALL_USERS_SUCCESS,
-	FETCH_ALL_USERS_FAILED
+	FETCH_ALL_USERS_FAILED,
+	FETCH_PROFILE_START,
+	FETCH_PROFILE_SUCCESS,
+	FETCH_PROFILE_FAILED,
+	SET_PROFILE
 } from "../actions/actionTypes";
 
 const initialState = {
+	mainUser: '',
+	selectedUser: '',
 	loggedIn: false,
 	connections: [],
 	users: '',
 	loading: false,
-	error: ''
+	error: '',
+
 };
 
 const containsObject = (obj, list) => {
@@ -43,6 +50,27 @@ const handleToggle = (state = initialState, action) => {
 			return {
 				...state,
 				loggedIn: action.loggedIn,
+			};
+		case FETCH_PROFILE_START:
+			return {
+				...state,
+				loading: true
+			};
+		case FETCH_PROFILE_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				mainUser: action.mainUser
+			};
+		case FETCH_PROFILE_FAILED:
+			return {
+				...state,
+				loading: false,
+			};
+		case SET_PROFILE:
+			return {
+				...state,
+				selectedUser: action.user
 			};
 		case FETCH_USER_CONNECTIONS_START:
 			return {

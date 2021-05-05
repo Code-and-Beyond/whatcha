@@ -1,21 +1,21 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isLoggedIn, getUser } from '../helpers/session';
-import { toggleLoggedIn } from '../store/actions/user';
-import { toggleLoginModal } from '../store/actions/loginModal';
+import { fetchChatsRooms, toggleLoggedIn, toggleLoginModal, fetchProfile } from '../store/actions/index';
 
 import FeaturesHeader from '../components/Header/Features';
 import Profile from '../components/Features/Profile';
 import Connections from './Connections';
 import Posts from './Posts';
 import Connect from './Connect';
-import { fetchChatsRooms } from '../store/actions';
 
 
 const HomeScreen = () => {
 	const dispatch = useDispatch();
 	const userLogin = useSelector(state => state.userState.loggedIn);
 	const feature = useSelector(state => state.featureState.show);
+	const selectedUserProfile = useSelector(state => state.userState.selectedUser);
+	const mainProfile = useSelector(state => state.userState.mainUser);
 
 	useEffect(() => {
 		if (!isLoggedIn()) {
@@ -26,6 +26,7 @@ const HomeScreen = () => {
 		}
 
 		if (getUser()) {
+			dispatch(fetchProfile(getUser()));
 			dispatch(fetchChatsRooms(getUser().id));
 		}
 
@@ -36,11 +37,13 @@ const HomeScreen = () => {
 	const getComponent = () => {
 		switch (feature) {
 			case 'profile':
-				return <Profile />;
+				return <Profile profile={ mainProfile } />;
 			case 'connections':
 				return <Connections />;
+			case 'selected':
+				return <Profile profile={ selectedUserProfile } />;
 			default:
-				return <Profile />;
+				return <Profile profile={ mainProfile } />;
 		}
 	};
 

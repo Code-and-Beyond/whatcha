@@ -3,21 +3,27 @@ import Avatar from '../Avatar/Avatar';
 // import IconContainer from '../Icon/Container';
 import TextButton from '../Button/Text';
 
+import { showSelectedProfile, setProfile } from '../../store/actions/index';
 // import message from '../../assets/icons/message.svg';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 
 const Connection = (props) => {
 	const { image, fullname, bio, active, id } = props;
-	// const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
 	// const handleMessaging = () => {
 	// 	// dispatch(messageUser(currUser, id));
 	// };
 
+	const seeUserProfile = () => {
+		dispatch(showSelectedProfile());
+		dispatch(setProfile(props.connUser));
+	};
+
 	return (
 		<div className='connection card'>
-			<div className='connection__profile u-c-pointer'>
+			<div className='connection__profile u-c-pointer' onClick={ seeUserProfile }>
 				<Avatar
 					src={ image }
 					alt="user avatar"
