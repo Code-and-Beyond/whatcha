@@ -12,4 +12,4 @@ export {
 } from './user';
 export { showChats, showCreateBlogs, fetchChatsRooms, createChatRoom } from './connect';
 export { showProfile, showConnections } from './features';
-export { showFeed, showTrending, showBlogs, showSavedPosts, fetchAllPosts, fetchTrendingPosts, fetchBlogs } from './posts';
+export { showFeed, showTrending, showBlogs, showSavedPosts, fetchAllPosts, fetchTrendingPosts, fetchBlogs, fetchSavedPosts } from './posts';

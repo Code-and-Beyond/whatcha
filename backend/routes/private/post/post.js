@@ -46,7 +46,6 @@ module.exports = function (app, connection) {
 			[id, content, imgUrl, dateCreated],
 			function (error, result, fields) {
 				if (error) {
-					console.log('itsme');
 					res.json(error);
 				} else {
 					const access = auth.generateAccessToken({
@@ -70,6 +69,31 @@ module.exports = function (app, connection) {
 		);
 	});
 
+	// Save a post for a given user
+	app.route('/api/pub/post/save')
+		.post(function (req, res, nex) {
+			const uid = req.body.uid;
+			const pid = req.body.pid;
+			const dateCreated = new Date();
+
+			connection.query('INSERT INTO whatcha.`saved-posts` (`uid`,`pid`, `createdAt`) values(?,?,?)', [uid, pid, dateCreated],
+				function (error, result, fields) {
+					if (error) {
+						res.json(error);
+					} else {
+						res.header('Access-Control-Allow-Origin', '*');
+						res.header(
+							'Access-Control-Allow-Headers',
+							'Origin, X-Requested-With, Content-Type, Accept'
+						);
+						res.json({
+							error: false,
+							message: 'Post Successfully Saved!',
+						});
+					}
+				}
+			);
+		});
 
 
 	//to update the post by a user (given postId)
@@ -136,6 +160,23 @@ module.exports = function (app, connection) {
 			);
 		});
 
+	// remove saved post for a given user
+	app.route('/api/pub/post/save')
+		.delete(function (req, res, next) {
+			const uid = req.body.uid;
+			const postId = req.body.pid;
 
+			connection.query("DELETE FROM whatcha.`saved-posts` WHERE `uid` = ? AND `pid`= ? ", [uid, postId],
+				function (error, result, fields) {
+					console.log(result);
+					if (error) { res.sendStatus(500); }
+					else {
+						res.header('Access-Control-Allow-Origin', '*');
+						res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+						res.json({ error: false, message: "Saved Post Successfully Removed!" });
+					}
+				}
+			);
+		});
 
 };

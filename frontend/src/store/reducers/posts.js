@@ -6,7 +6,8 @@ import {
 	SHOW_BLOGS,
 	SHOW_FEED,
 	SHOW_TRENDING,
-	SHOW_SAVED_POSTS
+	SHOW_SAVED_POSTS,
+	FETCH_SAVED_POSTS
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -16,6 +17,26 @@ const initialState = {
 	blogs: [],
 	trending: [],
 	loading: false
+};
+
+const containsObject = (obj, list) => {
+	var i;
+	for (i = 0; i < list.length; i++) {
+		if (list[i].pid === obj.pid) {
+			return true;
+		}
+	}
+	return false;
+};
+
+const getSavedPosts = (savedPostsList, allPosts) => {
+	let savedPosts = [];
+	allPosts.forEach((post) => {
+		if (containsObject(post, savedPostsList)) {
+			savedPosts.push(post);
+		}
+	});
+	return savedPosts;
 };
 
 const handlePosts = (state = initialState, action) => {
@@ -59,6 +80,11 @@ const handlePosts = (state = initialState, action) => {
 			return {
 				...state,
 				blogs: [...action.blogs],
+			};
+		case FETCH_SAVED_POSTS:
+			return {
+				...state,
+				saved: getSavedPosts(action.savedList, state.posts)
 			};
 		default:
 			return state;

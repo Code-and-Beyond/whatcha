@@ -12,6 +12,7 @@ import {
 	showFeed,
 	fetchAllPosts,
 	fetchTrendingPosts,
+	fetchSavedPosts
 } from '../store/actions/index';
 
 import Post from '../components/Post/Post';
@@ -34,6 +35,7 @@ const PostsScreen = () => {
 	const posts = useSelector((state) => state.postState.posts);
 	const trendingPosts = useSelector((state) => state.postState.trending);
 	const blogs = useSelector((state) => state.postState.blogs);
+	const savedPosts = useSelector((state) => state.postState.saved);
 
 	const initialAttachment = {
 		raw: '',
@@ -57,6 +59,7 @@ const PostsScreen = () => {
 				.then((res) => {
 					if (res.status === 200 && !res.data.error) {
 						dispatch(showFeed());
+						dispatch(fetchSavedPosts(getUser().id));
 						setUpvotedPosts(res.data.data);
 					}
 				})
@@ -255,6 +258,15 @@ const PostsScreen = () => {
 		return false;
 	};
 
+	const checkForSaved = (pid) => {
+		for (const [, val] of savedPosts.entries()) {
+			if (val.pid === pid) {
+				return true;
+			}
+		}
+		return false;
+	};
+
 	const getAllPosts = () =>
 		posts.length &&
 		posts.map((post, index) => (
@@ -267,6 +279,7 @@ const PostsScreen = () => {
 				attachment={ post.imgUrl }
 				createdAt={ post.createdAt }
 				name={ post.fullname }
+				saved={ checkForSaved(post.pid) }
 				email={ post.username }
 				displayPicture={ post.image }
 				upvoteState={ checkForUpvote(post.pid) }
@@ -287,6 +300,7 @@ const PostsScreen = () => {
 				attachment={ post.imgUrl }
 				createdAt={ post.createdAt }
 				name={ post.fullname }
+				saved={ checkForSaved(post.pid) }
 				email={ post.username }
 				displayPicture={ post.image }
 				upvoteState={ checkForUpvote(post.pid) }
@@ -307,6 +321,28 @@ const PostsScreen = () => {
 			/>
 		));
 
+
+	const getSavedPosts = () =>
+		savedPosts.length &&
+		savedPosts.map((post, index) => (
+			<Post
+				key={ post.pid }
+				postId={ post.pid }
+				content={ post.content }
+				upvotesCount={ post.upvotes }
+				commentsCount={ post.comments }
+				attachment={ post.imgUrl }
+				createdAt={ post.createdAt }
+				name={ post.fullname }
+				saved={ checkForSaved(post.pid) }
+				email={ post.username }
+				displayPicture={ post.image }
+				upvoteState={ checkForUpvote(post.pid) }
+				handleDeletePost={ handleDeletePost }
+				handleEditPost={ handleEditPost }
+			/>
+		));
+
 	const getSpinner = () => (
 		<div className="d--f jc--c u-p-v-b">
 			<Spinner loading={ blogs.length === 0 } />
@@ -323,7 +359,7 @@ const PostsScreen = () => {
 			case 'blogs':
 				return getAllBlogs();
 			case 'saved':
-				return getAllBlogs();
+				return getSavedPosts();
 			default:
 				return getAllPosts();
 		}
