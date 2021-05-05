@@ -1,114 +1,119 @@
 .chat {
-	&__header {
-		background-color: $color-black;
-		padding: 0.5rem 2rem;
-		height: 7rem;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+    &__header {
+        background-color: $color-black;
+        padding: 0.5rem 2rem;
+        height: 7rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-		&--icon {
-			filter: brightness(0) invert(1);
-			height: 2.5rem;
-			width: 2.5rem;
-			margin-right: 1rem;
-			cursor: pointer;
-			opacity: 0.7;
-			transition: 0.2s all ease-in-out;
+        &--icon {
+            filter: brightness(0) invert(1);
+            height: 2.5rem;
+            width: 2.5rem;
+            margin-right: 1rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: 0.2s all ease-in-out;
 
-			&:hover {
-				opacity: 1;
-				transform: scale(1.1);
-			}
-		}
-		
-		&--container {
-			border-radius: 40rem;
+            &:hover {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        &--container {
+            position: relative;
+            border-radius: 40rem;
             margin-left: auto;
             padding: 1rem 1.3rem;
             transition: all 0.2s ease-in-out;
             height: min-content;
 
-			&:hover {
-				background-color: $color-black-tray;
-			}
-		}
+            &:hover {
+                background-color: $color-black-tray;
+            }
+        }
 
-		&--dots {
-			transform: rotate(-90deg);
+        &--popover {
+            right: 2rem !important;
+            top: 4rem !important;
+        }
+
+        &--dots {
+            transform: rotate(-90deg);
             height: 2rem;
-			filter: brightness(0) invert(1);
-		}
-	}
+            filter: brightness(0) invert(1);
+        }
+    }
 
-	&__contact {
-		border-bottom: .1rem solid $color-black-light;
-		padding: 1.5rem 2rem;
-		background-color: $color-black-tray;
-		display: flex;
-		transition: 0.3s all ease-in-out;
-		
+    &__contact {
+        border-bottom: 0.1rem solid $color-black-light;
+        padding: 1.5rem 2rem;
+        background-color: $color-black-tray;
+        display: flex;
+        transition: 0.3s all ease-in-out;
 
-		&:hover {
-			cursor: pointer;
-			background-color: rgba($color-black-tray, 0.4);
-		}
-	}
+        &:hover {
+            cursor: pointer;
+            background-color: rgba($color-black-tray, 0.4);
+        }
+    }
 
-	&__space {
-		background: url('../../assets/backgrounds/chat-background2.jpg');
-		background-repeat: no-repeat;
-		background-size: auto;
-		height: calc(100vh  - 7rem);
-		display: flex;
-		flex-direction: column;
+    &__space {
+        background: url('../../assets/backgrounds/chat-background2.jpg');
+        background-repeat: no-repeat;
+        background-size: auto;
+        height: calc(100vh - 7rem);
+        display: flex;
+        flex-direction: column;
 
-		&--messages {
-			display: flex;
-			flex-direction: column;
-			height: 100%;
-			scroll-behavior: smooth;
-			overflow-y: scroll;
-	
-			&::-webkit-scrollbar {
-				width: 0.3rem; /* Remove scrollbar space */
-				background: transparent; /* Optional: just make scrollbar invisible */
-			}
-			/* Optional: show position indicator in red */
-			&::-webkit-scrollbar-thumb {
-				background: $color-white-head;
-			}
-		}
+        &--messages {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            scroll-behavior: smooth;
+            overflow-y: scroll;
 
-		&--keyboard {
-			background-color: $color-black-tray;
-			padding: 0.2rem 1rem;
-			padding-left: 1.5rem;
-			display: flex;
-			align-items: center;
-			margin-top: auto;
+            &::-webkit-scrollbar {
+                width: 0.3rem; /* Remove scrollbar space */
+                background: transparent; /* Optional: just make scrollbar invisible */
+            }
+            /* Optional: show position indicator in red */
+            &::-webkit-scrollbar-thumb {
+                background: $color-white-head;
+            }
+        }
 
-			& > textarea {
-				padding: inherit 2rem;
-				border-radius: 2.5rem;
-				border: none;
-				resize: vertical;
-				padding-left: 2rem;
-				color: $color-white;
-				width: 100%;
-				min-height: 4.5rem;
-				background-color: $color-white-head !important;
+        &--keyboard {
+            background-color: $color-black-tray;
+            padding: 0.2rem 1rem;
+            padding-left: 1.5rem;
+            display: flex;
+            align-items: center;
+            margin-top: auto;
 
-				&::-webkit-scrollbar-thumb {
-					background: none;
-				}
-			}
+            & > textarea {
+                padding: inherit 2rem;
+                border-radius: 2.5rem;
+                border: none;
+                resize: vertical;
+                padding-left: 2rem;
+                color: $color-white;
+                width: 100%;
+                min-height: 4.5rem;
+                background-color: $color-white-head !important;
 
-			&-send {
-				margin-left: 1.5rem;
-				margin-right: 0;
-				filter: brightness(1) invert(1);
-			}
-		}
-	}
+                &::-webkit-scrollbar-thumb {
+                    background: none;
+                }
+            }
+
+            &-send {
+                margin-left: 1.5rem;
+                margin-right: 0;
+                filter: brightness(1) invert(1);
+            }
+        }
+    }
 }

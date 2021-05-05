@@ -61,7 +61,7 @@ const ChatSpace = ({ chatRoom, currentUserId }) => {
             // console.log(socket.id, 'message');
             setMessages([...messages, newMessage]);
         });
-    }, [chatRoom.chatRoomId, currentUserId, messages, initialised]);
+    }, [chatRoom, currentUserId, messages, initialised]);
 
     const handleSend = () => {
         const messageObj = {
@@ -93,19 +93,27 @@ const ChatSpace = ({ chatRoom, currentUserId }) => {
             <div className="chat__space--messages u-p-v-s u-p-h-m">
                 {messages.map((message) =>
                     message.sender === currentUserId ? (
-                        <Message
-                            key={message.messageId}
-                            text={message.text}
-                            time={message.time}
-                        />
-                    ) : (
+                        (currentUserId < message.receiver &&
+                            !message.userOneHide) ||
+                        (currentUserId > message.receiver &&
+                            !message.userTwoHide) ? (
+                            <Message
+                                key={message.messageId}
+                                text={message.text}
+                                time={message.time}
+                            />
+                        ) : null
+                    ) : (currentUserId < message.sender &&
+                          !message.userOneHide) ||
+                      (currentUserId > message.sender &&
+                          !message.userTwoHide) ? (
                         <Message
                             key={message.messageId}
                             receive
                             text={message.text}
                             time={message.time}
                         />
-                    )
+                    ) : null
                 )}
             </div>
             {chatRoom.connectionExists ? (
