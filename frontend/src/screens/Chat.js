@@ -10,95 +10,95 @@ import axios from 'axios';
 import Search from '../components/Search/Search';
 
 const ChatScreen = () => {
-    const dispatch = useDispatch();
-    const chatList = useSelector((state) => state.connectState.chatRooms);
-    const [openChat, setOpenChat] = useState(false);
+	const dispatch = useDispatch();
+	const chatList = useSelector((state) => state.connectState.chatRooms);
+	const [openChat, setOpenChat] = useState(false);
 
-    const [currChatRoom, setCurrChatRoom] = useState('');
+	const [currChatRoom, setCurrChatRoom] = useState('');
 
-    const [searchPrefix, setSearchPrefix] = useState('');
+	const [searchPrefix, setSearchPrefix] = useState('');
 
-    useEffect(() => {
-        if (getUser()) {
-            dispatch(fetchChatsRooms(getUser().id));
-        }
-    }, [dispatch, openChat]);
+	useEffect(() => {
+		if (getUser()) {
+			dispatch(fetchChatsRooms(getUser().id));
+		}
+	}, [dispatch, openChat]);
 
-    const handleChatClick = (chatRoom) => {
-        setOpenChat(true);
-        setCurrChatRoom(chatRoom);
-    };
+	const handleChatClick = (chatRoom) => {
+		setOpenChat(true);
+		setCurrChatRoom(chatRoom);
+	};
 
-    const getRequiredChatSpace = () => {
-        const chatRoom = chatList.find(
-            (connection) => connection.id === currChatRoom.id
-        );
-        console.log('in chat screen', chatRoom);
-        return <ChatSpace chatRoom={chatRoom} currentUserId={getUser().id} />;
-    };
+	const getRequiredChatSpace = () => {
+		const chatRoom = chatList.find(
+			(connection) => connection.id === currChatRoom.id
+		);
+		console.log('in chat screen', chatRoom);
+		return <ChatSpace chatRoom={ chatRoom } currentUserId={ getUser().id } />;
+	};
 
-    const getConnections = () => (
-        <div>
-            <div className="u-p-v-s u-p-h-s u-fw">
-                <Search prefix={searchPrefix} setPrefix={setSearchPrefix} />
-            </div>
-            <div className="chat__space--messages">
-                {chatList && chatList.length
-                    ? chatList.map((connection) =>
-                          connection.fullname
-                              .toLowerCase()
-                              .startsWith(searchPrefix) ? (
-                              <ChatContact
-                                  {...connection}
-                                  key={connection.id}
-                                  currentUserId={getUser().id}
-                                  handleClick={() =>
-                                      handleChatClick(connection)
-                                  }
-                              />
-                          ) : null
-                      )
-                    : null}
-            </div>
-        </div>
-    );
+	const getConnections = () => (
+		<div>
+			<div className="u-p-v-s u-p-h-s u-fw">
+				<Search prefix={ searchPrefix } setPrefix={ setSearchPrefix } />
+			</div>
+			<div className="chat__space--messages">
+				{ chatList && chatList.length
+					? chatList.map((connection) =>
+						connection.fullname
+							.toLowerCase()
+							.startsWith(searchPrefix) ? (
+							<ChatContact
+								{ ...connection }
+								key={ connection.id }
+								currentUserId={ getUser().id }
+								handleClick={ () =>
+									handleChatClick(connection)
+								}
+							/>
+						) : null
+					)
+					: null }
+			</div>
+		</div>
+	);
 
-    const handleGoBack = () => {
-        setOpenChat(false);
-    };
+	const handleGoBack = () => {
+		setOpenChat(false);
+	};
 
-    const deleteChat = (uid1, uid2, hideFor) => {
-        axios({
-            method: 'PUT',
-            url: 'http://localhost:8080/api/pub/messages',
-            data: {
-                uid1,
-                uid2,
-                hideFor,
-            },
-        })
-            .then((res) => {
-                if (res.status === 200 && !res.data.error) {
-                    console.log(res.data.message);
-                    dispatch(fetchChatsRooms(hideFor));
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+	const deleteChat = (uid1, uid2, hideFor) => {
+		axios({
+			method: 'PUT',
+			url: 'http://localhost:8080/api/pub/messages',
+			data: {
+				uid1,
+				uid2,
+				hideFor,
+			},
+		})
+			.then((res) => {
+				if (res.status === 200 && !res.data.error) {
+					console.log(res.data.message);
+					dispatch(fetchChatsRooms(hideFor));
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 
-    return (
-        <div>
-            <ChatHeader
-                openChat={openChat}
-                {...currChatRoom}
-                goBack={handleGoBack}
-                deleteChat={deleteChat}
-            />
-            {openChat ? getRequiredChatSpace() : getConnections()}
-        </div>
-    );
+	return (
+		<div>
+			<ChatHeader
+				openChat={ openChat }
+				{ ...currChatRoom }
+				goBack={ handleGoBack }
+				deleteChat={ deleteChat }
+			/>
+			{openChat ? getRequiredChatSpace() : getConnections() }
+		</div>
+	);
 };
 
 export default ChatScreen;

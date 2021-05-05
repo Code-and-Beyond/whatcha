@@ -16,7 +16,8 @@
     &--bgdark {
         background-color: $color-black-tray !important;
         color: $color-white !important;
-        border: none !important;
+		box-shadow: none !important;
+		border: 0.1rem $color-black-light solid;
     }
 
     &--error {
