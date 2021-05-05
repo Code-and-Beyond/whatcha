@@ -7,7 +7,7 @@ import Row from '../Row/Row';
 import axios from 'axios';
 import { getUser } from '../../helpers/session';
 
-let marked = require("marked");
+const marked = require("marked");
 
 
 const CreateBlogs = () => {

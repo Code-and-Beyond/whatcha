@@ -19,6 +19,9 @@ import comment from '../../assets/icons/comment.svg';
 import axios from 'axios';
 
 import FillButton from '../../components/Button/Fill';
+const marked = require("marked");
+
+
 
 const Post = (props) => {
 	const {
@@ -149,6 +152,7 @@ const Post = (props) => {
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
 					console.log(res.data.message);
+					dispatch(fetchSavedPosts(uid));
 				}
 			})
 			.catch((err) => console.log(err));
@@ -226,7 +230,11 @@ const Post = (props) => {
 	const getContent = () => {
 		return (
 			<React.Fragment>
-				<p className="a a--2 text--black u-p-v-m">{ content }</p>
+				<p className="a a--2 text--black u-p-v-m"
+					dangerouslySetInnerHTML={ {
+						__html: marked(content),
+					} }
+				/>
 				{attachment ? (
 					<div className="post__imgContainer">
 						<img
