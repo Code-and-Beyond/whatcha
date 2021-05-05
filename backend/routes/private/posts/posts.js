@@ -29,4 +29,20 @@ module.exports = function (app, connection) {
 				}
 			});
 		});
+
+	app.route(`/api/pub/posts/saved/:uid`)
+		.get(function (req, res, next) {
+			const uid = req.params.uid;
+			connection.query('SELECT `saved-posts`.pid from whatcha.`saved-posts` WHERE `uid` = ?', [uid], (error, result, fields) => {
+				if (error) { res.json(error); }
+				else {
+					res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+					res.header('Access-Control-Allow-Origin', '*');
+					res.json({
+						error: false,
+						data: result
+					});
+				}
+			});
+		});
 }
