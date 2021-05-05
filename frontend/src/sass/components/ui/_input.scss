@@ -13,6 +13,12 @@
         outline: none;
     }
 
+    &--bgdark {
+        background-color: $color-black-tray !important;
+        color: $color-white !important;
+        border: none !important;
+    }
+
     &--error {
         border-color: $color-red;
     }

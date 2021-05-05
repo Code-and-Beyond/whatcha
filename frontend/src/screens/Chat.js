@@ -7,6 +7,7 @@ import ChatContact from '../components/Chat/ChatContact';
 import ChatHeader from '../components/Chat/ChatHeader';
 import ChatSpace from '../components/Chat/ChatSpace';
 import axios from 'axios';
+import Search from '../components/Search/Search';
 
 const ChatScreen = () => {
     const dispatch = useDispatch();
@@ -14,6 +15,8 @@ const ChatScreen = () => {
     const [openChat, setOpenChat] = useState(false);
 
     const [currChatRoom, setCurrChatRoom] = useState('');
+
+    const [searchPrefix, setSearchPrefix] = useState('');
 
     useEffect(() => {
         if (getUser()) {
@@ -36,19 +39,25 @@ const ChatScreen = () => {
 
     const getConnections = () => (
         <div>
-            <h1 className="b b--3 u-m-v-m text--center h--disabled">
-                Your chats will appear here
-            </h1>
+            <div className="u-p-v-s u-p-h-s u-fw">
+                <Search prefix={searchPrefix} setPrefix={setSearchPrefix} />
+            </div>
             <div className="chat__space--messages">
                 {chatList && chatList.length
-                    ? chatList.map((connection) => (
-                          <ChatContact
-                              {...connection}
-                              key={connection.id}
-                              currentUserId={getUser().id}
-                              handleClick={() => handleChatClick(connection)}
-                          />
-                      ))
+                    ? chatList.map((connection) =>
+                          connection.fullname
+                              .toLowerCase()
+                              .startsWith(searchPrefix) ? (
+                              <ChatContact
+                                  {...connection}
+                                  key={connection.id}
+                                  currentUserId={getUser().id}
+                                  handleClick={() =>
+                                      handleChatClick(connection)
+                                  }
+                              />
+                          ) : null
+                      )
                     : null}
             </div>
         </div>
