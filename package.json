@@ -1,13 +1,14 @@
 {
     "scripts": {
+        "start": "cd backend && npm start",
+        "heroku-prebuild": "npm install && npm install --prefix backend",
+        "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
         "prettier": "prettier --write \"./**/*.{js,jsx,json,scss}\""
     },
     "devDependencies": {
         "prettier": "^2.2.1"
     },
-    "dependencies": {
-        "moment": "^2.29.1",
-        "redux-thunk": "^2.3.0",
-        "uuid": "^8.3.2"
+    "engines": {
+        "node": "14.x"
     }
 }
