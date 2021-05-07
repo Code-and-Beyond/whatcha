@@ -50,7 +50,7 @@ export const showSavedPosts = () => {
 export const fetchAllPosts = () => {
 	return (dispatch) => {
 		dispatch(postsLoading(true));
-		axios.get('http://localhost:8080/api/pub/posts')
+		axios.get(`${process.env.REACT_APP_ENDPOINT}/api/pub/posts`)
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
 					dispatch(postsLoading(false));
@@ -70,7 +70,7 @@ export const fetchAllPosts = () => {
 export const fetchTrendingPosts = () => {
 	return (dispatch) => {
 		dispatch(postsLoading(true));
-		axios.get('http://localhost:8080/api/pub/posts/trending')
+		axios.get(`${process.env.REACT_APP_ENDPOINT}/api/pub/posts/trending`)
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
 					dispatch(postsLoading(false));
@@ -90,7 +90,7 @@ export const fetchTrendingPosts = () => {
 export const fetchBlogs = () => {
 	return (dispatch) => {
 		dispatch(postsLoading(true));
-		axios.get('http://localhost:8080/api/pub/blogs')
+		axios.get(`${process.env.REACT_APP_ENDPOINT}/api/pub/blogs`)
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
 					dispatch(postsLoading(false));
@@ -111,7 +111,7 @@ export const fetchBlogs = () => {
 export const fetchSavedPosts = (uid) => {
 	return (dispatch) => {
 		dispatch(postsLoading(true));
-		axios.get('http://localhost:8080/api/pub/posts/saved/' + uid)
+		axios.get(`${process.env.REACT_APP_ENDPOINT}/api/pub/posts/saved/` + uid)
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
 					dispatch(postsLoading(false));

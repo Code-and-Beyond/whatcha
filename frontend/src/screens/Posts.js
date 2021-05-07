@@ -54,7 +54,7 @@ const PostsScreen = () => {
 		if (getUser()) {
 			axios
 				.get(
-					'http://localhost:8080/api/pub/users/upvote/' + getUser().id
+					`${process.env.REACT_APP_ENDPOINT}/api/pub/users/upvote/` + getUser().id
 				)
 				.then((res) => {
 					if (res.status === 200 && !res.data.error) {
@@ -80,7 +80,7 @@ const PostsScreen = () => {
 		reader.readAsDataURL(attachment.raw);
 		reader.onloadend = () => {
 			axios({
-				url: 'http://localhost:8080/api/pub/post',
+				url: `${process.env.REACT_APP_ENDPOINT}/api/pub/post`,
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ const PostsScreen = () => {
 		setEditPost({ ...editPost, show: false });
 		setShowPostModal(false);
 		axios({
-			url: 'http://localhost:8080/api/pub/post/' + editPost.id,
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/post/` + editPost.id,
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ const PostsScreen = () => {
 		// const tempPosts = posts.filter((post) => post.pid !== postId);
 		// setPosts(tempPosts);
 		axios({
-			url: 'http://localhost:8080/api/pvt/post/' + postId,
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pvt/post/` + postId,
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',

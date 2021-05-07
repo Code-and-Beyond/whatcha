@@ -15,12 +15,11 @@ const ChatSpace = ({ chatRoom, currentUserId }) => {
     const [messages, setMessages] = useState([]);
     const [initialised, setInitialised] = useState(false);
 
-    const ENDPOINT = 'http://localhost:8080';
     useEffect(() => {
         if (!initialised) {
             axios({
                 method: 'GET',
-                url: `${ENDPOINT}/api/pub/chat/${chatRoom.chatRoomId}/messages`,
+                url: `${process.env.REACT_APP_ENDPOINT}/api/pub/chat/${chatRoom.chatRoomId}/messages`,
             })
                 .then((res) => {
                     if (res.status === 200 && !res.data.error) {
@@ -32,7 +31,7 @@ const ChatSpace = ({ chatRoom, currentUserId }) => {
                     console.log(error);
                 });
 
-            socket = io(ENDPOINT);
+            socket = io(process.env.REACT_APP_ENDPOINT);
 
             socket.emit(
                 'join',

@@ -70,7 +70,7 @@ const ChatScreen = () => {
 	const deleteChat = (uid1, uid2, hideFor) => {
 		axios({
 			method: 'PUT',
-			url: 'http://localhost:8080/api/pub/messages',
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/messages`,
 			data: {
 				uid1,
 				uid2,

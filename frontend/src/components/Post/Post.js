@@ -55,7 +55,7 @@ const Post = (props) => {
 		if (!upvote) {
 			setUpvoteCount(upvoteCount + 1);
 			axios({
-				url: 'http://localhost:8080/api/pub/post/' + postId,
+				url: `${process.env.REACT_APP_ENDPOINT}/api/pub/post/` + postId,
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const Post = (props) => {
 
 			axios({
 				url:
-					'http://localhost:8080/api/pub/users/upvote/' +
+					`${process.env.REACT_APP_ENDPOINT}/api/pub/users/upvote/` +
 					getUser().id +
 					'/' +
 					postId,
@@ -94,7 +94,7 @@ const Post = (props) => {
 		} else {
 			setUpvoteCount(upvoteCount - 1);
 			axios({
-				url: 'http://localhost:8080/api/pub/post/' + postId,
+				url: `${process.env.REACT_APP_ENDPOINT}/api/pub/post/` + postId,
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ const Post = (props) => {
 
 			axios({
 				url:
-					'http://localhost:8080/api/pub/users/upvote/' +
+					`${process.env.REACT_APP_ENDPOINT}/api/pub/users/upvote/` +
 					getUser().id +
 					'/' +
 					postId,
@@ -138,7 +138,7 @@ const Post = (props) => {
 		const pid = postId;
 		setShowPopover(false);
 		axios({
-			url: 'http://localhost:8080/api/pub/post/save',
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/post/save`,
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ const Post = (props) => {
 		const pid = postId;
 		setShowPopover(false);
 		axios({
-			url: 'http://localhost:8080/api/pub/post/save',
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/post/save`,
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
@@ -253,7 +253,7 @@ const Post = (props) => {
 			try {
 				const res = await axios({
 					method: 'GET',
-					url: `http://localhost:8080/api/pub/posts/${postId}/comments`,
+					url: `${process.env.REACT_APP_ENDPOINT}/api/pub/posts/${postId}/comments`,
 				});
 				if (res.status === 200 && !res.data.error) {
 					const data = res.data.data;
@@ -324,7 +324,7 @@ const Post = (props) => {
 	const postComment = () => {
 		axios({
 			method: 'POST',
-			url: `http://localhost:8080/api/pub/posts/${postId}/comments`,
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/posts/${postId}/comments`,
 			data: {
 				uid: getUser().id,
 				text: newComment,
@@ -336,7 +336,7 @@ const Post = (props) => {
 					fetchComments(true);
 					axios({
 						method: 'PUT',
-						url: `http://localhost:8080/api/pub/post/${postId}`,
+						url: `${process.env.REACT_APP_ENDPOINT}/api/pub/post/${postId}`,
 						data: {
 							comments: commentsCounter + 1,
 						},
@@ -359,14 +359,14 @@ const Post = (props) => {
 	const deleteComment = (commentId) => {
 		axios({
 			method: 'DELETE',
-			url: `http://localhost:8080/api/pub/posts/comments/${commentId}`,
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/posts/comments/${commentId}`,
 		}).then((res) => {
 			if (res.status === 200 && !res.data.error) {
 				console.log(res.data.message);
 				fetchComments(false, true);
 				axios({
 					method: 'PUT',
-					url: `http://localhost:8080/api/pub/post/${postId}`,
+					url: `${process.env.REACT_APP_ENDPOINT}/api/pub/post/${postId}`,
 					data: {
 						comments: commentsCounter - 1,
 					},

@@ -25,7 +25,7 @@ const EditProfile = (props) => {
 		props.closeEdit(false);
 		setUpdate(true);
 		axios({
-			url: "http://localhost:8080/api/pub/users/profile/" + getUser().id,
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/users/profile/` + getUser().id,
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',

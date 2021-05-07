@@ -32,7 +32,7 @@ export const initUserConnections = (currUser) => {
 	return (dispatch) => {
 		dispatch(fetchUserConnectionsStart());
 		axios
-			.get('http://localhost:8080/api/pub/connection/' + currUser)
+			.get(`${process.env.REACT_APP_ENDPOINT}/api/pub/connection/` + currUser)
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
 					dispatch(
@@ -68,7 +68,7 @@ export const initAllUsers = (currUser) => {
 	return (dispatch) => {
 		dispatch(fetchAllUsersStart());
 		axios
-			.get('http://localhost:8080/api/pub/allUsers')
+			.get(`${process.env.REACT_APP_ENDPOINT}/api/pub/allUsers`)
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
 					dispatch(fetchAllUsersSuccess(res.data.data, currUser));
@@ -82,7 +82,7 @@ export const followUser = (currUser, otherUser) => {
 	return () => {
 		axios
 			.post(
-				'http://localhost:8080/api/pub/connection/' +
+				`${process.env.REACT_APP_ENDPOINT}/api/pub/connection/` +
 				currUser +
 				'/' +
 				otherUser
@@ -103,7 +103,7 @@ export const unfollowUser = (currUser, otherUser) => {
 		axios
 
 			.delete(
-				'http://localhost:8080/api/pub/connection/' +
+				`${process.env.REACT_APP_ENDPOINT}/api/pub/connection/` +
 				currUser +
 				'/' +
 				otherUser
@@ -123,7 +123,7 @@ export const fetchProfile = (user) => {
 	return (dispatch) => {
 		dispatch({ type: actionTypes.FETCH_PROFILE_START });
 		axios({
-			url: 'http://localhost:8080/api/pub/users/profile/' + user.id,
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/users/profile/` + user.id,
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',

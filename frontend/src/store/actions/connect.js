@@ -26,7 +26,7 @@ export const fetchChatsRooms = (currUserId) => {
 		dispatch(fetchChatsStart());
 		axios({
 			method: 'GET',
-			url: `http://localhost:8080/api/pub/chat?uid=${currUserId}`,
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/chat?uid=${currUserId}`,
 		})
 			.then((res) => {
 				if (res.status === 200 && !res.data.error) {
@@ -44,7 +44,7 @@ export const updateChatRoomByUsers = (currUser, otherUser, body) => {
 	return (dispatch) => {
 		console.log('in updateChatRoom', currUser, otherUser, body);
 		axios({
-			url: `http://localhost:8080/api/pub/chat?userOne=${currUser}&userTwo=${otherUser}`,
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/chat?userOne=${currUser}&userTwo=${otherUser}`,
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ export const createChatRoom = (currUser, otherUser) => {
 	return (dispatch) => {
 		console.log(currUser, otherUser);
 		axios({
-			url: 'http://localhost:8080/api/pub/chat',
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/chat`,
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export const createChatRoom = (currUser, otherUser) => {
 export const deleteChatRoom = (chatRoomId) => {
 	return (dispatch) => {
 		axios({
-			url: 'http://localhost:8080/api/pub/chat/' + chatRoomId,
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/chat/` + chatRoomId,
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',

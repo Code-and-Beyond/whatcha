@@ -19,7 +19,7 @@ const CreateBlogs = () => {
 	const handleBlogUpload = () => {
 		setUploading(true);
 		axios({
-			url: "http://localhost:8080/api/pub/blogs",
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/blogs`,
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

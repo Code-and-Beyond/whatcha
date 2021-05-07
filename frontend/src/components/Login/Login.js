@@ -29,7 +29,7 @@ const Login = (props) => {
 		dispatch(toggleLoginModal(false));
 		dispatch(toggleLoading(true, "default", "Loggin In..."));
 		axios({
-			url: 'http://localhost:8080/auth/google',
+			url: `${process.env.REACT_APP_ENDPOINT}/auth/google`,
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',

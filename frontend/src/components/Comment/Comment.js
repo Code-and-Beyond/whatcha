@@ -36,7 +36,7 @@ const Comment = (props) => {
 	const checkForLike = (commentId) => {
 		axios({
 			method: 'GET',
-			url: `http://localhost:8080/api/pub/posts/comments/${commentId}/likes/${getUser().id
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/posts/comments/${commentId}/likes/${getUser().id
 				}`,
 		})
 			.then((res) => {
@@ -61,7 +61,7 @@ const Comment = (props) => {
 			setLikesCounter(likesCounter + 1);
 			axios({
 				method: 'POST',
-				url: `http://localhost:8080/api/pub/posts/comments/${commentId}/likes`,
+				url: `${process.env.REACT_APP_ENDPOINT}/api/pub/posts/comments/${commentId}/likes`,
 				data: {
 					uid: getUser().id,
 				},
@@ -71,7 +71,7 @@ const Comment = (props) => {
 						console.log(res.data.message);
 						axios({
 							method: 'PUT',
-							url: `http://localhost:8080/api/pub/posts/comments/${commentId}`,
+							url: `${process.env.REACT_APP_ENDPOINT}/api/pub/posts/comments/${commentId}`,
 							data: {
 								likesCount: likesCounter + 1,
 							},
@@ -88,7 +88,7 @@ const Comment = (props) => {
 			setLikesCounter(likesCounter - 1);
 			axios({
 				method: 'DELETE',
-				url: `http://localhost:8080/api/pub/posts/comments/${commentId}/likes/${getUser().id
+				url: `${process.env.REACT_APP_ENDPOINT}/api/pub/posts/comments/${commentId}/likes/${getUser().id
 					}`,
 			})
 				.then((res) => {
@@ -96,7 +96,7 @@ const Comment = (props) => {
 						console.log(res.data.message);
 						axios({
 							method: 'PUT',
-							url: `http://localhost:8080/api/pub/posts/comments/${commentId}`,
+							url: `${process.env.REACT_APP_ENDPOINT}/api/pub/posts/comments/${commentId}`,
 							data: {
 								likesCount: likesCounter - 1,
 							},
@@ -115,7 +115,7 @@ const Comment = (props) => {
 		console.log(edit.text);
 		axios({
 			method: 'PUT',
-			url: `http://localhost:8080/api/pub/posts/comments/${commentId}`,
+			url: `${process.env.REACT_APP_ENDPOINT}/api/pub/posts/comments/${commentId}`,
 			data: {
 				text: edit.text,
 			},
