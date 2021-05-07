@@ -18,6 +18,7 @@
         "react-redux": "^7.2.3",
         "react-scripts": "4.0.3",
         "redux": "^4.0.5",
+        "redux-thunk": "^2.3.0",
         "socket.io-client": "^4.0.1",
         "spinners-react": "^1.0.4",
         "web-vitals": "^1.1.1"
