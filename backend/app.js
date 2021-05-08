@@ -2,11 +2,11 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const https = require('https');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const connection = require('./connections/user');
 const auth = require('./helpers/auth');
+const path = require('path');
 
 const app = express();
 
@@ -61,3 +61,12 @@ const port = process.env.PORT || 8080;
 const server = app.listen(port, () => console.log('server is running'));
 
 require('./sockets')(server, connection);
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('../frontend/build'));
+    app.get('*', (req, res) => {
+        res.sendFile(
+            path.resolve(__dirname, '../frontend', 'build', 'index.html')
+        );
+    });
+}
