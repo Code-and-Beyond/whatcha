@@ -7,7 +7,7 @@ module.exports = (server, connection) => {
 
     const updateChatRoom = (chatRoomId, chatRoom) => {
         const computeUpdateQuery = () => {
-            let queryString = 'UPDATE whatcha.`chat-rooms` SET ';
+            let queryString = 'UPDATE ' + process.env.DB_USER_DATABASE + '.`chat-rooms` SET ';
             let queryArray = [];
 
             const updateColumns = (colArray) => {
@@ -60,7 +60,7 @@ module.exports = (server, connection) => {
         } = message;
 
         connection.query(
-            'INSERT INTO whatcha.`chat-messages` (`messageId`, `chatRoomId`, `sender`, `receiver`, `text`, `time`, `received`, `seen`) values( ?, ?, ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO ' + process.env.DB_USER_DATABASE + '.`chat-messages` (`messageId`, `chatRoomId`, `sender`, `receiver`, `text`, `time`, `received`, `seen`) values( ?, ?, ?, ?, ?, ?, ?, ?)',
             [
                 messageId,
                 chatRoomId,
@@ -81,7 +81,7 @@ module.exports = (server, connection) => {
     const getChatRoomFromSocket = async (socketId) => {
         let chatRoom = null;
         await connection.query(
-            'SELECT * FROM whatcha.`chat-rooms` WHERE `socketOne` = ? OR `socketTwo` = ?',
+            'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` WHERE `socketOne` = ? OR `socketTwo` = ?',
             [socketId, socketId],
             function (error, result, fields) {
                 if (error) console.log(error);
@@ -101,7 +101,7 @@ module.exports = (server, connection) => {
             console.log('join', socket.id);
 
             const query = connection.query(
-                'SELECT * FROM whatcha.`chat-rooms` WHERE `chatRoomId` = ?',
+                'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` WHERE `chatRoomId` = ?',
                 [chatRoomId]
             );
 
@@ -225,7 +225,7 @@ module.exports = (server, connection) => {
             console.log('disconnect', socket.id);
 
             const query = connection.query(
-                'SELECT * FROM whatcha.`chat-rooms` WHERE `socketOne` = ? OR `socketTwo` = ?',
+                'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` WHERE `socketOne` = ? OR `socketTwo` = ?',
                 [socket.id, socket.id]
             );
 

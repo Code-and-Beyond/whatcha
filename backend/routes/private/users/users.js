@@ -3,7 +3,7 @@ module.exports = function (app, connection) {
 	app.route(`/api/pub/users/:uid/blogs`)
 		.get(function (req, res, next) {
 			const uid = req.params.uid;
-			connection.query(`SELECT * FROM whatcha.\`blogs-list\` WHERE \`uid\` = ${uid}`, (error, result, fields) => {
+			connection.query(`SELECT * FROM ' + process.env.DB_USER_DATABASE + '.\`blogs-list\` WHERE \`uid\` = ${uid}`, (error, result, fields) => {
 				res.header('Access-Control-Allow-Origin', '*');
 				res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 				if (error) { res.json(error); }
@@ -21,7 +21,7 @@ module.exports = function (app, connection) {
 	app.route(`/api/pub/users/upvote/:uid`)
 		.get(function (req, res, next) {
 			const uid = req.params.uid;
-			connection.query('SELECT pid FROM whatcha.`user-upvotes` WHERE `uid` = ?', [uid], (error, result, fields) => {
+			connection.query('SELECT pid FROM ' + process.env.DB_USER_DATABASE + '.`user-upvotes` WHERE `uid` = ?', [uid], (error, result, fields) => {
 				if (error) { res.json(error); }
 				else {
 					res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -38,7 +38,7 @@ module.exports = function (app, connection) {
 	app.route(`/api/pub/users/profile/:uid`)
 		.get(function (req, res, next) {
 			const uid = req.params.uid;
-			connection.query('SELECT * FROM whatcha.`users-info` WHERE `uid` = ?', [uid], (error, result, fields) => {
+			connection.query('SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`users-info` WHERE `uid` = ?', [uid], (error, result, fields) => {
 				if (error) { res.json(error); }
 				else {
 					res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -55,7 +55,7 @@ module.exports = function (app, connection) {
 	app.route(`/api/pub/allUsers`)
 		.get(function (req, res, next) {
 			const uid = req.params.uid;
-			connection.query('SELECT whatcha.`users`.* ,whatcha.`users-info`.bio FROM whatcha.`users` INNER JOIN whatcha.`users-info` ON whatcha.`users-info`.uid = whatcha.`users`.id', (error, result, fields) => {
+			connection.query('SELECT ' + process.env.DB_USER_DATABASE + '.`users`.* ,' + process.env.DB_USER_DATABASE + '.`users-info`.bio FROM ' + process.env.DB_USER_DATABASE + '.`users` INNER JOIN ' + process.env.DB_USER_DATABASE + '.`users-info` ON ' + process.env.DB_USER_DATABASE + '.`users-info`.uid = ' + process.env.DB_USER_DATABASE + '.`users`.id', (error, result, fields) => {
 				if (error) { res.json(error); }
 				else {
 					res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -76,7 +76,7 @@ module.exports = function (app, connection) {
 			const pid = req.params.pid;
 			const dateUpvoted = new Date();
 
-			connection.query("INSERT INTO whatcha.`user-upvotes` (`uid`,`pid`,`createdAt`) values(?,?,?)", [uid, pid, dateUpvoted],
+			connection.query('INSERT INTO ' + process.env.DB_USER_DATABASE + '.`user-upvotes` (`uid`,`pid`,`createdAt`) values(?,?,?)', [uid, pid, dateUpvoted],
 				(error, result, fields) => {
 					if (error) { res.json(error); }
 					else {
@@ -91,7 +91,7 @@ module.exports = function (app, connection) {
 		.put(function (req, res, next) {
 			console.log(req.body, req.params);
 			const computeUpdateQuery = () => {
-				let queryString = 'UPDATE whatcha.`users-info` SET ';
+				let queryString = 'UPDATE ' + process.env.DB_USER_DATABASE + '.`users-info` SET ';
 				let queryArray = [];
 
 				const updateColumns = (colArray) => {
@@ -142,7 +142,7 @@ module.exports = function (app, connection) {
 			const uid = req.params.uid;
 			const pid = req.params.pid;
 
-			connection.query("DELETE FROM whatcha.`user-upvotes` WHERE `uid`= ? AND `pid` = ? ", [uid, pid],
+			connection.query('DELETE FROM ' + process.env.DB_USER_DATABASE + '.`user-upvotes` WHERE `uid`= ? AND `pid` = ? ', [uid, pid],
 				(error, result, fields) => {
 					if (error) { res.json(error); }
 					else {

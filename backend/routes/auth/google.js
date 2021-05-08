@@ -17,7 +17,7 @@ module.exports = function (app, userConnection, axios) {
 			else {
 				const googleData = response.data;
 				userConnection.query(
-					'SELECT * FROM whatcha.users WHERE `username` = ? ',
+					'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.users WHERE `username` = ? ',
 					[response.data.email],
 					function (error, results, fields) {
 						if (error) {
@@ -35,14 +35,14 @@ module.exports = function (app, userConnection, axios) {
 							if (results.length < 1) {
 								const uid = uuidv4();
 								userConnection.query(
-									'INSERT INTO whatcha.`users-info` (`uid`) VALUES(?)', [uid], function (error, results, fields) {
+									'INSERT INTO ' + process.env.DB_USER_DATABASE + '.`users-info` (`uid`) VALUES(?)', [uid], function (error, results, fields) {
 										if (error) {
 											console.log(error);
 										}
 									}
 								);
 								userConnection.query(
-									'INSERT INTO whatcha.users (`id`, `username`, `fname`, `lname`, `fullname`, `image`) VALUES (?, ?, ?, ?, ?, ?)',
+									'INSERT INTO ' + process.env.DB_USER_DATABASE + '.users (`id`, `username`, `fname`, `lname`, `fullname`, `image`) VALUES (?, ?, ?, ?, ?, ?)',
 									[
 										uid,
 										googleData.email,
@@ -68,7 +68,7 @@ module.exports = function (app, userConnection, axios) {
 											});
 										} else {
 											userConnection.query(
-												'SELECT * FROM whatcha.users WHERE `username` = ?',
+												'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.users WHERE `username` = ?',
 												[username],
 												function (
 													error,
@@ -129,7 +129,7 @@ module.exports = function (app, userConnection, axios) {
 								);
 							} else {
 								userConnection.query(
-									'UPDATE whatcha.users SET `logins` = `logins`+1, `lastlog` = CURRENT_TIMESTAMP WHERE `username` = ?',
+									'UPDATE ' + process.env.DB_USER_DATABASE + '.users SET `logins` = `logins`+1, `lastlog` = CURRENT_TIMESTAMP WHERE `username` = ?',
 									[googleData.email],
 									function (error, results, fields) {
 										if (error) {
@@ -148,7 +148,7 @@ module.exports = function (app, userConnection, axios) {
 											});
 										} else {
 											userConnection.query(
-												'SELECT * FROM whatcha.users WHERE `username` = ?',
+												'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.users WHERE `username` = ?',
 												[username],
 												function (
 													error,

@@ -9,7 +9,7 @@ module.exports = function (app, connection) {
         const { uid } = req.body;
         const createdAt = new Date();
         connection.query(
-            'INSERT INTO whatcha.`comments-likes` (`commentId`, `uid`, `createdAt`) values (?, ?, ?)',
+            'INSERT INTO ' + process.env.DB_USER_DATABASE + '.`comments-likes` (`commentId`, `uid`, `createdAt`) values (?, ?, ?)',
             [commentId, uid, createdAt],
             function (error, result, fields) {
                 res.header('Access-Control-Allow-Origin', '*');
@@ -37,7 +37,7 @@ module.exports = function (app, connection) {
     ) {
         const { commentId } = req.params;
         connection.query(
-            'SELECT whatcha.`comments-likes`.* , whatcha.`users`.fullname, whatcha.`users`.image, whatcha.`users-info`.bio FROM whatcha.`comments-likes` INNER JOIN whatcha.`users` INNER JOIN whatcha.`users-info` ON whatcha.`comments-likes`.uid = whatcha.`users`.id AND whatcha.`users-info`.uid = whatcha.`users`.id WHERE `commentId` = ?',
+            'SELECT ' + process.env.DB_USER_DATABASE + '.`comments-likes`.* , ' + process.env.DB_USER_DATABASE + '.`users`.fullname, ' + process.env.DB_USER_DATABASE + '.`users`.image, ' + process.env.DB_USER_DATABASE + '.`users-info`.bio FROM ' + process.env.DB_USER_DATABASE + '.`comments-likes` INNER JOIN ' + process.env.DB_USER_DATABASE + '.`users` INNER JOIN ' + process.env.DB_USER_DATABASE + '.`users-info` ON ' + process.env.DB_USER_DATABASE + '.`comments-likes`.uid = ' + process.env.DB_USER_DATABASE + '.`users`.id AND ' + process.env.DB_USER_DATABASE + '.`users-info`.uid = ' + process.env.DB_USER_DATABASE + '.`users`.id WHERE `commentId` = ?',
             [commentId],
             function (error, result, fields) {
                 res.header('Access-Control-Allow-Origin', '*');
@@ -65,7 +65,7 @@ module.exports = function (app, connection) {
     ) {
         const { commentId, uid } = req.params;
         connection.query(
-            'SELECT * FROM whatcha.`comments-likes` WHERE `commentId` = ? AND `uid` = ?',
+            'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`comments-likes` WHERE `commentId` = ? AND `uid` = ?',
             [commentId, uid],
             function (error, result, fields) {
                 res.header('Access-Control-Allow-Origin', '*');
@@ -93,7 +93,7 @@ module.exports = function (app, connection) {
     ) {
         const { commentId, uid } = req.params;
         connection.query(
-            'DELETE FROM whatcha.`comments-likes` WHERE `commentId`= ? AND `uid` = ?',
+            'DELETE FROM ' + process.env.DB_USER_DATABASE + '.`comments-likes` WHERE `commentId`= ? AND `uid` = ?',
             [commentId, uid],
             function (error, result, fields) {
                 res.header('Access-Control-Allow-Origin', '*');

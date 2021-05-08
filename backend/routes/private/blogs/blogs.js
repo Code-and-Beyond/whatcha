@@ -2,7 +2,7 @@ module.exports = function (app, connection) {
 	app.route('/api/pub/blogs')
 		// get all blogs
 		.get(function (req, res, next) {
-			connection.query('SELECT `blogs-list`.blogId, `blogs-list`.content, `blogs-list`.title, `blogs-list`.createdAt, `blogs-list`.uid, `users`.fullname, `users`.username, `users`.image  FROM whatcha.`blogs-list` INNER JOIN whatcha.`users` ON whatcha.`blogs-list`.uid = whatcha.`users`.id;', (error, result, fields) => {
+			connection.query('SELECT `blogs-list`.blogId, `blogs-list`.content, `blogs-list`.title, `blogs-list`.createdAt, `blogs-list`.uid, `users`.fullname, `users`.username, `users`.image  FROM ' + process.env.DB_USER_DATABASE + '.`blogs-list` INNER JOIN ' + process.env.DB_USER_DATABASE + '.`users` ON ' + process.env.DB_USER_DATABASE + '.`blogs-list`.uid = ' + process.env.DB_USER_DATABASE + '.`users`.id;', (error, result, fields) => {
 				res.header('Access-Control-Allow-Origin', '*');
 				res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 				if (error) res.json(error);
@@ -20,7 +20,7 @@ module.exports = function (app, connection) {
 			const title = req.body.title;
 			const content = req.body.content;
 			const dateCreated = new Date();
-			connection.query("INSERT INTO whatcha.`blogs-list` (`uid`, `title`, `content`,`createdAt`) values(?,?,?,?)", [uid, title, content, dateCreated],
+			connection.query('INSERT INTO ' + process.env.DB_USER_DATABASE + '.`blogs-list` (`uid`, `title`, `content`,`createdAt`) values(?,?,?,?)', [uid, title, content, dateCreated],
 				function (error, result, fields) {
 					if (error) { res.json(error); }
 					else {
@@ -35,7 +35,7 @@ module.exports = function (app, connection) {
 		// get a particular blog
 		.get(function (req, res, next) {
 			const blogId = req.params.blogId;
-			connection.query(`SELECT * FROM whatcha.\`blogs-list\` WHERE \`blogId\` = ${blogId}`,
+			connection.query(`SELECT * FROM ${process.env.DB_USER_DATABASE}.\`blogs-list\` WHERE \`blogId\` = ${blogId}`,
 				function (error, result, fields) {
 					res.header('Access-Control-Allow-Origin', '*');
 					res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -52,7 +52,7 @@ module.exports = function (app, connection) {
 		// update a particular blog
 		.put(function (req, res, nex) {
 			const computeUpdateQuery = () => {
-				let queryString = "UPDATE whatcha.`blogs-list` SET ";
+				let queryString = 'UPDATE ' + process.env.DB_USER_DATABASE + '.`blogs-list` SET ';
 				let queryArray = [];
 
 				const updateColumns = (colArray) => {
@@ -87,7 +87,7 @@ module.exports = function (app, connection) {
 		// delete a particular blog
 		.delete(function (req, res, next) {
 			const blogId = req.params.blogId;
-			connection.query(`DELETE FROM whatcha.\`blogs-list\` WHERE \`blog_id\` = ${blogId}`,
+			connection.query(`DELETE FROM ${process.env.DB_USER_DATABASE}.\`blogs-list\` WHERE \`blog_id\` = ${blogId}`,
 				function (error, result, fields) {
 					res.header('Access-Control-Allow-Origin', '*');
 					res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');

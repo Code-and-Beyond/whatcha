@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "start": "cd backend && npm start",
+        "start": "npm start --prefix backend",
         "heroku-prebuild": "npm install && npm install --prefix backend",
         "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
         "prettier": "prettier --write \"./**/*.{js,jsx,json,scss}\""

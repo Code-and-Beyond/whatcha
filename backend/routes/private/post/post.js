@@ -8,7 +8,7 @@ module.exports = function (app, connection) {
 	app.route('/api/pvt/post/:postId')
 		.get(function (req, res, next) {
 			const postId = req.params.postId;
-			connection.query("SELECT * FROM whatcha.`posts-list` WHERE `uid` = ?", [postId],
+			connection.query('SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`posts-list` WHERE `uid` = ?', [postId],
 				function (error, result, fields) {
 					if (error) { res.sendStatus(500); }
 					else {
@@ -42,7 +42,7 @@ module.exports = function (app, connection) {
 		}
 		const imgUrl = uploadResponse.secure_url;
 		connection.query(
-			'INSERT INTO whatcha.`posts-list` (`uid`,`content`,`imgUrl`, `createdAt`) values(?,?,?,?)',
+			'INSERT INTO ' + process.env.DB_USER_DATABASE + '.`posts-list` (`uid`,`content`,`imgUrl`, `createdAt`) values(?,?,?,?)',
 			[id, content, imgUrl, dateCreated],
 			function (error, result, fields) {
 				if (error) {
@@ -76,7 +76,7 @@ module.exports = function (app, connection) {
 			const pid = req.body.pid;
 			const dateCreated = new Date();
 
-			connection.query('INSERT INTO whatcha.`saved-posts` (`uid`,`pid`, `createdAt`) values(?,?,?)', [uid, pid, dateCreated],
+			connection.query('INSERT INTO ' + process.env.DB_USER_DATABASE + '.`saved-posts` (`uid`,`pid`, `createdAt`) values(?,?,?)', [uid, pid, dateCreated],
 				function (error, result, fields) {
 					if (error) {
 						res.json(error);
@@ -99,7 +99,7 @@ module.exports = function (app, connection) {
 	//to update the post by a user (given postId)
 	app.route('/api/pub/post/:postId').put(function (req, res, next) {
 		const computeUpdateQuery = () => {
-			let queryString = 'UPDATE whatcha.`posts-list` SET ';
+			let queryString = 'UPDATE ' + process.env.DB_USER_DATABASE + '.`posts-list` SET ';
 			let queryArray = [];
 
 			const updateColumns = (colArray) => {
@@ -146,7 +146,7 @@ module.exports = function (app, connection) {
 	app.route('/api/pvt/post/:postId')
 		.delete(function (req, res, next) {
 			const postId = req.params.postId;
-			connection.query("DELETE FROM whatcha.`posts-list` WHERE `pid`= ? ", [postId],
+			connection.query("DELETE FROM ' + process.env.DB_USER_DATABASE + '.`posts-list` WHERE `pid`= ? ", [postId],
 				function (error, result, fields) {
 					if (error) { res.sendStatus(500); }
 					else {
@@ -166,7 +166,7 @@ module.exports = function (app, connection) {
 			const uid = req.body.uid;
 			const postId = req.body.pid;
 
-			connection.query("DELETE FROM whatcha.`saved-posts` WHERE `uid` = ? AND `pid`= ? ", [uid, postId],
+			connection.query("DELETE FROM ' + process.env.DB_USER_DATABASE + '.`saved-posts` WHERE `uid` = ? AND `pid`= ? ", [uid, postId],
 				function (error, result, fields) {
 					if (error) { res.sendStatus(500); }
 					else {

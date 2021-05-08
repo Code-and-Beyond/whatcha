@@ -5,7 +5,7 @@ module.exports = function (app, connection) {
 		if (userOne > userTwo) [userOne, userTwo] = [userTwo, userOne];
 		const connectionExists = true;
 		connection.query(
-			'INSERT INTO whatcha.`chat-rooms` (`chatRoomId`, `userOne`, `userTwo`, `connectionExists`) values (UUID(), ?, ?, ?)',
+			'INSERT INTO ' + process.env.DB_USER_DATABASE + '.`chat-rooms` (`chatRoomId`, `userOne`, `userTwo`, `connectionExists`) values (UUID(), ?, ?, ?)',
 			[userOne, userTwo, connectionExists],
 			function (error, result, fields) {
 				res.header('Access-Control-Allow-Origin', '*');
@@ -30,7 +30,7 @@ module.exports = function (app, connection) {
 	app.route('/api/pub/chat').get(function (req, res, next) {
 		const { uid } = req.query;
 		connection.query(
-			'SELECT whatcha.`chat-rooms`.*, whatcha.`users`.image, whatcha.`users`.fullname, whatcha.`users`.id, whatcha.`chat-messages`.sender, whatcha.`chat-messages`.receiver, whatcha.`chat-messages`.`text`, whatcha.`chat-messages`.`time`, whatcha.`chat-messages`.received, whatcha.`chat-messages`.seen, whatcha.`chat-messages`.userOneHide, whatcha.`chat-messages`.userTwoHide FROM whatcha.`chat-rooms` INNER JOIN whatcha.`users` ON whatcha.`chat-rooms`.userTwo = whatcha.`users`.id OR whatcha.`chat-rooms`.userOne = whatcha.`users`.id INNER JOIN whatcha.`chat-messages` ON whatcha.`chat-rooms`.latestMessageId = whatcha.`chat-messages`.messageId WHERE (whatcha.`chat-rooms`.userOne = ? OR whatcha.`chat-rooms`.userTwo = ?) AND whatcha.`users`.id != ? ORDER BY whatcha.`chat-messages`.time DESC',
+			'SELECT ' + process.env.DB_USER_DATABASE + '.`chat-rooms`.*, ' + process.env.DB_USER_DATABASE + '.`users`.image, ' + process.env.DB_USER_DATABASE + '.`users`.fullname, ' + process.env.DB_USER_DATABASE + '.`users`.id, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.sender, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.receiver, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.`text`, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.`time`, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.received, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.seen, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.userOneHide, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.userTwoHide FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` INNER JOIN ' + process.env.DB_USER_DATABASE + '.`users` ON ' + process.env.DB_USER_DATABASE + '.`chat-rooms`.userTwo = ' + process.env.DB_USER_DATABASE + '.`users`.id OR ' + process.env.DB_USER_DATABASE + '.`chat-rooms`.userOne = ' + process.env.DB_USER_DATABASE + '.`users`.id INNER JOIN ' + process.env.DB_USER_DATABASE + '.`chat-messages` ON ' + process.env.DB_USER_DATABASE + '.`chat-rooms`.latestMessageId = ' + process.env.DB_USER_DATABASE + '.`chat-messages`.messageId WHERE (' + process.env.DB_USER_DATABASE + '.`chat-rooms`.userOne = ? OR ' + process.env.DB_USER_DATABASE + '.`chat-rooms`.userTwo = ?) AND ' + process.env.DB_USER_DATABASE + '.`users`.id != ? ORDER BY ' + process.env.DB_USER_DATABASE + '.`chat-messages`.time DESC',
 			[uid, uid, uid],
 			function (error, result, fields) {
 				res.header('Access-Control-Allow-Origin', '*');
@@ -54,7 +54,7 @@ module.exports = function (app, connection) {
 	app.route('/api/pub/chat/:chatRoomId').get(function (req, res, next) {
 		const { chatRoomId } = req.params;
 		connection.query(
-			'SELECT * FROM whatcha.`chat-rooms` WHERE `chatRoomId` = ?',
+			'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` WHERE `chatRoomId` = ?',
 			[chatRoomId],
 			function (error, result, fields) {
 				res.header('Access-Control-Allow-Origin', '*');
@@ -77,7 +77,7 @@ module.exports = function (app, connection) {
 	// update a chat room using chat room Id
 	app.route('/api/pub/chat/:chatRoomId').put(function (req, res, next) {
 		const computeUpdateQuery = () => {
-			let queryString = 'UPDATE whatcha.`chat-rooms` SET ';
+			let queryString = 'UPDATE ' + process.env.DB_USER_DATABASE + '.`chat-rooms` SET ';
 			let queryArray = [];
 
 			const updateColumns = (colArray) => {
@@ -131,7 +131,7 @@ module.exports = function (app, connection) {
 		let { userOne, userTwo } = req.query;
 		if (userOne > userTwo) [userOne, userTwo] = [userTwo, userOne];
 		const computeUpdateQuery = () => {
-			let queryString = 'UPDATE whatcha.`chat-rooms` SET ';
+			let queryString = 'UPDATE ' + process.env.DB_USER_DATABASE + '.`chat-rooms` SET ';
 			let queryArray = [];
 
 			const updateColumns = (colArray) => {
@@ -186,7 +186,7 @@ module.exports = function (app, connection) {
 	app.route('/api/pub/chat/:chatRoomId').delete(function (req, res, next) {
 		const { chatRoomId } = req.params;
 		connection.query(
-			'DELETE FROM whatcha.`chat-rooms` WHERE `chatRoomId`= ? ',
+			'DELETE FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` WHERE `chatRoomId`= ? ',
 			[chatRoomId],
 			function (error, result, fields) {
 				res.header('Access-Control-Allow-Origin', '*');
@@ -214,7 +214,7 @@ module.exports = function (app, connection) {
 	) {
 		const { chatRoomId } = req.params;
 		connection.query(
-			'SELECT * FROM whatcha.`chat-messages` WHERE `chatRoomId` = ? ORDER BY `time`',
+			'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`chat-messages` WHERE `chatRoomId` = ? ORDER BY `time`',
 			[chatRoomId],
 			function (error, result, fields) {
 				res.header('Access-Control-Allow-Origin', '*');

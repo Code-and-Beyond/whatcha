@@ -3,7 +3,7 @@ module.exports = function (app, connection) {
 	app.route(`/api/pub/connection/:uid`).get(function (req, res, next) {
 		const { uid } = req.params;
 		connection.query(
-			'SELECT whatcha.`users-info`.*, whatcha.`users`.id, whatcha.`users`.fullname, whatcha.`users`.image, whatcha.`users`.username FROM whatcha.`user-connections` INNER JOIN whatcha.`users-info` INNER JOIN whatcha.`users` ON (whatcha.`user-connections`.uid1 = ? OR whatcha.`user-connections`.uid2 = ?) AND whatcha.`users`.id != ? AND (whatcha.`user-connections`.uid1 = whatcha.`users-info`.uid OR whatcha.`user-connections`.uid2 = whatcha.`users-info`.uid) AND whatcha.`users`.id = whatcha.`users-info`.uid;',
+			'SELECT ' + process.env.DB_USER_DATABASE + '.`users-info`.*, ' + process.env.DB_USER_DATABASE + '.`users`.id, ' + process.env.DB_USER_DATABASE + '.`users`.fullname, ' + process.env.DB_USER_DATABASE + '.`users`.image, ' + process.env.DB_USER_DATABASE + '.`users`.username FROM ' + process.env.DB_USER_DATABASE + '.`user-connections` INNER JOIN ' + process.env.DB_USER_DATABASE + '.`users-info` INNER JOIN ' + process.env.DB_USER_DATABASE + '.`users` ON (' + process.env.DB_USER_DATABASE + '.`user-connections`.uid1 = ? OR ' + process.env.DB_USER_DATABASE + '.`user-connections`.uid2 = ?) AND ' + process.env.DB_USER_DATABASE + '.`users`.id != ? AND (' + process.env.DB_USER_DATABASE + '.`user-connections`.uid1 = ' + process.env.DB_USER_DATABASE + '.`users-info`.uid OR ' + process.env.DB_USER_DATABASE + '.`user-connections`.uid2 = ' + process.env.DB_USER_DATABASE + '.`users-info`.uid) AND ' + process.env.DB_USER_DATABASE + '.`users`.id = ' + process.env.DB_USER_DATABASE + '.`users-info`.uid;',
 			[uid, uid, uid],
 			(error, result, fields) => {
 				res.header('Access-Control-Allow-Origin', '*');
@@ -32,7 +32,7 @@ module.exports = function (app, connection) {
 		let { uid1, uid2 } = req.params;
 		if (uid1 > uid2) [uid1, uid2] = [uid2, uid1];
 		connection.query(
-			'INSERT INTO whatcha.`user-connections` (`uid1`,`uid2`) values(?,?)',
+			'INSERT INTO ' + process.env.DB_USER_DATABASE + '.`user-connections` (`uid1`,`uid2`) values(?,?)',
 			[uid1, uid2],
 			(error, result, fields) => {
 				if (error) {
@@ -58,7 +58,7 @@ module.exports = function (app, connection) {
 		let { uid1, uid2 } = req.params;
 		if (uid1 > uid2) [uid1, uid2] = [uid2, uid1];
 		connection.query(
-			'DELETE FROM whatcha.`user-connections` WHERE `uid1`= ? AND `uid2` = ? ',
+			'DELETE FROM ' + process.env.DB_USER_DATABASE + '.`user-connections` WHERE `uid1`= ? AND `uid2` = ? ',
 			[uid1, uid2],
 			(error, result, fields) => {
 				if (error) {

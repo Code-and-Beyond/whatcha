@@ -13,7 +13,7 @@ module.exports = function (app, connection) {
 		} = req.body;
 
 		connection.query(
-			'INSERT INTO whatcha.`chat-messages` (`messageId`, `chatRoomId`, `sender`, `receiver`, `text`, `time`, `received`, `seen`) values(UUID(), ?, ?, ?, ?, ?, ?, ?)',
+			'INSERT INTO ' + process.env.DB_USER_DATABASE + '.`chat-messages` (`messageId`, `chatRoomId`, `sender`, `receiver`, `text`, `time`, `received`, `seen`) values(UUID(), ?, ?, ?, ?, ?, ?, ?)',
 			[chatRoomId, sender, receiver, text, time, received, seen],
 			function (error, result, fields) {
 				res.header('Access-Control-Allow-Origin', '*');
@@ -37,7 +37,7 @@ module.exports = function (app, connection) {
 	app.route('/api/pub/messages/:messageId').get(function (req, res, next) {
 		const { messageId } = req.params;
 		connection.query(
-			'SELECT * FROM whatcha.`chat-messages` WHERE `messageId` = ?',
+			'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`chat-messages` WHERE `messageId` = ?',
 			[messageId],
 			function (error, result, fields) {
 				res.header('Access-Control-Allow-Origin', '*');
@@ -60,7 +60,7 @@ module.exports = function (app, connection) {
 	// update a message
 	app.route('/api/pub/messages/:messageId').put(function (req, res, next) {
 		const computeUpdateQuery = () => {
-			let queryString = 'UPDATE whatcha.`chat-messages` SET ';
+			let queryString = 'UPDATE ' + process.env.DB_USER_DATABASE + '.`chat-messages` SET ';
 			let queryArray = [];
 
 			const updateColumns = (colArray) => {
@@ -116,7 +116,7 @@ module.exports = function (app, connection) {
 	app.route('/api/pub/messages/:messageId').delete(function (req, res, next) {
 		const { messageId } = req.params;
 		connection.query(
-			'DELETE FROM whatcha.`chat-messages` WHERE `messageId`= ? ',
+			'DELETE FROM ' + process.env.DB_USER_DATABASE + '.`chat-messages` WHERE `messageId`= ? ',
 			[messageId],
 			function (error, result, fields) {
 				res.header('Access-Control-Allow-Origin', '*');
@@ -146,7 +146,7 @@ module.exports = function (app, connection) {
 		else hideColName = `userTwoHide`;
 
 		connection.query(
-			'UPDATE whatcha.`chat-messages` SET ' +
+			'UPDATE ' + process.env.DB_USER_DATABASE + '.`chat-messages` SET ' +
 			hideColName +
 			' = 1 WHERE (`sender` = ? AND `receiver` = ?) OR (`sender` = ? AND `receiver` = ?)',
 			[uid1, uid2, uid2, uid1],
