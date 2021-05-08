@@ -2,12 +2,12 @@ const { v4: uuidv4 } = require('uuid');
 const { Server } = require('socket.io');
 
 module.exports = (server, connection) => {
-    // const io = require('socket.io')(server, { cors: { origin: '*' } });
     const io = new Server(server, { cors: { origin: '*' } });
 
     const updateChatRoom = (chatRoomId, chatRoom) => {
         const computeUpdateQuery = () => {
-            let queryString = 'UPDATE ' + process.env.DB_USER_DATABASE + '.`chat-rooms` SET ';
+            let queryString =
+                'UPDATE ' + process.env.DB_USER_DATABASE + '.`chat-rooms` SET ';
             let queryArray = [];
 
             const updateColumns = (colArray) => {
@@ -60,7 +60,9 @@ module.exports = (server, connection) => {
         } = message;
 
         connection.query(
-            'INSERT INTO ' + process.env.DB_USER_DATABASE + '.`chat-messages` (`messageId`, `chatRoomId`, `sender`, `receiver`, `text`, `time`, `received`, `seen`) values( ?, ?, ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO ' +
+                process.env.DB_USER_DATABASE +
+                '.`chat-messages` (`messageId`, `chatRoomId`, `sender`, `receiver`, `text`, `time`, `received`, `seen`) values( ?, ?, ?, ?, ?, ?, ?, ?)',
             [
                 messageId,
                 chatRoomId,
@@ -78,22 +80,6 @@ module.exports = (server, connection) => {
         );
     };
 
-    const getChatRoomFromSocket = async (socketId) => {
-        let chatRoom = null;
-        await connection.query(
-            'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` WHERE `socketOne` = ? OR `socketTwo` = ?',
-            [socketId, socketId],
-            function (error, result, fields) {
-                if (error) console.log(error);
-                else {
-                    console.log('Got chat room from socket id!');
-                    chatRoom = result;
-                }
-            }
-        );
-        return chatRoom;
-    };
-
     // chatRoom : {chatRoomId, userOne, userTwo, socketOne, socketTwo, latestMessagId}
 
     io.on('connection', (socket) => {
@@ -101,7 +87,9 @@ module.exports = (server, connection) => {
             console.log('join', socket.id);
 
             const query = connection.query(
-                'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` WHERE `chatRoomId` = ?',
+                'SELECT * FROM ' +
+                    process.env.DB_USER_DATABASE +
+                    '.`chat-rooms` WHERE `chatRoomId` = ?',
                 [chatRoomId]
             );
 
@@ -141,43 +129,6 @@ module.exports = (server, connection) => {
 
                 callback(chatRoom);
             });
-
-            // getChatRoomFromId(chatRoomId).then((chatRoom) => {
-            //     console.log('chat Room received:', chatRoom.chatRoomId);
-
-            //     if (
-            //         userId === chatRoom.userOne &&
-            //         socket.id !== chatRoom.socketOne
-            //     ) {
-            //         chatRoom.socketOne = socket.id;
-            //         if (
-            //             chatRoom.socketTwo !== undefined &&
-            //             chatRoom.socketTwo !== null
-            //         )
-            //             io.to(chatRoom.socketTwo).emit(
-            //                 'receiverAvailable',
-            //                 socket.id
-            //             );
-            //     } else if (
-            //         userId === chatRoom.userTwo &&
-            //         socket.id !== chatRoom.socketTwo
-            //     ) {
-            //         chatRoom.socketTwo = socket.id;
-            //         if (
-            //             chatRoom.socketOne !== undefined &&
-            //             chatRoom.socketOne !== null
-            //         )
-            //             io.to(chatRoom.socketOne).emit(
-            //                 'receiverAvailable',
-            //                 socket.id
-            //             );
-            //     }
-
-            //     // push chatRoom to db
-            //     updateChatRoom(chatRoom.chatRoomId, chatRoom);
-
-            //     callback(chatRoom);
-            // });
         });
 
         // message: {chatRoomId, sender, receiver, receiverSocket, text, time}
@@ -225,7 +176,9 @@ module.exports = (server, connection) => {
             console.log('disconnect', socket.id);
 
             const query = connection.query(
-                'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` WHERE `socketOne` = ? OR `socketTwo` = ?',
+                'SELECT * FROM ' +
+                    process.env.DB_USER_DATABASE +
+                    '.`chat-rooms` WHERE `socketOne` = ? OR `socketTwo` = ?',
                 [socket.id, socket.id]
             );
 
@@ -238,14 +191,6 @@ module.exports = (server, connection) => {
                     updateChatRoom(chatRoom.chatRoomId, chatRoom);
                 }
             });
-
-            // const chatRoom = await getChatRoomFromSocket(socket.id);
-            // if (chatRoom) {
-            //     if (chatRoom.socketOne === socket.id) chatRoom.socketOne = null;
-            //     else chatRoom.socketTwo = null;
-
-            //     updateChatRoom(chatRoom);
-            // }
         });
     });
 };
