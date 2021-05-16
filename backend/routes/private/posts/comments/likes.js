@@ -9,17 +9,17 @@ module.exports = function (app, connection) {
         const { uid } = req.body;
         const createdAt = new Date();
         connection.query(
-            'INSERT INTO ' + process.env.DB_USER_DATABASE + '.`comments-likes` (`commentId`, `uid`, `createdAt`) values (?, ?, ?)',
+            'INSERT INTO "comments-likes" ("commentId", uid, "createdAt") values ($1, $2, $3)',
             [commentId, uid, createdAt],
-            function (error, result, fields) {
-                res.header('Access-Control-Allow-Origin', '*');
-                res.header(
-                    'Access-Control-Allow-Headers',
-                    'Origin, X-Requested-With, Content-Type, Accept'
-                );
+            function (error, result) {
                 if (error) {
                     res.json(error);
                 } else {
+                    res.header('Access-Control-Allow-Origin', '*');
+                    res.header(
+                        'Access-Control-Allow-Headers',
+                        'Origin, X-Requested-With, Content-Type, Accept'
+                    );
                     res.json({
                         error: false,
                         message: 'Like Successfully Created!',
@@ -37,20 +37,20 @@ module.exports = function (app, connection) {
     ) {
         const { commentId } = req.params;
         connection.query(
-            'SELECT ' + process.env.DB_USER_DATABASE + '.`comments-likes`.* , ' + process.env.DB_USER_DATABASE + '.`users`.fullname, ' + process.env.DB_USER_DATABASE + '.`users`.image, ' + process.env.DB_USER_DATABASE + '.`users-info`.bio FROM ' + process.env.DB_USER_DATABASE + '.`comments-likes` INNER JOIN ' + process.env.DB_USER_DATABASE + '.`users` INNER JOIN ' + process.env.DB_USER_DATABASE + '.`users-info` ON ' + process.env.DB_USER_DATABASE + '.`comments-likes`.uid = ' + process.env.DB_USER_DATABASE + '.`users`.id AND ' + process.env.DB_USER_DATABASE + '.`users-info`.uid = ' + process.env.DB_USER_DATABASE + '.`users`.id WHERE `commentId` = ?',
+            'SELECT "comments-likes".*, users.fullname, users.image, "users-info".bio FROM "comments-likes" INNER JOIN users ON TRUE INNER JOIN "users-info" ON "comments-likes".uid = users.id AND "users-info".uid = users.id WHERE "commentId" = $1',
             [commentId],
-            function (error, result, fields) {
-                res.header('Access-Control-Allow-Origin', '*');
-                res.header(
-                    'Access-Control-Allow-Headers',
-                    'Origin, X-Requested-With, Content-Type, Accept'
-                );
+            function (error, result) {
                 if (error) {
                     res.json(error);
                 } else {
+                    res.header('Access-Control-Allow-Origin', '*');
+                    res.header(
+                        'Access-Control-Allow-Headers',
+                        'Origin, X-Requested-With, Content-Type, Accept'
+                    );
                     res.json({
                         error: false,
-                        data: result,
+                        data: result.rows,
                     });
                 }
             }
@@ -65,20 +65,20 @@ module.exports = function (app, connection) {
     ) {
         const { commentId, uid } = req.params;
         connection.query(
-            'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`comments-likes` WHERE `commentId` = ? AND `uid` = ?',
+            'SELECT * FROM "comments-likes" WHERE "commentId" = $1 AND uid = $2',
             [commentId, uid],
-            function (error, result, fields) {
-                res.header('Access-Control-Allow-Origin', '*');
-                res.header(
-                    'Access-Control-Allow-Headers',
-                    'Origin, X-Requested-With, Content-Type, Accept'
-                );
+            function (error, result) {
                 if (error) {
                     res.json(error);
                 } else {
+                    res.header('Access-Control-Allow-Origin', '*');
+                    res.header(
+                        'Access-Control-Allow-Headers',
+                        'Origin, X-Requested-With, Content-Type, Accept'
+                    );
                     res.json({
                         error: false,
-                        data: result,
+                        data: result.rows,
                     });
                 }
             }
@@ -93,17 +93,17 @@ module.exports = function (app, connection) {
     ) {
         const { commentId, uid } = req.params;
         connection.query(
-            'DELETE FROM ' + process.env.DB_USER_DATABASE + '.`comments-likes` WHERE `commentId`= ? AND `uid` = ?',
+            'DELETE FROM "comments-likes" WHERE "commentId" = $1 AND uid = $2',
             [commentId, uid],
-            function (error, result, fields) {
-                res.header('Access-Control-Allow-Origin', '*');
-                res.header(
-                    'Access-Control-Allow-Headers',
-                    'Origin, X-Requested-With, Content-Type, Accept'
-                );
+            function (error, result) {
                 if (error) {
                     res.json(error);
                 } else {
+                    res.header('Access-Control-Allow-Origin', '*');
+                    res.header(
+                        'Access-Control-Allow-Headers',
+                        'Origin, X-Requested-With, Content-Type, Accept'
+                    );
                     res.json({
                         error: false,
                         message: 'Like Successfully Deleted!',

@@ -1,104 +1,131 @@
 module.exports = function (app, connection) {
-	app.route('/api/pub/blogs')
-		// get all blogs
-		.get(function (req, res, next) {
-			connection.query('SELECT `blogs-list`.blogId, `blogs-list`.content, `blogs-list`.title, `blogs-list`.createdAt, `blogs-list`.uid, `users`.fullname, `users`.username, `users`.image  FROM ' + process.env.DB_USER_DATABASE + '.`blogs-list` INNER JOIN ' + process.env.DB_USER_DATABASE + '.`users` ON ' + process.env.DB_USER_DATABASE + '.`blogs-list`.uid = ' + process.env.DB_USER_DATABASE + '.`users`.id;', (error, result, fields) => {
-				res.header('Access-Control-Allow-Origin', '*');
-				res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-				if (error) res.json(error);
-				else {
-					res.json({
-						error: false,
-						data: result
-					});
-				}
-			});
-		})
-		// create a new blog 
-		.post(function (req, res, nex) {
-			const uid = req.body.uid;
-			const title = req.body.title;
-			const content = req.body.content;
-			const dateCreated = new Date();
-			connection.query('INSERT INTO ' + process.env.DB_USER_DATABASE + '.`blogs-list` (`uid`, `title`, `content`,`createdAt`) values(?,?,?,?)', [uid, title, content, dateCreated],
-				function (error, result, fields) {
-					if (error) { res.json(error); }
-					else {
-						res.header('Access-Control-Allow-Origin', '*');
-						res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-						res.json({ error: false, message: "Blog Created!" });
-					}
-				});
-		});
+    // get all blogs
+    app.route('/api/pub/blogs').get(function (req, res, next) {
+        connection.query(
+            'SELECT "blogs-list"."blogId", "blogs-list".content, "blogs-list".title, "blogs-list"."createdAt", "blogs-list".uid, users.fullname, users.username, users.image  FROM "blogs-list" INNER JOIN users ON "blogs-list".uid = users.id',
+            (error, result) => {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) res.json(error);
+                else {
+                    res.json({
+                        error: false,
+                        data: result.rows,
+                    });
+                }
+            }
+        );
+    });
 
-	app.route('/api/pub/blogs/:blogId')
-		// get a particular blog
-		.get(function (req, res, next) {
-			const blogId = req.params.blogId;
-			connection.query(`SELECT * FROM ${process.env.DB_USER_DATABASE}.\`blogs-list\` WHERE \`blogId\` = ${blogId}`,
-				function (error, result, fields) {
-					res.header('Access-Control-Allow-Origin', '*');
-					res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-					if (error) res.json(error);
-					else {
-						res.json({
-							error: false,
-							data: result
-						});
-					}
-				}
-			);
-		})
-		// update a particular blog
-		.put(function (req, res, nex) {
-			const computeUpdateQuery = () => {
-				let queryString = 'UPDATE ' + process.env.DB_USER_DATABASE + '.`blogs-list` SET ';
-				let queryArray = [];
+    // create a new blog
+    app.route('/api/pub/blogs').post(function (req, res, nex) {
+        const uid = req.body.uid;
+        const title = req.body.title;
+        const content = req.body.content;
+        const dateCreated = new Date();
+        connection.query(
+            'INSERT INTO "blogs-list" (uid, title, content, "createdAt") values($1, $2, $3, $4)',
+            [uid, title, content, dateCreated],
+            function (error, result) {
+                if (error) {
+                    res.json(error);
+                } else {
+                    res.header('Access-Control-Allow-Origin', '*');
+                    res.header(
+                        'Access-Control-Allow-Headers',
+                        'Origin, X-Requested-With, Content-Type, Accept'
+                    );
+                    res.json({ error: false, message: 'Blog Created!' });
+                }
+            }
+        );
+    });
 
-				const updateColumns = (colArray) => {
-					for (let colName of colArray) {
-						if (req.body[colName] === undefined) continue;
+    // get a particular blog
+    app.route('/api/pub/blogs/:blogId').get(function (req, res, next) {
+        const blogId = req.params.blogId;
+        connection.query(
+            'SELECT * FROM "blogs-list" WHERE "blogId" = $1',
+            [blogId],
+            function (error, result) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) res.json(error);
+                else {
+                    res.json({
+                        error: false,
+                        data: result.rows,
+                    });
+                }
+            }
+        );
+    });
 
-						queryString += `\`${colName}\` = ?, `;
-						queryArray.push(req.body[colName]);
-					}
-				};
+    // update a particular blog
+    app.route('/api/pub/blogs/:blogId').put(function (req, res, nex) {
+        const computeUpdateQuery = () => {
+            let queryString = 'UPDATE "blogs-list" SET ';
+            let queryArray = [];
 
-				updateColumns(["title", "content", "upvotesCount"]);
+            const updateColumns = (colArray) => {
+                for (let colName of colArray) {
+                    if (req.body[colName] === undefined) continue;
 
-				queryString = queryString.substring(0, queryString.length - 2);
-				queryString += ` WHERE \`blogId\` = ${req.params.blogId}`;
+                    queryString += `"${colName}" = $${queryArray.length + 1}, `;
+                    queryArray.push(req.body[colName]);
+                }
+            };
 
-				return { queryString, queryArray };
-			};
+            updateColumns(['title', 'content', 'upvotesCount']);
 
-			const args = computeUpdateQuery();
+            queryString = queryString.substring(0, queryString.length - 2);
+            queryString += ` WHERE "blogId" = ${req.params.blogId}`;
 
-			connection.query(args.queryString, args.queryArray,
-				function (error, result, fields) {
-					res.header('Access-Control-Allow-Origin', '*');
-					res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-					if (error) res.json(error);
-					else {
-						res.json({ error: false, message: "Blog Updated!" });
-					}
-				});
-		})
-		// delete a particular blog
-		.delete(function (req, res, next) {
-			const blogId = req.params.blogId;
-			connection.query(`DELETE FROM ${process.env.DB_USER_DATABASE}.\`blogs-list\` WHERE \`blog_id\` = ${blogId}`,
-				function (error, result, fields) {
-					res.header('Access-Control-Allow-Origin', '*');
-					res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-					if (error) res.json(error);
-					else {
-						res.json({
-							error: false,
-							data: result
-						});
-					}
-				}
-			);
-		});
+            return { queryString, queryArray };
+        };
+
+        const args = computeUpdateQuery();
+
+        connection.query(
+            args.queryString,
+            args.queryArray,
+            function (error, result) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) res.json(error);
+                else {
+                    res.json({ error: false, message: 'Blog Updated!' });
+                }
+            }
+        );
+    });
+
+    // delete a particular blog
+    app.route('/api/pub/blogs/:blogId').delete(function (req, res, next) {
+        const blogId = req.params.blogId;
+        connection.query(
+            'DELETE FROM "blogs-list" WHERE "blogId" = $1',
+            [blogId],
+            function (error, result) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) res.json(error);
+                else {
+                    res.json({ error: false, message: 'Blog Deleted!' });
+                }
+            }
+        );
+    });
 };

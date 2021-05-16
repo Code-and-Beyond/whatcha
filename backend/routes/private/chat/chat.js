@@ -1,236 +1,240 @@
+const { v4: uuidv4 } = require('uuid');
+
 module.exports = function (app, connection) {
-	// create chat room
-	app.route('/api/pub/chat').post(function (req, res, next) {
-		let { userOne, userTwo } = req.body;
-		if (userOne > userTwo) [userOne, userTwo] = [userTwo, userOne];
-		const connectionExists = true;
-		connection.query(
-			'INSERT INTO ' + process.env.DB_USER_DATABASE + '.`chat-rooms` (`chatRoomId`, `userOne`, `userTwo`, `connectionExists`) values (UUID(), ?, ?, ?)',
-			[userOne, userTwo, connectionExists],
-			function (error, result, fields) {
-				res.header('Access-Control-Allow-Origin', '*');
-				res.header(
-					'Access-Control-Allow-Headers',
-					'Origin, X-Requested-With, Content-Type, Accept'
-				);
-				if (error) {
-					res.sendStatus(500);
-					// res.json(error);
-				} else {
-					res.json({
-						error: false,
-						message: 'Chat Room Successfully Created!',
-					});
-				}
-			}
-		);
-	});
+    // create chat room
+    app.route('/api/pub/chat').post(function (req, res, next) {
+        let { userOne, userTwo } = req.body;
+        if (userOne > userTwo) [userOne, userTwo] = [userTwo, userOne];
+        const chatRoomId = uuidv4();
+        const connectionExists = true;
 
-	// get chat rooms for given user
-	app.route('/api/pub/chat').get(function (req, res, next) {
-		const { uid } = req.query;
-		connection.query(
-			'SELECT ' + process.env.DB_USER_DATABASE + '.`chat-rooms`.*, ' + process.env.DB_USER_DATABASE + '.`users`.image, ' + process.env.DB_USER_DATABASE + '.`users`.fullname, ' + process.env.DB_USER_DATABASE + '.`users`.id, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.sender, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.receiver, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.`text`, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.`time`, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.received, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.seen, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.userOneHide, ' + process.env.DB_USER_DATABASE + '.`chat-messages`.userTwoHide FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` INNER JOIN ' + process.env.DB_USER_DATABASE + '.`users` ON ' + process.env.DB_USER_DATABASE + '.`chat-rooms`.userTwo = ' + process.env.DB_USER_DATABASE + '.`users`.id OR ' + process.env.DB_USER_DATABASE + '.`chat-rooms`.userOne = ' + process.env.DB_USER_DATABASE + '.`users`.id INNER JOIN ' + process.env.DB_USER_DATABASE + '.`chat-messages` ON ' + process.env.DB_USER_DATABASE + '.`chat-rooms`.latestMessageId = ' + process.env.DB_USER_DATABASE + '.`chat-messages`.messageId WHERE (' + process.env.DB_USER_DATABASE + '.`chat-rooms`.userOne = ? OR ' + process.env.DB_USER_DATABASE + '.`chat-rooms`.userTwo = ?) AND ' + process.env.DB_USER_DATABASE + '.`users`.id != ? ORDER BY ' + process.env.DB_USER_DATABASE + '.`chat-messages`.time DESC',
-			[uid, uid, uid],
-			function (error, result, fields) {
-				res.header('Access-Control-Allow-Origin', '*');
-				res.header(
-					'Access-Control-Allow-Headers',
-					'Origin, X-Requested-With, Content-Type, Accept'
-				);
-				if (error) {
-					res.json(error);
-				} else {
-					res.json({
-						error: false,
-						data: result,
-					});
-				}
-			}
-		);
-	});
+        connection.query(
+            'INSERT INTO "chat-rooms" ("chatRoomId", "userOne", "userTwo", "connectionExists") values ($1, $2, $3, $4)',
+            [chatRoomId, userOne, userTwo, connectionExists],
+            function (error, result) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) {
+                    res.sendStatus(500);
+                    // res.json(error);
+                } else {
+                    res.json({
+                        error: false,
+                        message: 'Chat Room Successfully Created!',
+                    });
+                }
+            }
+        );
+    });
 
-	// get chat room
-	app.route('/api/pub/chat/:chatRoomId').get(function (req, res, next) {
-		const { chatRoomId } = req.params;
-		connection.query(
-			'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` WHERE `chatRoomId` = ?',
-			[chatRoomId],
-			function (error, result, fields) {
-				res.header('Access-Control-Allow-Origin', '*');
-				res.header(
-					'Access-Control-Allow-Headers',
-					'Origin, X-Requested-With, Content-Type, Accept'
-				);
-				if (error) {
-					res.json(error);
-				} else {
-					res.json({
-						error: false,
-						data: result,
-					});
-				}
-			}
-		);
-	});
+    // get chat rooms for given user
+    app.route('/api/pub/chat').get(function (req, res, next) {
+        const { uid } = req.query;
+        connection.query(
+            'SELECT "chat-rooms".*, users.image, users.fullname, users.id, "chat-messages".sender, "chat-messages".receiver, "chat-messages".text, "chat-messages".time, "chat-messages".received, "chat-messages".seen, "chat-messages"."userOneHide", "chat-messages"."userTwoHide" FROM "chat-rooms" INNER JOIN users ON "chat-rooms"."userTwo" = users.id OR "chat-rooms"."userOne" = users.id INNER JOIN "chat-messages" ON "chat-rooms"."latestMessageId" = "chat-messages"."messageId" WHERE ("chat-rooms"."userOne" = $1 OR "chat-rooms"."userTwo" = $1) AND users.id != $1 ORDER BY "chat-messages".time DESC',
+            [uid],
+            function (error, result) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) {
+                    res.json(error);
+                } else {
+                    res.json({
+                        error: false,
+                        data: result.rows,
+                    });
+                }
+            }
+        );
+    });
 
-	// update a chat room using chat room Id
-	app.route('/api/pub/chat/:chatRoomId').put(function (req, res, next) {
-		const computeUpdateQuery = () => {
-			let queryString = 'UPDATE ' + process.env.DB_USER_DATABASE + '.`chat-rooms` SET ';
-			let queryArray = [];
+    // get chat room
+    app.route('/api/pub/chat/:chatRoomId').get(function (req, res, next) {
+        const { chatRoomId } = req.params;
+        connection.query(
+            'SELECT * FROM "chat-rooms" WHERE "chatRoomId" = $1',
+            [chatRoomId],
+            function (error, result) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) {
+                    res.json(error);
+                } else {
+                    res.json({
+                        error: false,
+                        data: result.rows,
+                    });
+                }
+            }
+        );
+    });
 
-			const updateColumns = (colArray) => {
-				for (let colName of colArray) {
-					if (req.body[colName] === undefined) continue;
+    // update a chat room using chat room Id
+    app.route('/api/pub/chat/:chatRoomId').put(function (req, res, next) {
+        const computeUpdateQuery = () => {
+            let queryString = 'UPDATE "chat-rooms" SET ';
+            let queryArray = [];
 
-					queryString += `\`${colName}\` = ?, `;
-					queryArray.push(req.body[colName]);
-				}
-			};
+            const updateColumns = (colArray) => {
+                for (let colName of colArray) {
+                    if (req.body[colName] === undefined) continue;
 
-			updateColumns([
-				'socketOne',
-				'socketTwo',
-				'connectionExists',
-				'latestMessageId',
-			]);
+                    queryString += `"${colName}" = $${queryArray.length + 1}, `;
+                    queryArray.push(req.body[colName]);
+                }
+            };
 
-			queryString = queryString.substring(0, queryString.length - 2);
-			queryString += ` WHERE \`chatRoomId\` = ?`;
-			queryArray.push(req.params.chatRoomId);
+            updateColumns([
+                'socketOne',
+                'socketTwo',
+                'connectionExists',
+                'latestMessageId',
+            ]);
 
-			return { queryString, queryArray };
-		};
+            queryString = queryString.substring(0, queryString.length - 2);
+            queryString += ` WHERE "chatRoomId" = $${queryArray.length + 1}`;
+            queryArray.push(req.params.chatRoomId);
 
-		const args = computeUpdateQuery();
+            return { queryString, queryArray };
+        };
 
-		connection.query(
-			args.queryString,
-			args.queryArray,
-			function (error, result, fields) {
-				res.header('Access-Control-Allow-Origin', '*');
-				res.header(
-					'Access-Control-Allow-Headers',
-					'Origin, X-Requested-With, Content-Type, Accept'
-				);
-				if (error) {
-					res.json(error);
-				} else {
-					res.json({
-						error: false,
-						message: 'Post Successfully Updated!',
-					});
-				}
-			}
-		);
-	});
+        const args = computeUpdateQuery();
 
-	// update a chat room using user Ids
-	app.route('/api/pub/chat').put(function (req, res, next) {
-		let { userOne, userTwo } = req.query;
-		if (userOne > userTwo) [userOne, userTwo] = [userTwo, userOne];
-		const computeUpdateQuery = () => {
-			let queryString = 'UPDATE ' + process.env.DB_USER_DATABASE + '.`chat-rooms` SET ';
-			let queryArray = [];
+        connection.query(
+            args.queryString,
+            args.queryArray,
+            function (error, result) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) {
+                    res.json(error);
+                } else {
+                    res.json({
+                        error: false,
+                        message: 'Post Successfully Updated!',
+                    });
+                }
+            }
+        );
+    });
 
-			const updateColumns = (colArray) => {
-				for (let colName of colArray) {
-					if (req.body[colName] === undefined) continue;
+    // update a chat room using user Ids
+    app.route('/api/pub/chat').put(function (req, res, next) {
+        let { userOne, userTwo } = req.query;
+        if (userOne > userTwo) [userOne, userTwo] = [userTwo, userOne];
+        const computeUpdateQuery = () => {
+            let queryString = 'UPDATE "chat-rooms" SET ';
+            let queryArray = [];
 
-					queryString += `\`${colName}\` = ?, `;
-					queryArray.push(req.body[colName]);
-				}
-			};
+            const updateColumns = (colArray) => {
+                for (let colName of colArray) {
+                    if (req.body[colName] === undefined) continue;
 
-			updateColumns([
-				'socketOne',
-				'socketTwo',
-				'connectionExists',
-				'latestMessageId',
-			]);
+                    queryString += `"${colName}" = $${queryArray.length + 1}, `;
+                    queryArray.push(req.body[colName]);
+                }
+            };
 
-			queryString = queryString.substring(0, queryString.length - 2);
-			queryString += ` WHERE \`userOne\` = ? AND \`userTwo\` = ?`;
-			queryArray.push(userOne, userTwo);
+            updateColumns([
+                'socketOne',
+                'socketTwo',
+                'connectionExists',
+                'latestMessageId',
+            ]);
 
-			return { queryString, queryArray };
-		};
+            queryString = queryString.substring(0, queryString.length - 2);
+            queryString += ` WHERE "userOne" = $${
+                queryArray.length + 1
+            } AND "userTwo" = $${queryArray.length + 2}`;
+            queryArray.push(userOne, userTwo);
 
-		const args = computeUpdateQuery();
-		console.log(args.queryString);
-		console.log(args.queryArray);
+            return { queryString, queryArray };
+        };
 
-		connection.query(
-			args.queryString,
-			args.queryArray,
-			function (error, result, fields) {
-				res.header('Access-Control-Allow-Origin', '*');
-				res.header(
-					'Access-Control-Allow-Headers',
-					'Origin, X-Requested-With, Content-Type, Accept'
-				);
-				if (error) {
-					res.json(error);
-				} else {
-					res.json({
-						error: false,
-						message: 'Chat room Successfully Updated!',
-					});
-				}
-			}
-		);
-	});
+        const args = computeUpdateQuery();
 
-	// delete a chat room
-	app.route('/api/pub/chat/:chatRoomId').delete(function (req, res, next) {
-		const { chatRoomId } = req.params;
-		connection.query(
-			'DELETE FROM ' + process.env.DB_USER_DATABASE + '.`chat-rooms` WHERE `chatRoomId`= ? ',
-			[chatRoomId],
-			function (error, result, fields) {
-				res.header('Access-Control-Allow-Origin', '*');
-				res.header(
-					'Access-Control-Allow-Headers',
-					'Origin, X-Requested-With, Content-Type, Accept'
-				);
-				if (error) {
-					res.json(error);
-				} else {
-					res.json({
-						error: false,
-						message: 'Post Successfully Deleted!',
-					});
-				}
-			}
-		);
-	});
+        connection.query(
+            args.queryString,
+            args.queryArray,
+            function (error, result) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) {
+                    res.json(error);
+                } else {
+                    res.json({
+                        error: false,
+                        message: 'Chat room Successfully Updated!',
+                    });
+                }
+            }
+        );
+    });
 
-	// get chat messages of a chat room
-	app.route('/api/pub/chat/:chatRoomId/messages').get(function (
-		req,
-		res,
-		next
-	) {
-		const { chatRoomId } = req.params;
-		connection.query(
-			'SELECT * FROM ' + process.env.DB_USER_DATABASE + '.`chat-messages` WHERE `chatRoomId` = ? ORDER BY `time`',
-			[chatRoomId],
-			function (error, result, fields) {
-				res.header('Access-Control-Allow-Origin', '*');
-				res.header(
-					'Access-Control-Allow-Headers',
-					'Origin, X-Requested-With, Content-Type, Accept'
-				);
-				if (error) {
-					res.json(error);
-				} else {
-					res.json({
-						error: false,
-						data: result,
-					});
-				}
-			}
-		);
-	});
+    // delete a chat room
+    app.route('/api/pub/chat/:chatRoomId').delete(function (req, res, next) {
+        const { chatRoomId } = req.params;
+        connection.query(
+            'DELETE FROM "chat-rooms" WHERE "chatRoomId" = $1',
+            [chatRoomId],
+            function (error, result) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) {
+                    res.json(error);
+                } else {
+                    res.json({
+                        error: false,
+                        message: 'Post Successfully Deleted!',
+                    });
+                }
+            }
+        );
+    });
+
+    // get chat messages of a chat room
+    app.route('/api/pub/chat/:chatRoomId/messages').get(function (
+        req,
+        res,
+        next
+    ) {
+        const { chatRoomId } = req.params;
+        connection.query(
+            'SELECT * FROM "chat-messages" WHERE "chatRoomId" = $1 ORDER BY time',
+            [chatRoomId],
+            function (error, result) {
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header(
+                    'Access-Control-Allow-Headers',
+                    'Origin, X-Requested-With, Content-Type, Accept'
+                );
+                if (error) {
+                    res.json(error);
+                } else {
+                    res.json({
+                        error: false,
+                        data: result.rows,
+                    });
+                }
+            }
+        );
+    });
 };

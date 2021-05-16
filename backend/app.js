@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
-const connection = require('./connections/user');
+const connection = require('./connections/postgres');
 const auth = require('./helpers/auth');
 const path = require('path');
 

@@ -6,15 +6,14 @@ module.exports = (server, connection) => {
 
     const updateChatRoom = (chatRoomId, chatRoom) => {
         const computeUpdateQuery = () => {
-            let queryString =
-                'UPDATE ' + process.env.DB_USER_DATABASE + '.`chat-rooms` SET ';
+            let queryString = 'UPDATE "chat-rooms" SET ';
             let queryArray = [];
 
             const updateColumns = (colArray) => {
                 for (let colName of colArray) {
                     if (chatRoom[colName] === undefined) continue;
 
-                    queryString += `\`${colName}\` = ?, `;
+                    queryString += `"${colName}" = $${queryArray.length + 1}, `;
                     queryArray.push(chatRoom[colName]);
                 }
             };
@@ -29,7 +28,7 @@ module.exports = (server, connection) => {
             ]);
 
             queryString = queryString.substring(0, queryString.length - 2);
-            queryString += ` WHERE \`chatRoomId\` = ?`;
+            queryString += ` WHERE "chatRoomId" = $${queryArray.length + 1}`;
             queryArray.push(chatRoomId);
 
             return { queryString, queryArray };
@@ -40,7 +39,7 @@ module.exports = (server, connection) => {
         connection.query(
             args.queryString,
             args.queryArray,
-            function (error, result, fields) {
+            function (error, result) {
                 if (error) console.log(error);
                 else console.log('Chat Room updated!');
             }
@@ -60,9 +59,7 @@ module.exports = (server, connection) => {
         } = message;
 
         connection.query(
-            'INSERT INTO ' +
-                process.env.DB_USER_DATABASE +
-                '.`chat-messages` (`messageId`, `chatRoomId`, `sender`, `receiver`, `text`, `time`, `received`, `seen`) values( ?, ?, ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO "chat-messages" ("messageId", "chatRoomId", sender, receiver, text, time, received, seen) values($1, $2, $3, $4, $5, $6, $7, $8)',
             [
                 messageId,
                 chatRoomId,
@@ -73,7 +70,7 @@ module.exports = (server, connection) => {
                 received,
                 seen,
             ],
-            function (error, result, fields) {
+            function (error, result) {
                 if (error) console.log(error);
                 else console.log('Message posted!');
             }
@@ -87,48 +84,49 @@ module.exports = (server, connection) => {
             console.log('join', socket.id);
 
             const query = connection.query(
-                'SELECT * FROM ' +
-                    process.env.DB_USER_DATABASE +
-                    '.`chat-rooms` WHERE `chatRoomId` = ?',
-                [chatRoomId]
-            );
+                'SELECT * FROM "chat-rooms" WHERE "chatRoomId" = $1',
+                [chatRoomId],
+                (error, result) => {
+                    if (error) return;
 
-            query.on('result', (chatRoom) => {
-                console.log('chat Room received:', chatRoom.chatRoomId);
+                    chatRoom = result.rows[0];
 
-                if (
-                    userId === chatRoom.userOne &&
-                    socket.id !== chatRoom.socketOne
-                ) {
-                    chatRoom.socketOne = socket.id;
+                    console.log('chat Room received:', chatRoom.chatRoomId);
+
                     if (
-                        chatRoom.socketTwo !== undefined &&
-                        chatRoom.socketTwo !== null
-                    )
-                        io.to(chatRoom.socketTwo).emit(
-                            'receiverAvailable',
-                            socket.id
-                        );
-                } else if (
-                    userId === chatRoom.userTwo &&
-                    socket.id !== chatRoom.socketTwo
-                ) {
-                    chatRoom.socketTwo = socket.id;
-                    if (
-                        chatRoom.socketOne !== undefined &&
-                        chatRoom.socketOne !== null
-                    )
-                        io.to(chatRoom.socketOne).emit(
-                            'receiverAvailable',
-                            socket.id
-                        );
+                        userId === chatRoom.userOne &&
+                        socket.id !== chatRoom.socketOne
+                    ) {
+                        chatRoom.socketOne = socket.id;
+                        if (
+                            chatRoom.socketTwo !== undefined &&
+                            chatRoom.socketTwo !== null
+                        )
+                            io.to(chatRoom.socketTwo).emit(
+                                'receiverAvailable',
+                                socket.id
+                            );
+                    } else if (
+                        userId === chatRoom.userTwo &&
+                        socket.id !== chatRoom.socketTwo
+                    ) {
+                        chatRoom.socketTwo = socket.id;
+                        if (
+                            chatRoom.socketOne !== undefined &&
+                            chatRoom.socketOne !== null
+                        )
+                            io.to(chatRoom.socketOne).emit(
+                                'receiverAvailable',
+                                socket.id
+                            );
+                    }
+
+                    // push chatRoom to db
+                    updateChatRoom(chatRoom.chatRoomId, chatRoom);
+
+                    callback(chatRoom);
                 }
-
-                // push chatRoom to db
-                updateChatRoom(chatRoom.chatRoomId, chatRoom);
-
-                callback(chatRoom);
-            });
+            );
         });
 
         // message: {chatRoomId, sender, receiver, receiverSocket, text, time}
@@ -176,21 +174,23 @@ module.exports = (server, connection) => {
             console.log('disconnect', socket.id);
 
             const query = connection.query(
-                'SELECT * FROM ' +
-                    process.env.DB_USER_DATABASE +
-                    '.`chat-rooms` WHERE `socketOne` = ? OR `socketTwo` = ?',
-                [socket.id, socket.id]
-            );
+                'SELECT * FROM "chat-rooms" WHERE "socketOne" = $1 OR "socketTwo" = $1',
+                [socket.id],
+                (error, result) => {
+                    if (error) return;
 
-            query.on('result', (chatRoom) => {
-                if (chatRoom) {
-                    if (chatRoom.socketOne === socket.id)
-                        chatRoom.socketOne = null;
-                    else chatRoom.socketTwo = null;
+                    if (result.length === 0) return;
 
-                    updateChatRoom(chatRoom.chatRoomId, chatRoom);
+                    const chatRoom = result.rows[0];
+                    if (chatRoom) {
+                        if (chatRoom.socketOne === socket.id)
+                            chatRoom.socketOne = null;
+                        else chatRoom.socketTwo = null;
+
+                        updateChatRoom(chatRoom.chatRoomId, chatRoom);
+                    }
                 }
-            });
+            );
         });
     });
 };
