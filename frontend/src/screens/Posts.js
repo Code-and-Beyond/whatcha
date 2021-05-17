@@ -268,7 +268,7 @@ const PostsScreen = () => {
 	};
 
 	const getAllPosts = () =>
-		posts.length &&
+		posts.length > 0 &&
 		posts.map((post, index) => (
 			<Post
 				key={ post.pid }
@@ -289,7 +289,7 @@ const PostsScreen = () => {
 		));
 
 	const getTrendingPosts = () =>
-		trendingPosts.length &&
+		trendingPosts.length > 0 &&
 		trendingPosts.map((post, index) => (
 			<Post
 				key={ post.pid }
@@ -323,7 +323,7 @@ const PostsScreen = () => {
 
 
 	const getSavedPosts = () =>
-		savedPosts.length &&
+		savedPosts.length > 0 &&
 		savedPosts.map((post, index) => (
 			<Post
 				key={ post.pid }
